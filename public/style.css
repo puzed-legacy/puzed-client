@@ -1,0 +1,71 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: tahoma;
+}
+
+nav a {
+  margin-right: 5px;
+}
+
+.loading {
+  background-color: #eaeaea;
+  box-shadow: 0 0 10px #b1b1b1;
+  display: inline-block;
+  position: fixed;
+  top: 10px;
+  width: 80%;
+  left: calc(50% - 40%);
+  padding: 10px 20px;
+  border: 2px solid black;
+  text-align: center;
+  font-weight: bold;
+}
+
+/*
+  FORMS
+*/
+puz-form-field {
+  display: block;
+  margin-bottom: 20px;
+}
+
+puz-form-label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+puz-form-input input {
+  width: 100%;
+  font-size: 100%;
+  padding: 5px;
+}
+
+puz-form-label:after {
+  content: ':';
+}
+
+puz-form-label {
+  font-weight: bold;
+}
+
+/*
+  BUTTONS
+*/
+puz-form-actions button {
+  padding: 10px 20px;
+  font-size: 100%;
+  border: 1px solid black;
+  font-weight: 600;
+}
+
+puz-form-actions button.primary:hover {
+  background-color: #2d7511;
+}
+puz-form-actions button.primary {
+  background-color: #449e1f;
+  color: white;
+  cursor: pointer;
+}
