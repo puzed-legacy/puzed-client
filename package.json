@@ -29,5 +29,8 @@
     "spath": "^2.0.2",
     "uglifyify": "^5.0.2",
     "watchify": "^3.11.1"
+  },
+  "dependencies": {
+    "stream-http": "^3.1.1"
   }
 }

@@ -10,7 +10,8 @@ module.exports = function (config) {
       oauthToken: window.localStorage.getItem('oauthToken'),
       loggedIn: window.localStorage.getItem('oauthToken'),
 
-      projects: []
+      projects: [],
+      buildLogs: {}
     }
   };
 

@@ -11,6 +11,8 @@ module.exports = function (app, html) {
         <div class="loading" ${app.state.loading === 0 ? 'off' : ''}><div>Loading project</div></div>
 
         <h2>${project && project.name}</h2>
+        <h3>Build Log</h3>  
+        <pre class="terminal"><code>${project && app.state.buildLogs[project.id]}</code></pre>
 
       </section>
     </main>
