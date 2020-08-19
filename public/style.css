@@ -10,18 +10,23 @@ nav a {
   margin-right: 5px;
 }
 
+/*
+  LOADING
+*/
+.loading > div {
+  padding: 10px;
+}
 .loading {
-  background-color: #eaeaea;
-  box-shadow: 0 0 10px #b1b1b1;
-  display: inline-block;
-  position: fixed;
-  top: 10px;
-  width: 80%;
-  left: calc(50% - 40%);
-  padding: 10px 20px;
-  border: 2px solid black;
-  text-align: center;
-  font-weight: bold;
+  background-color: #feffc0;
+  color: #545409;
+  border-left: 5px solid #ddde7c;
+  max-height: 60px;            
+  overflow-y: hidden;
+  transition: max-height 0.5s ease-in-out;
+}
+
+.loading[off] {
+  max-height: 0;
 }
 
 /*

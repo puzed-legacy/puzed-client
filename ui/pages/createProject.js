@@ -2,18 +2,19 @@ const menu = require('../components/menu');
 
 function selectRepository (app, html) {
   return html`
-    <main oncreate=${app.listRepositories}>
+    <main oncreate=${app.listRepositories.bind(null, app)}>
       ${menu(app, html)}
  
       <section>
         <h2>Your Repositories</h2>
         <p>Select a repository you would like to deploy.</p>
+        <div class="loading" ${app.state.loading === 0 ? 'off' : ''}><div>Loading your repositories</div></div>
         <ul>
           ${(app.state.repositories || []).map(repository => {
             return html`
               <li>
                 <a href="/projects/create?from=${repository.full_name}">${repository.name}</a>
-              </li>`
+              </li>`;
           })}
         </ul>
       </section>
@@ -72,11 +73,11 @@ function setupProject (app, html, url) {
 }
 
 module.exports = function (app, html) {
-  const url = new URL(window.location.href)
+  const url = new URL(window.location.href);
 
   if (url.searchParams.get('from')) {
-    return setupProject(app, html, url)
+    return setupProject(app, html, url);
   }
 
-  return selectRepository(app, html)
+  return selectRepository(app, html);
 };

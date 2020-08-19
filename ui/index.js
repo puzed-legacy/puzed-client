@@ -5,6 +5,8 @@ require('./modules/onUrlChange');
 
 const pages = {
   home: require('./pages/home'),
+  listProjects: require('./pages/listProjects'),
+  readProject: require('./pages/readProject'),
   createProject: require('./pages/createProject'),
   notFound: require('./pages/notFound')
 };

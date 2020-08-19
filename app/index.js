@@ -4,120 +4,70 @@ const routemeup = require('routemeup');
 module.exports = function (config) {
   const eventEmitter = new EventEmitter();
 
-  const state = {
-    loading: 0,
-    oauthToken: localStorage.getItem('oauthToken'),
-    loggedIn: localStorage.getItem('oauthToken')
+  const app = {
+    state: {
+      loading: 0,
+      oauthToken: window.localStorage.getItem('oauthToken'),
+      loggedIn: window.localStorage.getItem('oauthToken'),
+
+      projects: []
+    }
   };
 
   async function changeUrl () {
     const route = routemeup(routes, { url: window.location.pathname });
 
-    state.page = route ? await route.controller() : 'notFound';
-    state.tokens = route ? route.tokens : {};
+    app.state.page = route ? await route.controller() : 'notFound';
+    app.state.tokens = route ? route.tokens : {};
 
-    if (state.page) {
+    if (app.state.page) {
       eventEmitter.emit('stateChanged', { force: true });
     }
   }
 
   const routes = {
     '/': () => 'home',
+    '/projects': () => 'listProjects',
     '/projects/create': () => 'createProject',
-    '/auth': async () => {
-      const url = new URL(location.href);
-      const accessToken = url.searchParams.get('code');
-
-      const oauthResponse = await fetch(`${config.apiServerUrl}/auth?token=${accessToken}`, {
-        method: 'post'
-      });
-
-      const oauthData = await oauthResponse.json();
-
-      state.oauthToken = oauthData.access_token;
-      localStorage.setItem('oauthToken', oauthData.access_token);
-
-      location.href = '/';
-    }
+    '/projects/:projectId': () => 'readProject',
+    '/auth': require('./auth/loginHandler').bind(null, app)
   };
 
   function emitStateChanged () {
     eventEmitter.emit('stateChanged');
   }
 
-  async function listRepositories () {
-    if (!state.loggedIn) {
-      return;
-    }
-
-    state.loading = state.loading + 1;
-    eventEmitter.emit('stateChanged');
-
-    try {
-      const response = await fetch('https://api.github.com/user/repos?sort=updated', {
-        headers: {
-          authorization: 'token ' + state.oauthToken
-        }
-      });
-
-      const repositories = await response.json();
-
-      state.repositories = repositories;
-    } catch (error) {
-      console.log(error);
-    }
-
-    state.loading = state.loading - 1;
-    eventEmitter.emit('stateChanged');
+  function setLoadingState () {
+    app.state.loading = app.state.loading + 1;
+    app.eventEmitter.emit('stateChanged');
   }
 
-  async function getUser () {
-    if (!state.oauthToken) {
-      return;
-    }
-
-    state.loading = state.loading + 1;
-    eventEmitter.emit('stateChanged');
-
-    try {
-      const response = await fetch('https://api.github.com/user', {
-        headers: {
-          authorization: 'token ' + state.oauthToken
-        }
-      });
-
-      const user = await response.json();
-
-      state.user = user;
-    } catch (error) {
-      localStorage.removeItem('oauthToken');
-      location.reload();
-      console.log(error);
-    }
-
-    state.loading = state.loading - 1;
-    eventEmitter.emit('stateChanged');
+  function unsetLoadingState () {
+    app.state.loading = app.state.loading - 1;
+    app.eventEmitter.emit('stateChanged');
   }
 
-  getUser();
+  app.eventEmitter = eventEmitter;
+  app.config = config;
 
-  const app = {
-    eventEmitter,
+  app.emitStateChanged = emitStateChanged;
 
-    state,
-    config,
+  app.listRepositories = require('./repositories/list');
+  app.listProjects = require('./projects/list');
+  app.readProject = require('./projects/read');
+  app.createProject = require('./projects/create');
 
-    emitStateChanged,
+  app.changeUrl = changeUrl;
 
-    listRepositories,
+  app.setLoadingState = setLoadingState;
+  app.unsetLoadingState = unsetLoadingState;
 
-    changeUrl,
-
-    on: eventEmitter.addListener.bind(eventEmitter),
-    off: eventEmitter.removeListener.bind(eventEmitter)
-  };
+  app.on = eventEmitter.addListener.bind(eventEmitter);
+  app.off = eventEmitter.removeListener.bind(eventEmitter);
 
   window.app = app;
+
+  require('./auth/getUser')(app);
 
   return app;
 };
