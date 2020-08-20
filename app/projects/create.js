@@ -1,8 +1,5 @@
 const http = require('stream-http');
-<<<<<<< HEAD
 const NdJsonFe = require('ndjson-fe');
-=======
->>>>>>> f836edf126a4c119dfed56500fd18c93e94230d3
 
 async function createProject (app, project) {
   app.setLoadingState();
@@ -19,29 +16,35 @@ async function createProject (app, project) {
     protocol: uri.protocol
   };
 
-  let buffer = '';
   let projectDocument;
 
   return new Promise((resolve, reject) => {
     http.request(options, function (response) {
-      response.on('data', (chunk) => {
-        buffer = buffer + chunk.toString();
-
-        if (projectDocument) {
-          app.state.buildLogs[projectDocument.id] = app.state.buildLogs[projectDocument.id] || '';
-          app.state.buildLogs[projectDocument.id] = app.state.buildLogs[projectDocument.id] + chunk.toString();
-          app.emitStateChanged();
-        }
-
-        if (buffer.includes('\n\n---\n\n')) {
-          const splitBuffer = buffer.split('\n\n---\n\n');
-          projectDocument = JSON.parse(splitBuffer[0]);
-          buffer = buffer[1];
-
-          app.state.projects.push(projectDocument);
-          resolve(projectDocument);
+      const stream = new NdJsonFe();
+      stream.on('next', entry => {
+        if (!projectDocument) {
+          projectDocument = entry;
+          app.state.projects.push(entry);
+          resolve(entry);
           app.unsetLoadingState();
+          return;
         }
+
+        app.state.buildLogs[entry[0]] = app.state.buildLogs[entry[0]] || '';
+        app.state.buildLogs[entry[0]] = app.state.buildLogs[entry[0]] + entry[1];
+
+        if (!app.state.deployments.find(deployment => deployment.id === entry[0])) {
+          app.listDeployments(app, projectDocument.id);
+        }
+
+        app.emitStateChanged();
+      });
+      stream.on('error', (error) => {
+        console.log('error parsing ndjson', error);
+      });
+
+      response.on('data', chunk => {
+        stream.emit('write', chunk.toString());
       });
     }).end(JSON.stringify(project));
   });
