@@ -75,7 +75,7 @@ function setupProject (app, html, url) {
           <puz-form-field>
             <puz-form-label>Web Port</puz-form-label>
             <puz-form-input>
-              <input name="webPort" value="8080" />
+              <input name="webPort" value="8000" />
             </puz-form-input>
           </puz-form-field>
 
