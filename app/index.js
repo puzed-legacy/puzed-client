@@ -10,7 +10,9 @@ module.exports = function (config) {
       oauthToken: window.localStorage.getItem('oauthToken'),
       loggedIn: window.localStorage.getItem('oauthToken'),
 
-      projects: []
+      projects: [],
+      deployments: [],
+      buildLogs: {}
     }
   };
 
@@ -54,6 +56,7 @@ module.exports = function (config) {
 
   app.listRepositories = require('./repositories/list');
   app.listProjects = require('./projects/list');
+  app.listDeployments = require('./projects/deployments/list');
   app.readProject = require('./projects/read');
   app.createProject = require('./projects/create');
 
