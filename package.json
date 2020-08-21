@@ -8,7 +8,9 @@
     "watch": "node_modules/.bin/watchify -t envify -t brfs -d -o public/index.bundle.js index.js",
     "serve": "node_modules/.bin/ws -d ./public --spa index.html",
     "start": "npm run watch & npm run serve",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "keywords": [],
   "author": "",
@@ -33,6 +35,8 @@
   "dependencies": {
     "ansi-to-html": "^0.6.14",
     "ndjson-fe": "^1.0.0",
-    "stream-http": "^3.1.1"
-  }
+    "stream-http": "^3.1.1",
+    "snyk": "^1.381.1"
+  },
+  "snyk": true
 }
