@@ -1,5 +1,11 @@
 const setPath = require('spath/setPath');
 
+const {
+  createForm,
+  createTextInput,
+  createSelectInput
+} = require('minthril-form');
+
 const menu = require('../components/menu');
 
 function selectRepository (app, html) {
@@ -29,67 +35,63 @@ function setupProject (app, html, url) {
   const owner = from[0];
   const repo = from[1];
 
-  function deploy (event) {
-    event.preventDefault();
+  const form = createForm({
+    fields: [
+      {
+        name: 'name',
+        label: 'Project Name',
+        component: createTextInput,
+        autoFocus: true,
+        initialValue: `my-${owner}-${repo}-1`
+      },
+      {
+        name: 'image',
+        label: 'Image',
+        component: createSelectInput,
+        options: [
+          {
+            value: 'nodejs12',
+            label: 'NodeJS (version 12)'
+          }
+        ],
+        initialValue: 'nodejs12'
+      },
+      {
+        name: 'webPort',
+        label: 'Web Port',
+        component: createTextInput,
+        initialValue: '8000'
+      },
+      {
+        name: 'domain',
+        label: 'Domain',
+        component: createTextInput,
+        initialValue: `${owner}-${repo}.puzed.net`
+      }
+    ],
+    onSubmit: (event, data) => {
+      event.preventDefault();
 
-    app.createProject(app, {
-      image: event.target.querySelector('[name="image"]').value,
-      domain: event.target.querySelector('[name="domain"]').value,
-      name: event.target.querySelector('[name="name"]').value,
-      owner,
-      repo,
-      webport: event.target.querySelector('[name="webPort"]').value
-    }).then(project => {
-      setPath('/projects/' + project.id);
-    });
-  }
+      app.createProject(app, {
+        image: data.image,
+        domain: data.domain,
+        name: data.name,
+        owner,
+        repo,
+        webport: data.webPort
+      }).then(project => {
+        setPath('/projects/' + project.id);
+      });
+    }
+  });
 
   return html`
     <main>
       ${menu(app, html)}
- 
+
       <section>
-        <h2>Your Repositories</h2>
-        <form onsubmit=${deploy}>
-          <puz-form-field>
-            <puz-form-label>Repository</puz-form-label>
-            <puz-form-input>
-              ${url.searchParams.get('from')}
-            </puz-form-input>
-          </puz-form-field>
-
-          <puz-form-field>
-            <puz-form-label>Project Name</puz-form-label>
-            <puz-form-input>
-              <input name="name" value="my-${owner}-${repo}-1" autofocus />
-            </puz-form-input>
-          </puz-form-field>
-
-          <puz-form-field>
-            <puz-form-label>Image</puz-form-label>
-            <puz-form-input>
-              <input name="image" value="node:12" />
-            </puz-form-input>
-          </puz-form-field>
-
-          <puz-form-field>
-            <puz-form-label>Web Port</puz-form-label>
-            <puz-form-input>
-              <input name="webPort" value="8000" />
-            </puz-form-input>
-          </puz-form-field>
-
-          <puz-form-field>
-            <puz-form-label>Domain</puz-form-label>
-            <puz-form-input>
-              <input name="domain" value="something.puzed.net" />
-            </puz-form-input>
-          </puz-form-field>
-
-          <puz-form-actions>
-            <button class="primary">Deploy</button>
-          </puz-form-actions>
-        </form>
+        <h2>Create a new project</h2>
+        ${form}
       </section>
     </main>
   `;

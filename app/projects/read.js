@@ -15,7 +15,7 @@ async function readProject (app, projectId) {
     const project = await response.json();
 
     const existingProjectIndex = app.state.projects.findIndex(project => project.id === projectId);
-    if (existingProjectIndex) {
+    if (existingProjectIndex > -1) {
       app.state.projects.splice(existingProjectIndex, 1);
     }
 

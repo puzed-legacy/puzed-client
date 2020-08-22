@@ -71,18 +71,97 @@ puz-form-label {
 /*
   BUTTONS
 */
-puz-form-actions button {
+button {
   padding: 10px 20px;
   font-size: 100%;
   border: 1px solid black;
   font-weight: 600;
 }
 
-puz-form-actions button.primary:hover {
+button:hover {
   background-color: #2d7511;
 }
-puz-form-actions button.primary {
+button {
   background-color: #449e1f;
   color: white;
   cursor: pointer;
+}
+
+/*
+  LIBRARY STYLING
+*/
+.form-group {
+  margin-bottom: 10px;
+}
+
+label:after {
+  content: ':';
+}
+label {
+  cursor: pointer;
+  display: block;
+  margin-bottom: 5px;
+}
+
+input:focus {
+  border-color: blue;
+}
+input {
+  width: 100%;
+  padding: 3px;
+  font-size: 100%;
+  font-weight: bold;
+  border: 2px solid black;
+  outline: none;
+}
+
+min-ui-form-checkbox-input {
+  margin: 20px 0 20px 0;
+  display: block;
+}
+
+min-ui-form-checkbox-input input:checked {
+  background-color: black;
+  box-shadow: inset 0 0 1px 2px white;
+}
+min-ui-form-checkbox-input input {
+  cursor: pointer;
+  appearance: none;
+  width: auto;
+  padding: 8px;
+  margin: 0;
+  vertical-align: text-top;
+}
+
+min-ui-form-checkbox-input label:after {
+  content: '';
+}
+min-ui-form-checkbox-input label {
+  display: inline;
+}
+min-ui-form-checkbox-input input {
+  width: auto;
+}
+
+min-ui-form-select-input select:focus {
+  border-color: blue;
+}
+min-ui-form-select-input select {
+  cursor: pointer;
+
+  font-weight: bold;
+  outline: none;
+  display: block;
+  width: 100%;
+  padding: 3px 3px 3px 3px;
+  border: 2px solid black;
+  font-size: 100%;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: transparent;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position-x: 100%;
+  background-position-y: center;
 }
