@@ -1,6 +1,16 @@
 const menu = require('../components/menu');
-const Convert = require('ansi-to-html');
-const convert = new Convert();
+const createTerminal = require('../components/terminal');
+
+const format = require('date-fns/format');
+
+const toggleExpanded = parentSelector => event => {
+  const parent = event.target.closest(parentSelector);
+  if (parent.classList.contains('expanded')) {
+    parent.classList.remove('expanded');
+  } else {
+    parent.classList.add('expanded');
+  }
+};
 
 module.exports = function (app, html) {
   const project = app.state.projects.find(project => project.id === app.state.tokens.projectId);
@@ -13,18 +23,31 @@ module.exports = function (app, html) {
 
   function renderDeployments () {
     return html`
-      <div>
-        <h2>Deployments</h3>
-        ${deployments.map(deployment => html`
+      <puz-deployments>
+        <div class="heading-container">
+          <h2>
+            Deployments
+          </h3>
           <div>
-            <strong>${deployment.status}</strong> ${deployment.id}
-            <h3>Build Log</h4>
-            <pre class="terminal"><code innerHTML=${convert.toHtml(
-              app.state.buildLogs[deployment.id] || deployment.buildlog || 'No build log found'
-            )}></code></pre>
+            <button>Scale Up</button>
           </div>
+        </div>
+        ${deployments.map(deployment => html`
+          <puz-deployment key=${deployment.id} class="deployment-status-${deployment.status}">
+            <puz-deployment-heading onclick=${toggleExpanded('puz-deployment')}>
+              <div class="nowrap cutoff">${deployment.id}</div>
+              <div><span class="label label-${deployment.status}">${deployment.status}</span></div>
+              <div class="nowrap">${format(new Date(parseFloat(deployment.datecreated)), 'dd/MM/yyyy hh:mm:ss')}</div>
+            </puz-deployment-heading>
+
+            <puz-deployment-content>
+              <h3>Build Log</h4>
+
+              ${createTerminal(app.state.buildLogs[deployment.id] || deployment.buildlog || 'No build log found')}
+            </puz-deployment-content>
+          </puz-deployment>
         `)}
-      </div>
+      </puz-deployments>
     `;
   }
 

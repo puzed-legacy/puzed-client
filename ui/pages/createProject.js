@@ -71,6 +71,8 @@ function setupProject (app, html, url) {
     ],
     onSubmit: (event, data) => {
       event.preventDefault();
+      const button = event.target.querySelector('button');
+      button.disabled = true;
 
       app.createProject(app, {
         image: data.image,
@@ -80,7 +82,11 @@ function setupProject (app, html, url) {
         repo,
         webport: data.webPort
       }).then(project => {
+        button.disabled = true;
         setPath('/projects/' + project.id);
+      }).catch(error => {
+        console.log(error);
+        button.disabled = true;
       });
     }
   });

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "node_modules/.bin/browserify -g uglifyify -t envify -t brfs ./index.js --noparse clone > public/index.bundle.js",
+    "disc": "./node_modules/.bin/browserify --full-paths index.js | discify --open",
+    "build": "node_modules/.bin/browserify --full-paths -g uglifyify -t envify -t brfs ./index.js --noparse clone > public/index.bundle.js",
     "watch": "node_modules/.bin/watchify -t envify -t brfs -d -o public/index.bundle.js index.js",
     "serve": "node_modules/.bin/ws -d ./public --spa index.html",
     "start": "npm run watch & npm run serve",
@@ -23,6 +24,7 @@
   "devDependencies": {
     "brfs": "^2.0.2",
     "browserify": "^16.5.2",
+    "browserify-tree": "0.0.6",
     "envify": "^4.1.0",
     "hyperx": "^2.5.4",
     "local-web-server": "^4.2.1",
@@ -34,10 +36,11 @@
   },
   "dependencies": {
     "ansi-to-html": "^0.6.14",
+    "date-fns": "^2.15.0",
     "minthril-form": "^1.0.1",
     "ndjson-fe": "^1.0.0",
-    "stream-http": "^3.1.1",
-    "snyk": "^1.381.1"
+    "snyk": "^1.381.1",
+    "stream-http": "^3.1.1"
   },
   "snyk": true
 }

@@ -46,6 +46,11 @@ async function createProject (app, project) {
       response.on('data', chunk => {
         stream.emit('write', chunk.toString());
       });
+
+      response.on('end', chunk => {
+        app.readProject(app, projectDocument.id);
+        app.listDeployments(app, projectDocument.id);
+      });
     }).end(JSON.stringify(project));
   });
 }
