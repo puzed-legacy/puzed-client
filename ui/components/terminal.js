@@ -27,6 +27,11 @@ function createTerminal (content) {
       }, 300);
     }
 
+    function handleUpdate (event) {
+      const element = event.dom;
+      element.scrollTop = 10000000000000;
+    }
+
     function handleDestroy (event) {
       clearInterval(state.timer);
     }
@@ -34,7 +39,7 @@ function createTerminal (content) {
     const contentFormatted = convert.toHtml(content);
 
     return html`
-      <pre oncreate=${handleCreate} ondestroy=${handleDestroy} class="terminal"><code innerHTML=${contentFormatted}></code></pre> 
+      <pre oncreate=${handleCreate} onupdate=${handleUpdate} ondestroy=${handleDestroy} class="terminal"><code innerHTML=${contentFormatted}></code></pre> 
     `;
   });
 }
