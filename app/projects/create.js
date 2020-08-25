@@ -33,7 +33,7 @@ async function createProject (app, project) {
         app.state.buildLogs[entry[0]] = app.state.buildLogs[entry[0]] || '';
         app.state.buildLogs[entry[0]] = app.state.buildLogs[entry[0]] + entry[1];
 
-        if (!app.state.deployments.find(deployment => deployment.id === entry[0])) {
+        if (!app.state.loading && !app.state.deployments.find(deployment => deployment.id === entry[0])) {
           app.listDeployments(app, projectDocument.id);
         }
 
