@@ -20,8 +20,8 @@ async function createProject (app, project) {
 
   return new Promise((resolve, reject) => {
     http.request(options, function (response) {
-      const stream = new NdJsonFe();
-      stream.on('next', entry => {
+      const feed = new NdJsonFe();
+      feed.on('next', entry => {
         if (!projectDocument) {
           projectDocument = entry;
           app.state.projects.push(entry);
@@ -39,13 +39,11 @@ async function createProject (app, project) {
 
         app.emitStateChanged();
       });
-      stream.on('error', (error) => {
+      feed.on('error', (error) => {
         console.log('error parsing ndjson', error);
       });
 
-      response.on('data', chunk => {
-        stream.emit('write', chunk.toString());
-      });
+      response.pipe(feed);
 
       response.on('end', chunk => {
         app.readProject(app, projectDocument.id);
