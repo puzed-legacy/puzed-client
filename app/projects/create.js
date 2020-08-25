@@ -22,8 +22,6 @@ async function createProject (app, project) {
     http.request(options, function (response) {
       const stream = new NdJsonFe();
       stream.on('next', entry => {
-        console.log(entry)
-
         if (!projectDocument) {
           projectDocument = entry;
           app.state.projects.push(entry);
