@@ -57,6 +57,20 @@ function setupProject (app, html, url) {
         initialValue: 'nodejs12'
       },
       {
+        name: 'buildCommand',
+        label: 'Build command',
+        component: createTextInput,
+        autoFocus: true,
+        initialValue: `npm ci`
+      },
+      {
+        name: 'runCommand',
+        label: 'Run command',
+        component: createTextInput,
+        autoFocus: true,
+        initialValue: `npm run start`
+      },
+      {
         name: 'webPort',
         label: 'Web Port',
         component: createTextInput,
@@ -66,7 +80,7 @@ function setupProject (app, html, url) {
         name: 'domain',
         label: 'Domain',
         component: createTextInput,
-        initialValue: `${owner}-${repo}.puzed.net`
+        initialValue: `${owner}-${repo}.puzed.com`
       }
     ],
     onSubmit: (event, data) => {
@@ -78,6 +92,8 @@ function setupProject (app, html, url) {
         image: data.image,
         domain: data.domain,
         name: data.name,
+        buildCommand: data.buildCommand,
+        runCommand: data.runCommand,
         owner,
         repo,
         webport: data.webPort
@@ -97,6 +113,9 @@ function setupProject (app, html, url) {
 
       <section>
         <h2>Create a new project</h2>
+        <strong>Owner</strong>: ${owner}
+        <strong>Repo</strong>: ${repo}
+        <hr />        
         ${form}
       </section>
     </main>

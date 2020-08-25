@@ -3,7 +3,7 @@ module.exports = function (app, html) {
     <header>
       <nav>
         <a href="/">Home</a>
-        <a href="/projects">Projects</a>
+        ${app.state.loggedIn ? html`<a href="/projects">Projects</a>` : null}
       </nav>
     </header>
   `;

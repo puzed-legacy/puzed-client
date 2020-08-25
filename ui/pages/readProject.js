@@ -32,8 +32,8 @@ module.exports = function (app, html) {
             <button>Scale Up</button>
           </div>
         </div>
-        ${deployments.map(deployment => html`
-          <puz-deployment key=${deployment.id} class="deployment-status-${deployment.status}">
+        ${deployments.map((deployment, deploymentIndex) => html`
+          <puz-deployment key=${deployment.id} class="deployment-status-${deployment.status} ${deploymentIndex === 0 ? 'expanded' : ''}">
             <puz-deployment-heading onclick=${toggleExpanded('puz-deployment')}>
               <div class="nowrap cutoff">${deployment.id}</div>
               <div><span class="label label-${deployment.status}">${deployment.status}</span></div>

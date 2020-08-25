@@ -206,6 +206,11 @@ min-ui-form-select-input select {
   color: white;
 }
 
+.label-pending {
+  background-color: rgb(139, 141, 17);
+  color: white;
+}
+
 .label-failed {
   background-color: rgb(128, 0, 0);
   color: white;
@@ -231,6 +236,11 @@ puz-deployment.deployment-status-success puz-deployment-heading  {
   background-color: #d4efcf;
   border-bottom: 1px solid rgb(0, 129, 0);
 }
+puz-deployment.deployment-status-pending puz-deployment-heading {
+  background-color: #f9ea85;
+  border-bottom: 1px solid rgb(206 190 82);
+}
+
 puz-deployment.deployment-status-failed puz-deployment-heading {
   background-color: #efcfcf;
   border-bottom: 1px solid rgb(128, 0, 0);
