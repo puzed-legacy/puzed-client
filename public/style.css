@@ -233,11 +233,9 @@ puz-deployment-heading div.nowrap {
 }
 
 puz-deployment.deployment-status-success puz-deployment-heading  {
-  background-color: #d4efcf;
   border-bottom: 1px solid rgb(0, 129, 0);
 }
 puz-deployment.deployment-status-pending puz-deployment-heading {
-  background-color: #f9ea85;
   border-bottom: 1px solid rgb(206 190 82);
 }
 
@@ -251,6 +249,7 @@ puz-deployment-heading {
   display: flex;
   color: #374235;
   padding: 2px 5px 5px 5px;
+  background-color: #e6e6e6;
 }
 
 puz-deployment-heading > * {
@@ -270,4 +269,34 @@ puz-deployment.expanded puz-deployment-content {
 
 puz-deployment-content {
   display: none;
+}
+
+/*
+  TABBED
+*/
+puz-tabbed-menu a[disabled] {
+  color: #a8a8a8;
+}
+
+puz-tabbed-menu a.active {
+  border-bottom: 3px solid #868686;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  text-shadow: 1px 0 0 black;
+}
+
+puz-tabbed-menu a {
+  border-bottom: 3px solid transparent;
+  transition: all .3s;
+  display: inline-block;
+  padding: 10px 5px 8px 5px;
+  text-align: center;
+  margin-right: 15px;
+  text-decoration: none;
+  color: black;
+}
+
+puz-tabbed-content {
+  display: block;
+  padding-top: 10px;
 }

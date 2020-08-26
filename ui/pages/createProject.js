@@ -61,14 +61,14 @@ function setupProject (app, html, url) {
         label: 'Build command',
         component: createTextInput,
         autoFocus: true,
-        initialValue: `npm ci`
+        initialValue: 'npm ci'
       },
       {
         name: 'runCommand',
         label: 'Run command',
         component: createTextInput,
         autoFocus: true,
-        initialValue: `npm run start`
+        initialValue: 'npm run start'
       },
       {
         name: 'webPort',

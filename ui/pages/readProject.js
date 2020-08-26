@@ -1,5 +1,6 @@
 const menu = require('../components/menu');
 const createTerminal = require('../components/terminal');
+const createTabbed = require('../components/tabbed');
 
 const format = require('date-fns/format');
 
@@ -41,9 +42,27 @@ module.exports = function (app, html) {
             </puz-deployment-heading>
 
             <puz-deployment-content>
-              <h3>Build Log</h4>
-
-              ${createTerminal(app.state.buildLogs[deployment.id] || deployment.buildlog || 'No build log found')}
+              ${createTabbed(app, html, {
+                tabs: [{
+                  key: 'logs',
+                  title: html`<span>Logs</span>`,
+                  disabled: true,
+                  content: () => html`
+                    <div oncreate=${app.startDeploymentLogs.bind(null, deployment.id)} onremove=${app.stopDeploymentLogs.bind(null, deployment.id)}>
+                      ${createTerminal(app.state.deploymentLogs[deployment.id] || 'No logs found')}
+                    </div>
+                  `
+                }, {
+                  key: 'buildLogs',
+                  title: html`<span>Build Log</span>`,
+                  defaultActive: true,
+                  content: () => html`
+                    <div>
+                      ${createTerminal(app.state.buildLogs[deployment.id] || deployment.buildlog || 'No build log found')}
+                    </div>
+                  `
+                }]
+              })}
             </puz-deployment-content>
           </puz-deployment>
         `)}

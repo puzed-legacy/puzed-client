@@ -12,7 +12,9 @@ module.exports = function (config) {
 
       projects: [],
       deployments: [],
-      buildLogs: {}
+      buildLogs: {},
+
+      deploymentLogs: {}
     }
   };
 
@@ -59,6 +61,9 @@ module.exports = function (config) {
   app.listDeployments = require('./projects/deployments/list');
   app.readProject = require('./projects/read');
   app.createProject = require('./projects/create');
+
+  app.startDeploymentLogs = require('./projects/deployments/startLogs.js');
+  app.stopDeploymentLogs = require('./projects/deployments/stopLogs.js');
 
   app.changeUrl = changeUrl;
 
