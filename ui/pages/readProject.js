@@ -44,23 +44,35 @@ module.exports = function (app, html) {
             <puz-deployment-content>
               ${createTabbed(app, html, {
                 tabs: [{
-                  key: 'logs',
-                  title: html`<span>Logs</span>`,
-                  disabled: true,
-                  content: () => html`
-                    <div oncreate=${app.startDeploymentLogs.bind(null, deployment.id)} onremove=${app.stopDeploymentLogs.bind(null, deployment.id)}>
-                      ${createTerminal(app.state.deploymentLogs[deployment.id] || 'No logs found')}
-                    </div>
-                  `
-                }, {
                   key: 'buildLogs',
                   title: html`<span>Build Log</span>`,
-                  defaultActive: true,
                   content: () => html`
-                    <div>
+                    <puz-build-log>
                       ${createTerminal(app.state.buildLogs[deployment.id] || deployment.buildlog || 'No build log found')}
-                    </div>
+                    </puz-build-log>
                   `
+                }, {
+                  key: 'logs',
+                  title: html`<span>Logs</span>`,
+                  defaultActive: true,
+                  content: () => {
+                    const reconnect = event => {
+                      event.preventDefault();
+                      app.startDeploymentLogs(app, project.id, deployment.id);
+                    }
+
+                    return html`
+                    <puz-live-log oncreate=${app.startDeploymentLogs.bind(null, app, project.id, deployment.id)} onremove=${app.stopDeploymentLogs.bind(null, app, project.id, deployment.id)}>
+                      ${app.state.liveLogs[deployment.id] && !app.state.liveLogs[deployment.id].response ? html`
+                        <div class="alert alert-warning">
+                          Logs are not live. Disconnected.
+                          <a href="javascript:void(0)" onclick=${reconnect}>Click here to reconnect</a>
+                        </div>
+                      ` : ''}
+                      ${createTerminal(app.state.liveLogs[deployment.id] && app.state.liveLogs[deployment.id].data || 'No logs found')}
+                    </puz-live-log>
+                  `
+                  }
                 }]
               })}
             </puz-deployment-content>

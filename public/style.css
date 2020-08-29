@@ -11,6 +11,18 @@ nav a {
 }
 
 /*
+  ALERT
+*/
+.alert {
+  padding: 10px;
+}
+
+.alert-warning {
+  background-color: #f9f9c6;
+  color: #40400a;
+}
+
+/*
   TERMINAL
 */
 .terminal {

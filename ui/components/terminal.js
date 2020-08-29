@@ -17,6 +17,7 @@ function createTerminal (content) {
     function handleCreate (event) {
       state.keepToBottom = true;
       const element = event.dom;
+      element.scrollTop = 10000000000000;
 
       keepToBottom(element);
 

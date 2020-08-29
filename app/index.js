@@ -13,6 +13,7 @@ module.exports = function (config) {
       projects: [],
       deployments: [],
       buildLogs: {},
+      liveLogs: {},
 
       deploymentLogs: {}
     }
