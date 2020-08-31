@@ -22,6 +22,11 @@ nav a {
   color: #40400a;
 }
 
+.alert-info {
+  background-color: #d8f7f5;
+  color: #0b4642;
+}
+
 /*
   TERMINAL
 */
@@ -129,13 +134,22 @@ label {
 input:focus {
   border-color: blue;
 }
-input {
+input,
+select,
+textarea {
   width: 100%;
   padding: 3px;
+  font-family: tahoma;
   font-size: 100%;
   font-weight: bold;
   border: 2px solid black;
   outline: none;
+}
+
+textarea {
+  max-width: 100%;
+  min-width: 100%;
+  min-height: 70px;
 }
 
 min-ui-form-checkbox-input {
@@ -273,14 +287,7 @@ puz-deployment-heading > *:first-child {
 
 puz-deployment-content {
   padding: 10px;
-}
-
-puz-deployment.expanded puz-deployment-content {
-  display: inherit;
-}
-
-puz-deployment-content {
-  display: none;
+  display: block;
 }
 
 /*

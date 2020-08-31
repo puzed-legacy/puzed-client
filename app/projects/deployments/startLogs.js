@@ -6,15 +6,15 @@ async function startDeploymentLogs (app, projectId, deploymentId) {
   }
 
   if (app.state.liveLogs[deploymentId] && app.state.liveLogs[deploymentId].connection) {
-    app.state.liveLogs[deploymentId].connection.destroy()
+    app.state.liveLogs[deploymentId].connection.destroy();
   }
-  
-  const liveLog = {
-    data: 'Connecting to logs...\n' 
-  };
-  app.state.liveLogs[deploymentId] = liveLog
 
-  app.emitStateChanged()
+  const liveLog = {
+    data: 'Connecting to logs...\n'
+  };
+  app.state.liveLogs[deploymentId] = liveLog;
+
+  app.emitStateChanged();
 
   const uri = new URL(`${app.config.apiServerUrl}/projects/${projectId}/deployments/${deploymentId}/log`);
   const options = {
@@ -29,15 +29,15 @@ async function startDeploymentLogs (app, projectId, deploymentId) {
   };
 
   const request = http.request(options, function (response) {
-    liveLog.response = response
+    liveLog.response = response;
 
     response.on('end', () => {
       delete app.state.liveLogs[deploymentId].response;
-    })
+    });
 
     response.on('close', () => {
       delete app.state.liveLogs[deploymentId].response;
-    })
+    });
 
     response.on('data', chunk => {
       if (liveLog.data === 'Connecting to logs...\n') {
@@ -45,15 +45,15 @@ async function startDeploymentLogs (app, projectId, deploymentId) {
       }
       liveLog.data = liveLog.data + chunk.toString('utf8');
       app.emitStateChanged();
-    })
-  })
+    });
+  });
 
   request.on('error', (error) => {
-    console.log(error)
+    console.log(error);
     delete app.state.liveLogs[deploymentId].response;
     app.emitStateChanged();
-  })
-  
+  });
+
   request.end();
 }
 

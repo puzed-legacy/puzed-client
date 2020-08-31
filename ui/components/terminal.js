@@ -37,7 +37,7 @@ function createTerminal (content) {
       clearInterval(state.timer);
     }
 
-    const contentFormatted = convert.toHtml(content);
+    const contentFormatted = convert.toHtml(content.replace(/</g, '&lt;'));
 
     return html`
       <pre oncreate=${handleCreate} onupdate=${handleUpdate} ondestroy=${handleDestroy} class="terminal"><code innerHTML=${contentFormatted}></code></pre> 

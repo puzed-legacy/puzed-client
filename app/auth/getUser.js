@@ -14,7 +14,7 @@ async function getUser (app) {
     });
 
     if (response.status >= 300) {
-      throw new Error('session could not be validated')
+      throw new Error('session could not be validated');
     }
 
     const user = await response.json();

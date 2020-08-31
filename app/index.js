@@ -12,12 +12,23 @@ module.exports = function (config) {
 
       projects: [],
       deployments: [],
+      deploymentExpands: {},
       buildLogs: {},
       liveLogs: {},
 
       deploymentLogs: {}
     }
   };
+
+  function toggleExpanded (app, stateKey, id) {
+    if (app.state[stateKey][id]) {
+      app.state[stateKey][id] = false;
+    } else {
+      app.state[stateKey][id] = true;
+    }
+
+    app.emitStateChanged();
+  }
 
   async function changeUrl () {
     const route = routemeup(routes, { url: window.location.pathname });
@@ -55,11 +66,16 @@ module.exports = function (config) {
   app.eventEmitter = eventEmitter;
   app.config = config;
 
+  app.toggleExpanded = toggleExpanded;
+
   app.emitStateChanged = emitStateChanged;
 
   app.listRepositories = require('./repositories/list');
   app.listProjects = require('./projects/list');
   app.listDeployments = require('./projects/deployments/list');
+  app.createDeployment = require('./projects/deployments/create');
+  app.destroyDeployment = require('./projects/deployments/destroy');
+  app.readDeploymentBuildLog = require('./projects/deployments/buildlog');
   app.readProject = require('./projects/read');
   app.createProject = require('./projects/create');
 

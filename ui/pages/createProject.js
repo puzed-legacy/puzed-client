@@ -3,7 +3,8 @@ const setPath = require('spath/setPath');
 const {
   createForm,
   createTextInput,
-  createSelectInput
+  createSelectInput,
+  createMultilineTextInput
 } = require('minthril-form');
 
 const menu = require('../components/menu');
@@ -57,17 +58,20 @@ function setupProject (app, html, url) {
         initialValue: 'nodejs12'
       },
       {
+        name: 'environmentVariables',
+        label: 'Environment Variables',
+        component: createMultilineTextInput
+      },
+      {
         name: 'buildCommand',
         label: 'Build command',
         component: createTextInput,
-        autoFocus: true,
         initialValue: 'npm ci'
       },
       {
         name: 'runCommand',
         label: 'Run command',
         component: createTextInput,
-        autoFocus: true,
         initialValue: 'npm run start'
       },
       {
@@ -89,14 +93,9 @@ function setupProject (app, html, url) {
       button.disabled = true;
 
       app.createProject(app, {
-        image: data.image,
-        domain: data.domain,
-        name: data.name,
-        buildCommand: data.buildCommand,
-        runCommand: data.runCommand,
+        ...data,
         owner,
-        repo,
-        webport: data.webPort
+        repo
       }).then(project => {
         button.disabled = true;
         setPath('/projects/' + project.id);
