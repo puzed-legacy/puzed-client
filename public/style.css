@@ -209,9 +209,7 @@ puz-deployment.expanded.deployment-status-success puz-deployment-heading  {
 puz-deployment.expanded.deployment-status-pending puz-deployment-heading {
   border-bottom: 1px solid rgb(206 190 82);
 }
-
 puz-deployment.expanded.deployment-status-failed puz-deployment-heading {
-  background-color: #efcfcf;
   border-bottom: 1px solid rgb(128, 0, 0);
 }
 

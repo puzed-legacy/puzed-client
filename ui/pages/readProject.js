@@ -15,6 +15,9 @@ function settings (app, project, deployment) {
   return {
     view: () => html`
       <puz-build-log>
+        <div>
+          <label>Commit Hash:</label> ${deployment.commitHash}
+        </div>
         <button onclick=${destroyDeployment.bind(null, project, deployment)}>Destroy</button>
       </puz-build-log>
     `
