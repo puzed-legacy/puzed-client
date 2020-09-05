@@ -90,7 +90,7 @@ module.exports = function (app, html) {
           </div>
         </div>
         ${deployments.map((deployment, deploymentIndex) => html`
-          <puz-deployment key=${deployment.id} class="deployment-status-${deployment.status}">
+          <puz-deployment key=${deployment.id} class="deployment-status-${deployment.status} ${app.state.deploymentExpands[deployment.id] ? 'expanded' : ''}">
             <puz-deployment-heading onclick=${app.toggleExpanded.bind(null, app, 'deploymentExpands', deployment.id)}>
               <div class="nowrap cutoff">${deployment.id}</div>
               <div><span class="label label-${deployment.status}">${deployment.status}</span></div>
@@ -129,7 +129,7 @@ module.exports = function (app, html) {
 
   function renderProject (project, deployments) {
     return html`
-      <div>
+      <div class="projectInfo">
         <h1>${project.name}</h2>
         <div>
           <strong>Domain:</strong> <a href="https://${project.domain}" target="_blank">https://${project.domain}</a>

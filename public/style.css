@@ -15,6 +15,23 @@ nav a {
 }
 
 /*
+  PROJECT VIEW
+*/
+.projectInfo h1 {
+  margin: 0 0 20px 0;
+}
+.projectInfo {
+  padding: 10px;
+  background-color: #ececec;
+}
+.projectInfo > div {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: white;
+  box-shadow: 0 0 10px -5px #5a5a5a;
+}
+
+/*
   ALERT
 */
 .alert {
@@ -126,7 +143,7 @@ button.success {
 
 ul.small {
   padding: 5px;
-  margin: 0;
+  margin: 0 0 0 15px;
 }
 
 /*
@@ -172,8 +189,10 @@ ul.small {
 */
 puz-deployment {
   display: block;
-  border: 2px solid #374235;
   margin-bottom: 10px;
+  padding: 5px;
+  background-color: white;
+  box-shadow: 0 0 10px -5px #5a5a5a;
 }
 
 puz-deployment-heading div.cutoff {
@@ -184,24 +203,26 @@ puz-deployment-heading div.nowrap {
   text-overflow: ellipsis;
 }
 
-puz-deployment.deployment-status-success puz-deployment-heading  {
+puz-deployment.expanded.deployment-status-success puz-deployment-heading  {
   border-bottom: 1px solid rgb(0, 129, 0);
 }
-puz-deployment.deployment-status-pending puz-deployment-heading {
+puz-deployment.expanded.deployment-status-pending puz-deployment-heading {
   border-bottom: 1px solid rgb(206 190 82);
 }
 
-puz-deployment.deployment-status-failed puz-deployment-heading {
+puz-deployment.expanded.deployment-status-failed puz-deployment-heading {
   background-color: #efcfcf;
   border-bottom: 1px solid rgb(128, 0, 0);
 }
 
+.expanded puz-deployment-heading {
+  padding: 2px 5px 10px 5px;
+}
 puz-deployment-heading {
   cursor: pointer;
   display: flex;
   color: #374235;
   padding: 2px 5px 5px 5px;
-  background-color: #e6e6e6;
 }
 
 puz-deployment-heading > * {
