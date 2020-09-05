@@ -1,8 +1,8 @@
-const minthril = require('minthril');
-const html = require('hyperx')(minthril);
+const mithril = require('mithril');
+const html = require('hyperx')(mithril);
 const pushStateAnchors = require('spath/pushStateAnchors');
 require('./modules/onUrlChange');
-
+window.m = mithril;
 const pages = {
   home: require('./pages/home'),
   listProjects: require('./pages/listProjects'),
@@ -16,20 +16,22 @@ module.exports = function (app, container) {
   window.addEventListener('locationchange', app.changeUrl);
   app.changeUrl();
 
+  let currentPage;
   function render (data) {
-    if (data && data.force) {
-      minthril.render(container, '');
-    }
-
     if (!app.state.page) {
       return;
     }
 
     const page = pages[app.state.page] || pages.notFound;
 
-    const content = page(app, html);
+    if (currentPage !== page) {
+      currentPage = page;
+      const content = page(app, html);
 
-    setTimeout(() => minthril.render(container, content));
+      mithril.mount(container, content);
+    }
+
+    mithril.redraw();
   }
 
   app.on('stateChanged', render);

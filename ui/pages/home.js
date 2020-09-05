@@ -24,11 +24,13 @@ module.exports = function (app, html) {
     `;
   }
 
-  return html`
-    <main>
-      ${menu(app, html)}
- 
-      ${app.state.loggedIn ? userBox() : authBox()}
-    </main>
-  `;
+  return {
+    view: () => html`
+      <main>
+        ${menu(app, html)}
+  
+        ${app.state.loggedIn ? userBox() : authBox()}
+      </main>
+    `
+  };
 };

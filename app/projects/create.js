@@ -4,6 +4,19 @@ const NdJsonFe = require('ndjson-fe');
 async function createProject (app, project) {
   app.setLoadingState();
 
+  const secrets = await Promise.all((project.secrets || []).map(secret =>
+    new Promise(resolve => {
+      const reader = new window.FileReader();
+      reader.onload = function (event) {
+        resolve({
+          ...secret,
+          data: event.target.result
+        });
+      };
+      reader.readAsDataURL(secret.file);
+    })
+  ));
+
   const uri = new URL(`${app.config.apiServerUrl}/projects`);
   const options = {
     method: 'post',
@@ -49,7 +62,10 @@ async function createProject (app, project) {
         app.readProject(app, projectDocument.id);
         app.listDeployments(app, projectDocument.id);
       });
-    }).end(JSON.stringify(project));
+    }).end(JSON.stringify({
+      ...project,
+      secrets
+    }));
   });
 }
 

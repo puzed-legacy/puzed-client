@@ -1,54 +1,24 @@
 const setPath = require('spath/setPath');
-
-const {
-  createForm,
-  createTextInput,
-  createSelectInput,
-  createMultilineTextInput
-} = require('minthril-form');
+const m = require('mithril');
+const html = require('hyperx')(m);
+const mui = require('mithui');
 
 const menu = require('../components/menu');
 
-function selectRepository (app, html) {
-  return html`
-    <main oncreate=${app.listRepositories.bind(null, app)}>
-      ${menu(app, html)}
- 
-      <section>
-        <h2>Your Repositories</h2>
-        <p>Select a repository you would like to deploy.</p>
-        <div class="loading" ${app.state.loading === 0 ? 'off' : ''}><div>Loading your repositories</div></div>
-        <ul>
-          ${(app.state.repositories || []).map(repository => {
-            return html`
-              <li>
-                <a href="/projects/create?from=${repository.full_name}">${repository.name}</a>
-              </li>`;
-          })}
-        </ul>
-      </section>
-    </main>
-  `;
-}
-
-function setupProject (app, html, url) {
-  const from = url.searchParams.get('from').split('/');
-  const owner = from[0];
-  const repo = from[1];
-
-  const form = createForm({
+function createForm (app, owner, repo) {
+  return m(mui.form, {
     fields: [
       {
         name: 'name',
         label: 'Project Name',
-        component: createTextInput,
+        component: mui.textInput,
         autoFocus: true,
         initialValue: `my-${owner}-${repo}-1`
       },
       {
         name: 'image',
         label: 'Image',
-        component: createSelectInput,
+        component: mui.select,
         options: [
           {
             value: 'nodejs12',
@@ -60,30 +30,37 @@ function setupProject (app, html, url) {
       {
         name: 'environmentVariables',
         label: 'Environment Variables',
-        component: createMultilineTextInput
+        component: mui.multilineInput
+      },
+      {
+        name: 'secrets',
+        label: 'Secrets',
+        prefix: '/run/secrets/',
+        component: mui.filePicker,
+        multiple: true
       },
       {
         name: 'buildCommand',
         label: 'Build command',
-        component: createTextInput,
+        component: mui.textInput,
         initialValue: 'npm ci'
       },
       {
         name: 'runCommand',
         label: 'Run command',
-        component: createTextInput,
+        component: mui.textInput,
         initialValue: 'npm run start'
       },
       {
         name: 'webPort',
         label: 'Web Port',
-        component: createTextInput,
+        component: mui.textInput,
         initialValue: '8000'
       },
       {
         name: 'domain',
         label: 'Domain',
-        component: createTextInput,
+        component: mui.textInput,
         initialValue: `${owner}-${repo}.puzed.com`
       }
     ],
@@ -97,36 +74,84 @@ function setupProject (app, html, url) {
         owner,
         repo
       }).then(project => {
-        button.disabled = true;
+        button.disabled = false;
         setPath('/projects/' + project.id);
       }).catch(error => {
         console.log(error);
-        button.disabled = true;
+        button.disabled = false;
       });
     }
   });
+}
 
-  return html`
-    <main>
-      ${menu(app, html)}
+function selectRepository ({ attrs }) {
+  return {
+    oncreate: () => {
+      attrs.app.listRepositories(attrs.app);
+    },
 
-      <section>
-        <h2>Create a new project</h2>
-        <strong>Owner</strong>: ${owner}
-        <strong>Repo</strong>: ${repo}
-        <hr />        
-        ${form}
-      </section>
-    </main>
-  `;
+    view: () => {
+      const app = attrs.app;
+
+      return html`
+        <main>
+          ${menu(app, html)}
+    
+          <section>
+            <h2>Your Repositories</h2>
+            <p>Select a repository you would like to deploy.</p>
+            <div class="loading" ${app.state.loading === 0 ? 'off' : ''}><div>Loading your repositories</div></div>
+            <ul>
+              ${(app.state.repositories || []).map(repository => {
+                return html`
+                  <li>
+                    <a href="/projects/create?from=${repository.full_name}">${repository.name}</a>
+                  </li>`;
+              })}
+            </ul>
+          </section>
+        </main>
+      `;
+    }
+  };
+}
+
+function setupProject ({ attrs }) {
+  const url = attrs.url;
+
+  const from = url.searchParams.get('from').split('/');
+  const owner = from[0];
+  const repo = from[1];
+
+  return {
+    view: ({ attrs }) => {
+      return html`
+        <main>
+          ${menu(attrs.app, html)}
+
+          <section>
+            <h2>Create a new project</h2>
+            <strong>Owner</strong>: ${owner}
+            <strong>Repo</strong>: ${repo}
+            <hr />        
+            ${createForm(attrs.app, owner, repo)}
+          </section>
+        </main>
+      `;
+    }
+  };
 }
 
 module.exports = function (app, html) {
-  const url = new URL(window.location.href);
+  return {
+    view: () => {
+      const url = new URL(window.location.href);
 
-  if (url.searchParams.get('from')) {
-    return setupProject(app, html, url);
-  }
+      if (url.searchParams.get('from')) {
+        return m(setupProject, { app, url });
+      }
 
-  return selectRepository(app, html);
+      return m(selectRepository, { app, url });
+    }
+  };
 };
