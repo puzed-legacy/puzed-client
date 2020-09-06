@@ -1,5 +1,5 @@
-const minthril = require('minthril');
-const html = require('hyperx')(minthril);
+const mithril = require('mithril');
+const html = require('hyperx')(mithril);
 const Convert = require('ansi-to-html');
 const convert = new Convert();
 

@@ -8,20 +8,22 @@ async function buildlog (app, projectId, deploymentId) {
   }
 
   app.setLoadingState();
+  app.state.buildLogs[deploymentId] = '';
 
-  try {
-    const response = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments/${deploymentId}/buildlog`, {
-      headers: {
-        authorization: 'token ' + app.state.oauthToken
-      }
-    });
+  const response = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments/${deploymentId}/buildlog`, {
+    headers: {
+      authorization: 'token ' + app.state.oauthToken
+    }
+  });
+  const reader = response.body
+    .pipeThrough(new window.TextDecoderStream())
+    .getReader();
 
-    const buildlogData = await response.text();
-
-    app.state.buildLogs[deploymentId] = buildlogData;
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    app.state.buildLogs[deploymentId] = app.state.buildLogs[deploymentId] + value.toString();
     app.emitStateChanged();
-  } catch (error) {
-    console.log(error);
   }
 
   app.unsetLoadingState();

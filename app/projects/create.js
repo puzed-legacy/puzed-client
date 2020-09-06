@@ -1,6 +1,3 @@
-const http = require('stream-http');
-const NdJsonFe = require('ndjson-fe');
-
 async function createProject (app, project) {
   app.setLoadingState();
 
@@ -17,56 +14,24 @@ async function createProject (app, project) {
     })
   ));
 
-  const uri = new URL(`${app.config.apiServerUrl}/projects`);
-  const options = {
+  const projectCreationResponse = await window.fetch(`${app.config.apiServerUrl}/projects`, {
     method: 'post',
     headers: {
       authorization: 'token ' + app.state.oauthToken
     },
-    hostname: uri.hostname,
-    port: uri.port,
-    path: `${uri.pathname}${uri.search}`,
-    protocol: uri.protocol
-  };
-
-  let projectDocument;
-
-  return new Promise((resolve, reject) => {
-    http.request(options, function (response) {
-      const feed = new NdJsonFe();
-      feed.on('next', entry => {
-        if (!projectDocument) {
-          projectDocument = entry;
-          app.state.projects.push(entry);
-          resolve(entry);
-          app.unsetLoadingState();
-          return;
-        }
-
-        app.state.buildLogs[entry[0]] = app.state.buildLogs[entry[0]] || '';
-        app.state.buildLogs[entry[0]] = app.state.buildLogs[entry[0]] + entry[1];
-
-        if (!app.state.loading && !app.state.deployments.find(deployment => deployment.id === entry[0])) {
-          app.listDeployments(app, projectDocument.id);
-        }
-
-        app.emitStateChanged();
-      });
-      feed.on('error', (error) => {
-        console.log('error parsing ndjson', error);
-      });
-
-      response.pipe(feed);
-
-      response.on('end', chunk => {
-        app.readProject(app, projectDocument.id);
-        app.listDeployments(app, projectDocument.id);
-      });
-    }).end(JSON.stringify({
+    body: JSON.stringify({
       ...project,
       secrets
-    }));
+    })
   });
+  const projectResult = await projectCreationResponse.json();
+
+  app.readProject(app, projectResult.id);
+  app.listDeployments(app, projectResult.id);
+
+  app.unsetLoadingState();
+
+  return projectResult;
 }
 
 module.exports = createProject;

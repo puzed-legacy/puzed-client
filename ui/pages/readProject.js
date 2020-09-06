@@ -169,7 +169,7 @@ module.exports = function (app, html) {
           <strong>Repository:</strong> <a href="https://github.com/${project.owner}/${project.repo}" target="_blank">https://github.com/${project.owner}/${project.repo}</a>
         </div>
 
-        ${deployments.length > 0 ? renderDeployments(project, deployments) : null}
+        ${renderDeployments(project, deployments)}
       </div>
     `;
   }
