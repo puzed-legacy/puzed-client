@@ -5,9 +5,9 @@ async function stopDeploymentLogs (app, projectId, deploymentId) {
 
   app.setLoadingState();
 
-  if (app.state.liveLogs[deploymentId] && app.state.liveLogs[deploymentId].response) {
-    app.state.liveLogs[deploymentId].response.destroy();
-    delete app.state.liveLogs[deploymentId].response;
+  if (app.state.liveLogs[deploymentId] && app.state.liveLogs[deploymentId].abort) {
+    app.state.liveLogs[deploymentId].abort();
+    delete app.state.liveLogs[deploymentId].abort;
   }
 
   app.unsetLoadingState();

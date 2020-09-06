@@ -42,7 +42,7 @@ function liveLog (app, project, deployment) {
     view: () => {
       return html`
         <puz-live-log>
-        ${app.state.liveLogs[deployment.id] && !app.state.liveLogs[deployment.id].response && deployment.status !== 'destroyed' ? html`
+        ${app.state.liveLogs[deployment.id] && !app.state.liveLogs[deployment.id].abort && deployment.status !== 'destroyed' ? html`
             <div class="alert alert-warning">
               Logs are not live. Disconnected.
               <a href="javascript:void(0)" onclick=${reconnect}>Click here to reconnect</a>
