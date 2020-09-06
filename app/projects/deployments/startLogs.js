@@ -1,5 +1,3 @@
-const http = require('stream-http');
-
 async function startDeploymentLogs (app, projectId, deploymentId) {
   if (!app.state.loggedIn) {
     return;
@@ -10,51 +8,27 @@ async function startDeploymentLogs (app, projectId, deploymentId) {
   }
 
   const liveLog = {
-    data: 'Connecting to logs...\n'
+    data: 'Connecting to logs...\n\n'
   };
   app.state.liveLogs[deploymentId] = liveLog;
 
   app.emitStateChanged();
 
-  const uri = new URL(`${app.config.apiServerUrl}/projects/${projectId}/deployments/${deploymentId}/log`);
-  const options = {
-    method: 'get',
+  const response = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments/${deploymentId}/log`, {
     headers: {
       authorization: 'token ' + app.state.oauthToken
-    },
-    hostname: uri.hostname,
-    port: uri.port,
-    path: `${uri.pathname}${uri.search}`,
-    protocol: uri.protocol
-  };
-
-  const request = http.request(options, function (response) {
-    liveLog.response = response;
-
-    response.on('end', () => {
-      delete app.state.liveLogs[deploymentId].response;
-    });
-
-    response.on('close', () => {
-      delete app.state.liveLogs[deploymentId].response;
-    });
-
-    response.on('data', chunk => {
-      if (liveLog.data === 'Connecting to logs...\n') {
-        liveLog.data = '';
-      }
-      liveLog.data = liveLog.data + chunk.toString('utf8');
-      app.emitStateChanged();
-    });
+    }
   });
+  const reader = response.body
+    .pipeThrough(new window.TextDecoderStream())
+    .getReader();
 
-  request.on('error', (error) => {
-    console.log(error);
-    delete app.state.liveLogs[deploymentId].response;
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    liveLog.data = liveLog.data + value.toString();
     app.emitStateChanged();
-  });
-
-  request.end();
+  }
 }
 
 module.exports = startDeploymentLogs;
