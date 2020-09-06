@@ -66,7 +66,7 @@ function createForm (app, owner, repo) {
     ],
     onSubmit: (event, data) => {
       event.preventDefault();
-      const button = event.target.querySelector('button');
+      const button = event.target.querySelector('form > button');
       button.disabled = true;
 
       app.createProject(app, {
