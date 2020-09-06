@@ -136,7 +136,6 @@ button.success {
   background-color: #449e1f;
 }
 
-
 /*
   LISTS
 */
@@ -170,12 +169,13 @@ ul.small {
   padding: 2px 10px 5px 10px;
 }
 
-.label-success {
+.label-healthy {
   background-color: rgb(0, 129, 0);
   color: white;
 }
 
-.label-pending {
+.label-building,
+.label-starting {
   background-color: rgb(139, 141, 17);
   color: white;
 }
@@ -183,6 +183,10 @@ ul.small {
 .label-failed {
   background-color: rgb(128, 0, 0);
   color: white;
+}
+
+.label-destroyed {
+  color: rgb(90, 90, 90);
 }
 /*
   PUZ-DEPLOYMENTS
@@ -203,14 +207,8 @@ puz-deployment-heading div.nowrap {
   text-overflow: ellipsis;
 }
 
-puz-deployment.expanded.deployment-status-success puz-deployment-heading  {
-  border-bottom: 1px solid rgb(0, 129, 0);
-}
-puz-deployment.expanded.deployment-status-pending puz-deployment-heading {
-  border-bottom: 1px solid rgb(206 190 82);
-}
-puz-deployment.expanded.deployment-status-failed puz-deployment-heading {
-  border-bottom: 1px solid rgb(128, 0, 0);
+puz-deployment.expanded puz-deployment-heading {
+  border-bottom: 2px solid gray;
 }
 
 .expanded puz-deployment-heading {

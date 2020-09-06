@@ -30,6 +30,13 @@ function terminal (content) {
       }, 300);
     },
 
+    onupdate: (vnode) => {
+      const element = vnode.dom;
+      if (state.keepToBottom) {
+        element.scrollTop = 10000000000000;
+      }
+    },
+
     onremove: (vnode) => {
       clearInterval(state.timer);
     },
