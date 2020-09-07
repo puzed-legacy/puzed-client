@@ -19,14 +19,14 @@ async function buildlog (app, projectId, deploymentId) {
     .pipeThrough(new window.TextDecoderStream())
     .getReader();
 
+  app.unsetLoadingState();
+
   while (true) {
     const { value, done } = await reader.read();
     if (done) break;
     app.state.buildLogs[deploymentId] = app.state.buildLogs[deploymentId] + value.toString();
     app.emitStateChanged();
   }
-
-  app.unsetLoadingState();
 }
 
 module.exports = buildlog;
