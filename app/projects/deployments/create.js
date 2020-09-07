@@ -1,4 +1,4 @@
-async function createDeployment (app, projectId, deploymentId) {
+async function createDeployment (app, projectId) {
   if (!app.state.loggedIn) {
     return;
   }

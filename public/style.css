@@ -207,7 +207,7 @@ puz-deployment-heading div.nowrap {
 }
 
 puz-deployment.expanded puz-deployment-heading {
-  border-bottom: 2px solid gray;
+  border-bottom: 3px solid #ececec;
 }
 
 .expanded puz-deployment-heading {

@@ -7,6 +7,58 @@ const menu = require('../components/menu');
 const terminal = require('../components/terminal');
 const tabbed = require('../components/tabbed');
 
+function deploymentCard (vnode) {
+  const app = vnode.attrs.app;
+  const deploymentId = vnode.attrs.deployment.id;
+  const projectId = vnode.attrs.project.id;
+
+  function deploymentChangeHandler () {
+    app.listDeployments(app, projectId);
+  }
+
+  return {
+    oncreate: () => app.notifier.on(deploymentId, deploymentChangeHandler),
+    onremove: () => app.notifier.off(deploymentId, deploymentChangeHandler),
+    view: (vnode) => {
+      const { app, project, deployment } = vnode.attrs;
+      return html`
+        <puz-deployment key=${deployment.id} class="deployment-status-${deployment.status} ${app.state.deploymentExpands[deployment.id] ? 'expanded' : ''}">
+          <puz-deployment-heading onclick=${app.toggleExpanded.bind(null, app, 'deploymentExpands', deployment.id)}>
+            <div class="nowrap cutoff">${deployment.id}</div>
+            <div><span class="label label-${deployment.status}">${deployment.status}</span></div>
+            <div class="nowrap">${format(new Date(parseFloat(deployment.dateCreated)), 'dd/MM/yyyy hh:mm:ss')}</div>
+          </puz-deployment-heading>
+      
+          ${app.state.deploymentExpands[deployment.id] ? html`
+            <puz-deployment-content>
+      
+                ${mithril(tabbed, {
+                  app,
+                  tabs: [{
+                    key: 'buildLogs',
+                    title: html`<span>Build Log</span>`,
+                    defaultActive: deployment.status === 'pending',
+                    content: deploymentLog(app, project, deployment)
+                  }, {
+                    key: 'logs',
+                    title: html`<span>Logs</span>`,
+                    defaultActive: deployment.status !== 'pending',
+                    content: liveLog(app, project, deployment)
+                  }, {
+                      key: 'settings',
+                      title: html`<span>Settings</span>`,
+                      content: settings(app, project, deployment)
+                  }]
+                })}
+      
+            </puz-deployment-content>
+          ` : ''}
+        </puz-deployment>
+      `;
+    }
+  };
+}
+
 function settings (app, project, deployment) {
   function destroyDeployment (project, deployment) {
     app.destroyDeployment(app, project.id, deployment.id);
@@ -92,40 +144,7 @@ module.exports = function (app, html) {
             <button onclick=${app.createDeployment.bind(null, app, project.id)}>Scale Up</button>
           </div>
         </div>
-        ${deployments.map((deployment, deploymentIndex) => html`
-          <puz-deployment key=${deployment.id} class="deployment-status-${deployment.status} ${app.state.deploymentExpands[deployment.id] ? 'expanded' : ''}">
-            <puz-deployment-heading onclick=${app.toggleExpanded.bind(null, app, 'deploymentExpands', deployment.id)}>
-              <div class="nowrap cutoff">${deployment.id}</div>
-              <div><span class="label label-${deployment.status}">${deployment.status}</span></div>
-              <div class="nowrap">${format(new Date(parseFloat(deployment.dateCreated)), 'dd/MM/yyyy hh:mm:ss')}</div>
-            </puz-deployment-heading>
-
-            ${app.state.deploymentExpands[deployment.id] ? html`
-              <puz-deployment-content>
-
-                  ${mithril(tabbed, {
-                    app,
-                    tabs: [{
-                      key: 'buildLogs',
-                      title: html`<span>Build Log</span>`,
-                      defaultActive: deployment.status === 'pending',
-                      content: deploymentLog(app, project, deployment)
-                    }, {
-                      key: 'logs',
-                      title: html`<span>Logs</span>`,
-                      defaultActive: deployment.status !== 'pending',
-                      content: liveLog(app, project, deployment)
-                    }, {
-                        key: 'settings',
-                        title: html`<span>Settings</span>`,
-                        content: settings(app, project, deployment)
-                    }]
-                  })}
-
-              </puz-deployment-content>
-            ` : ''}
-          </puz-deployment>
-        `)}
+        ${deployments.map(deployment => mithril(deploymentCard, { key: deployment.id, app, project, deployment }))}
       </puz-deployments>
     `;
   }

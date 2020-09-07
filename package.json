@@ -27,7 +27,8 @@
     "mithril": "^2.0.4",
     "mithui": "^1.0.2",
     "preact": "^10.4.7",
-    "snyk": "^1.383.0"
+    "snyk": "^1.383.0",
+    "throttle-debounce": "^2.3.0"
   },
   "devDependencies": {
     "brfs": "^2.0.2",

@@ -70,6 +70,41 @@ module.exports = function (config) {
 
   app.emitStateChanged = emitStateChanged;
 
+  let notifierController;
+  app.notifier = require('./notifier')(async (notifyIds, emit) => {
+    const url = new URL(`${app.config.apiServerUrl}/notify`);
+    notifyIds.forEach(id => {
+      url.searchParams.append('id', id);
+    });
+
+    if (notifierController) {
+      notifierController.abort();
+    }
+
+    notifierController = new window.AbortController();
+    const signal = notifierController.signal;
+
+    try {
+      const notifierResponse = await window.fetch(url.href, { signal });
+      const reader = notifierResponse.body
+        .pipeThrough(new window.TextDecoderStream())
+        .getReader();
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        emit(value.trim());
+      }
+    } catch (error) {
+      // The user aborted a request
+      if (error.code === 20) {
+        return;
+      }
+
+      throw error;
+    }
+  });
+
   app.listRepositories = require('./repositories/list');
   app.listProjects = require('./projects/list');
   app.listDeployments = require('./projects/deployments/list');
