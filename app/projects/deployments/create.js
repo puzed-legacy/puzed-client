@@ -1,4 +1,4 @@
-async function createDeployment (app, projectId) {
+async function createDeployment (app, projectId, branch) {
   if (!app.state.loggedIn) {
     return;
   }
@@ -9,7 +9,11 @@ async function createDeployment (app, projectId) {
     method: 'post',
     headers: {
       authorization: 'token ' + app.state.oauthToken
-    }
+    },
+    body: JSON.stringify({
+      branch,
+      group: branch
+    }, null, 2)
   });
 
   app.readProject(app, projectId);

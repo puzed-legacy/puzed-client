@@ -7,13 +7,45 @@ const menu = require('../components/menu');
 const terminal = require('../components/terminal');
 const tabbed = require('../components/tabbed');
 
+function deployPicker (vnode) {
+  const { app, project } = vnode.attrs;
+
+  app.listBranches(app, project);
+
+  function createDeployment (branch) {
+    return event => {
+      event.preventDefault();
+
+      app.createDeployment(app, project.id, branch.name);
+    };
+  }
+
+  return {
+    view: () => {
+      if (!app.state.branches || !app.state.branches[project.id]) {
+        return;
+      }
+
+      return html`
+        <ul class="dropdown">
+          ${app.state.branches[project.id].map(branch => html`
+            <li>
+              <a onclick=${createDeployment(branch)}>${branch.name}</a>
+            </li>
+          `)}
+        </ul>
+      `;
+    }
+  };
+}
+
 function deploymentCard (vnode) {
   const app = vnode.attrs.app;
   const deploymentId = vnode.attrs.deployment.id;
   const projectId = vnode.attrs.project.id;
 
   function deploymentChangeHandler () {
-    app.listDeployments(app, projectId);
+    app.readDeployment(app, projectId, deploymentId);
   }
 
   return {
@@ -21,10 +53,21 @@ function deploymentCard (vnode) {
     onremove: () => app.notifier.off(deploymentId, deploymentChangeHandler),
     view: (vnode) => {
       const { app, project, deployment } = vnode.attrs;
+      const toggleExpanded = event => {
+        if (event.target.tagName === 'A') {
+          return;
+        }
+
+        app.toggleExpanded(app, 'deploymentExpands', deployment.id);
+      };
+
       return html`
         <puz-deployment key=${deployment.id} class="deployment-status-${deployment.status} ${app.state.deploymentExpands[deployment.id] ? 'expanded' : ''}">
-          <puz-deployment-heading onclick=${app.toggleExpanded.bind(null, app, 'deploymentExpands', deployment.id)}>
+          <puz-deployment-heading onclick=${toggleExpanded}>
             <div class="nowrap cutoff">${deployment.id}</div>
+            <div class="nowrap cutoff">
+              <a href="https://${deployment.group}--${project.domain}" target="_blank">${deployment.group}</a>
+            </div>
             <div><span class="label label-${deployment.status}">${deployment.status}</span></div>
             <div class="nowrap">${format(new Date(parseFloat(deployment.dateCreated)), 'dd/MM/yyyy hh:mm:ss')}</div>
           </puz-deployment-heading>
@@ -136,14 +179,21 @@ module.exports = function (app, html) {
   function renderDeployments (project, deployments) {
     return html`
       <puz-deployments>
-        <div class="heading-container">
+      <div class="heading-container">
+          <h1>Groups</h1>>
+          <div>
+            ${mithril(deployPicker, { app, project })}
+          </div>
+        </div>
+
+        <!-- <div class="heading-container">
           <h2>
-            Deployments
-          </h3>
+            Production
+          </h2>
           <div>
             <button onclick=${app.createDeployment.bind(null, app, project.id)}>Scale Up</button>
           </div>
-        </div>
+        </div> -->
         ${deployments.map(deployment => mithril(deploymentCard, { key: deployment.id, app, project, deployment }))}
       </puz-deployments>
     `;

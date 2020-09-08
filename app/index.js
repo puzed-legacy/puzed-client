@@ -107,7 +107,9 @@ module.exports = function (config) {
 
   app.listRepositories = require('./repositories/list');
   app.listProjects = require('./projects/list');
+  app.listBranches = require('./projects/branches/list');
   app.listDeployments = require('./projects/deployments/list');
+  app.readDeployment = require('./projects/deployments/read');
   app.createDeployment = require('./projects/deployments/create');
   app.destroyDeployment = require('./projects/deployments/destroy');
   app.readDeploymentBuildLog = require('./projects/deployments/buildlog');
