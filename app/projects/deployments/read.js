@@ -19,7 +19,7 @@ async function readProject (app, projectId, deploymentId) {
       app.state.deployments.splice(existingDeploymentIndex, 1);
     }
 
-    app.state.deployments.push(deployment);
+    app.state.deployments.unshift(deployment);
   } catch (error) {
     console.log(error);
   }
