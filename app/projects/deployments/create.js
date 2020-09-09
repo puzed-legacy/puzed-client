@@ -5,7 +5,7 @@ async function createDeployment (app, projectId, branch) {
 
   app.setLoadingState();
 
-  await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments`, {
+  const deploymentResponse = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments`, {
     method: 'post',
     headers: {
       authorization: 'token ' + app.state.oauthToken
@@ -16,8 +16,10 @@ async function createDeployment (app, projectId, branch) {
     }, null, 2)
   });
 
+  const deployment = await deploymentResponse.json();
+
   app.readProject(app, projectId);
-  app.listDeployments(app, projectId);
+  app.readDeployment(app, projectId, deployment.id);
 
   app.unsetLoadingState();
 }
