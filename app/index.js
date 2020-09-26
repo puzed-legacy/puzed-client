@@ -13,6 +13,8 @@ module.exports = function (config) {
       projects: [],
       deployments: [],
       deploymentExpands: {},
+      instances: [],
+      instanceExpands: {},
       buildLogs: {},
       liveLogs: {},
 
@@ -109,15 +111,18 @@ module.exports = function (config) {
   app.listProjects = require('./projects/list');
   app.listBranches = require('./projects/branches/list');
   app.listDeployments = require('./projects/deployments/list');
+  app.listInstances = require('./projects/deployments/instances/list');
+  app.readInstance = require('./projects/deployments/instances/read');
   app.readDeployment = require('./projects/deployments/read');
   app.createDeployment = require('./projects/deployments/create');
-  app.destroyDeployment = require('./projects/deployments/destroy');
-  app.readDeploymentBuildLog = require('./projects/deployments/buildlog');
+  app.createInstance = require('./projects/deployments/instances/create');
+  app.destroyInstance = require('./projects/deployments/instances/destroy');
+  app.readInstanceBuildLog = require('./projects/deployments/instances/buildlog');
   app.readProject = require('./projects/read');
   app.createProject = require('./projects/create');
 
-  app.startDeploymentLogs = require('./projects/deployments/startLogs.js');
-  app.stopDeploymentLogs = require('./projects/deployments/stopLogs.js');
+  app.startInstanceLogs = require('./projects/deployments/instances/startLogs.js');
+  app.stopInstanceLogs = require('./projects/deployments/instances/stopLogs.js');
 
   app.changeUrl = changeUrl;
 

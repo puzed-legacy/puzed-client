@@ -12,13 +12,14 @@ mui-checkbox input:focus {
   outline: none;
 }
 mui-checkbox input {
+  display: inline-block;
+  vertical-align: middle;
   border: 2px solid black;
   cursor: pointer;
   appearance: none;
   width: auto;
-  padding: 8px;
+  padding: 10px;
   margin: 0;
-  vertical-align: text-top;
 }
 
 mui-form mui-checkbox label:after {
@@ -30,6 +31,15 @@ mui-form mui-checkbox label {
 }
 mui-form mui-checkbox input {
   width: auto;
+}
+
+html {
+  --input-padding: 5px;
+  --dropdown-padding: 5px;
+}
+
+[hidden] {
+  display: none;
 }
 
 mui-form .form-group {
@@ -60,6 +70,80 @@ mui-form .form-errors li {
   background-position: left center;
   color: rgb(105 23 23);
   margin-bottom: 3px;
+}
+mui-dropdown {
+  position: relative;
+  outline: none;
+  display: inline-block;
+}
+
+mui-dropdown:focus mui-dropdown-head {
+  border-color: blue;
+}
+
+mui-dropdown-head {
+  display: inline-block;
+  font-family: arial;
+  font-weight: bold;
+  font-size: 100%;
+  border: 2px solid black;
+  padding: var(--dropdown-padding);
+  cursor: pointer;
+}
+
+mui-dropdown-body a {
+  color: black;
+}
+mui-dropdown-body {
+  z-index: 100000;
+  background-color: white;
+  color: black;
+  position: absolute;
+  display: inline-block;
+  font-family: arial;
+  font-weight: bold;
+  font-size: 100%;
+  border: 2px solid black;
+  padding: 3px;
+}
+
+mui-dropdown.full-width mui-dropdown-head {
+  width: 100%;
+}
+
+mui-dropdown.with-icon mui-dropdown-head {
+  padding-right: 25px;
+  background: transparent;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position-x: 100%;
+  background-position-y: center;
+}
+
+mui-dropdown-body {
+  display: block;
+  white-space: nowrap;
+}
+
+mui-dropdown-body > hr {
+  border-color: black;
+  padding: 0;
+  margin: 6px 0 6px 0;
+}
+
+mui-dropdown > mui-dropdown-body > div {
+  display: block;
+  padding: 8px;
+}
+
+mui-dropdown.align-right mui-dropdown-body {
+  min-width: 24px;
+  right: 0;
+}
+
+mui-dropdown.align-up mui-dropdown-body {
+  bottom: 0;
+  margin-bottom: calc(100% + 6px);
 }
 mui-file-picker {
   display: block;
@@ -118,9 +202,11 @@ mui-file-picker li:not(.info) {
 mui-file-picker li input {
   border-color: #dadada;
 }
+
 mui-file-picker li button:hover {
   background-color: #691212;
 }
+
 mui-file-picker li button {
   padding: 5px 10px 4px 10px;
   font-size: 10px;
@@ -140,7 +226,7 @@ mui-file-picker input {
   font-size: 100%;
   width: 100%;
   border: 2px solid black;
-  padding: 3px;
+  padding: var(--input-padding);
 }
 mui-multiline-input textarea:focus {
   border-color: blue;
@@ -156,7 +242,7 @@ mui-multiline-input textarea {
   min-width: 100%;
   min-height: 100px;
   border: 2px solid black;
-  padding: 3px;
+  padding: var(--input-padding);
 }
 mui-select select:focus {
   border-color: blue;
@@ -168,7 +254,7 @@ mui-select select {
   outline: none;
   display: block;
   width: 100%;
-  padding: 3px 3px 3px 3px;
+  padding: var(--input-padding);
   border: 2px solid black;
   font-size: 100%;
 
@@ -191,5 +277,5 @@ mui-text-input input {
   font-size: 100%;
   width: 100%;
   border: 2px solid black;
-  padding: 3px;
+  padding: var(--input-padding);
 }

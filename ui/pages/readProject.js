@@ -1,172 +1,29 @@
-const format = require('date-fns/format');
 const mithril = require('mithril');
 const m = mithril;
 const html = require('hyperx')(mithril);
 
+const deploymentItem = require('../components/deploymentItem');
 const menu = require('../components/menu');
-const terminal = require('../components/terminal');
-const tabbed = require('../components/tabbed');
 
-function deployPicker (vnode) {
+function branchPicker (vnode) {
   const { app, project } = vnode.attrs;
 
   app.listBranches(app, project);
 
-  function createDeployment (branch) {
-    return event => {
-      event.preventDefault();
-
-      app.createDeployment(app, project.id, branch.name);
-    };
-  }
-
   return {
-    view: () => {
+    view: (vnode) => {
       if (!app.state.branches || !app.state.branches[project.id]) {
-        return;
+        return html`
+          <select name="${vnode.attrs.name}" disabled="disabled">
+            <option>Fetching branches...</option>
+          </select>
+        `;
       }
 
       return html`
-        <ul class="dropdown">
-          ${app.state.branches[project.id].map(branch => html`
-            <li>
-              <a onclick=${createDeployment(branch)}>${branch.name}</a>
-            </li>
-          `)}
-        </ul>
-      `;
-    }
-  };
-}
-
-function deploymentCard (vnode) {
-  const app = vnode.attrs.app;
-  const deploymentId = vnode.attrs.deployment.id;
-  const projectId = vnode.attrs.project.id;
-
-  function deploymentChangeHandler () {
-    app.readDeployment(app, projectId, deploymentId);
-  }
-
-  return {
-    oncreate: () => app.notifier.on(deploymentId, deploymentChangeHandler),
-    onremove: () => app.notifier.off(deploymentId, deploymentChangeHandler),
-    view: (vnode) => {
-      const { app, project, deployment } = vnode.attrs;
-      const toggleExpanded = event => {
-        if (event.target.tagName === 'A') {
-          return;
-        }
-
-        app.toggleExpanded(app, 'deploymentExpands', deployment.id);
-      };
-
-      return html`
-        <puz-deployment key=${deployment.id} class="deployment-status-${deployment.status} ${app.state.deploymentExpands[deployment.id] ? 'expanded' : ''}">
-          <puz-deployment-heading onclick=${toggleExpanded}>
-            <div class="nowrap cutoff">${deployment.id}</div>
-            <div class="nowrap cutoff">
-              <a href="https://${deployment.group}--${project.domain}" target="_blank">${deployment.group}</a>
-            </div>
-            <div><span class="label label-${deployment.status}">${deployment.status}</span></div>
-            <div class="nowrap">${format(new Date(parseFloat(deployment.dateCreated)), 'dd/MM/yyyy hh:mm:ss')}</div>
-          </puz-deployment-heading>
-      
-          ${app.state.deploymentExpands[deployment.id] ? html`
-            <puz-deployment-content>
-      
-                ${mithril(tabbed, {
-                  app,
-                  tabs: [{
-                    key: 'buildLogs',
-                    title: html`<span>Build Log</span>`,
-                    defaultActive: deployment.status === 'pending',
-                    content: deploymentLog(app, project, deployment)
-                  }, {
-                    key: 'logs',
-                    title: html`<span>Logs</span>`,
-                    defaultActive: deployment.status !== 'pending',
-                    content: liveLog(app, project, deployment)
-                  }, {
-                      key: 'settings',
-                      title: html`<span>Settings</span>`,
-                      content: settings(app, project, deployment)
-                  }]
-                })}
-      
-            </puz-deployment-content>
-          ` : ''}
-        </puz-deployment>
-      `;
-    }
-  };
-}
-
-function settings (app, project, deployment) {
-  function destroyDeployment (project, deployment) {
-    app.destroyDeployment(app, project.id, deployment.id);
-  }
-
-  return {
-    view: () => html`
-      <puz-build-log>
-        <div>
-          <label>Commit Hash:</label> ${deployment.commitHash}
-        </div>
-        <button onclick=${destroyDeployment.bind(null, project, deployment)}>Destroy</button>
-      </puz-build-log>
-    `
-  };
-}
-
-function liveLog (app, project, deployment) {
-  const reconnect = event => {
-    event.preventDefault();
-    app.startDeploymentLogs(app, project.id, deployment.id);
-  };
-
-  return {
-    oncreate: () => {
-      app.startDeploymentLogs(app, project.id, deployment.id);
-    },
-
-    ondelete: () => {
-      app.stopDeploymentLogs(app, project.id, deployment.id);
-    },
-
-    view: () => {
-      return html`
-        <puz-live-log>
-        ${app.state.liveLogs[deployment.id] && !app.state.liveLogs[deployment.id].abort && deployment.status !== 'destroyed' ? html`
-            <div class="alert alert-warning">
-              Logs are not live. Disconnected.
-              <a href="javascript:void(0)" onclick=${reconnect}>Click here to reconnect</a>
-            </div>
-          ` : ''}
-
-          ${deployment.status === 'destroyed' ? html`
-            <div class="alert alert-info">
-              Logs are not live. Container is destroyed.
-            </div>
-          ` : ''}
-          ${mithril(terminal, { content: (app.state.liveLogs[deployment.id] && app.state.liveLogs[deployment.id].data) || 'No logs found' })}
-        </puz-live-log>
-      `;
-    }
-  };
-}
-
-function deploymentLog (app, project, deployment) {
-  return {
-    oncreate: () => {
-      app.readDeploymentBuildLog(app, project.id, deployment.id);
-    },
-
-    view: () => {
-      return html`
-        <puz-build-log>
-          ${mithril(terminal, { content: app.state.buildLogs[deployment.id] || deployment.buildLog || 'No build log found' })}
-        </puz-build-log>
+        <select name="${vnode.attrs.name}">
+          ${app.state.branches[project.id].map(branch => m('option', {}, branch.name))}
+        </select>
       `;
     }
   };
@@ -176,25 +33,53 @@ module.exports = function (app, html) {
   app.readProject(app, app.state.tokens.projectId);
   app.listDeployments(app, app.state.tokens.projectId);
 
+  let createDeploymentOpen = false;
+  function toggleCreateDeploymentOpen () {
+    createDeploymentOpen = !createDeploymentOpen;
+    mithril.redraw();
+  }
+
+  function handleCreateDeploymentSubmit (event) {
+    event.preventDefault();
+
+    const title = event.target.querySelector('[name="title"]').value;
+    const branch = event.target.querySelector('[name="branch"]').value;
+
+    app.createDeployment(app, app.state.tokens.projectId, title, branch);
+
+    createDeploymentOpen = false;
+    mithril.redraw();
+  }
+
   function renderDeployments (project, deployments) {
     return html`
       <puz-deployments>
-      <div class="heading-container">
-          <h1>Groups</h1>>
+        <div class="heading-container">
+          <h1>Deployments</h1>>
           <div>
-            ${mithril(deployPicker, { app, project })}
+            <button onclick=${toggleCreateDeploymentOpen}>New Deployment</button>
           </div>
         </div>
 
-        <!-- <div class="heading-container">
-          <h2>
-            Production
-          </h2>
-          <div>
-            <button onclick=${app.createDeployment.bind(null, app, project.id)}>Scale Up</button>
-          </div>
-        </div> -->
-        ${deployments.map(deployment => mithril(deploymentCard, { key: deployment.id, app, project, deployment }))}
+        ${createDeploymentOpen ? html`
+          <puz-deployment>
+            <form onsubmit=${handleCreateDeploymentSubmit}>
+              <puz-deployment-heading>
+                <div class="nowrap cutoff">
+                  <input name="title" placeholder="Name your new deployment" />
+                </div>
+                <div class="nowrap cutoff">
+                  ${mithril(branchPicker, { name: 'branch', app, project })}
+                </div>
+                <div>
+                  <button>Save</button>
+                </div>
+              </puz-deployment-heading>
+            </form>
+          </puz-deployment>
+        ` : ''}
+
+        ${deployments.map(deployment => mithril(deploymentItem, { key: deployment.id, app, project, deployment }))}
       </puz-deployments>
     `;
   }
@@ -256,8 +141,6 @@ module.exports = function (app, html) {
           ${menu(app, html)}
 
           <section>
-            <div class="loading" ${app.state.loading === 0 ? 'off' : ''}><div>Loading project</div></div>
-
             ${project ? renderProject(project, deployments) : null}
           </section>
         </main>

@@ -100,7 +100,6 @@ function selectRepository ({ attrs }) {
           <section>
             <h2>Your Repositories</h2>
             <p>Select a repository you would like to deploy.</p>
-            <div class="loading" ${app.state.loading === 0 ? 'off' : ''}><div>Loading your repositories</div></div>
             <ul>
               ${(app.state.repositories || []).map(repository => {
                 return html`

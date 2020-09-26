@@ -1,16 +1,16 @@
-async function startDeploymentLogs (app, projectId, deploymentId) {
+async function startInstanceLogs (app, projectId, deploymentId, instanceId) {
   if (!app.state.loggedIn) {
     return;
   }
 
-  if (app.state.liveLogs[deploymentId] && app.state.liveLogs[deploymentId].abort) {
-    app.state.liveLogs[deploymentId].abort();
+  if (app.state.liveLogs[instanceId] && app.state.liveLogs[instanceId].abort) {
+    app.state.liveLogs[instanceId].abort();
   }
 
   const liveLog = {
     data: 'Connecting to logs...\n\n'
   };
-  app.state.liveLogs[deploymentId] = liveLog;
+  app.state.liveLogs[instanceId] = liveLog;
 
   app.emitStateChanged();
 
@@ -18,7 +18,7 @@ async function startDeploymentLogs (app, projectId, deploymentId) {
   liveLog.abort = () => controller.abort();
   const signal = controller.signal;
   try {
-    const response = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments/${deploymentId}/log`, {
+    const response = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments/${deploymentId}/instances/${instanceId}/log`, {
       signal,
       headers: {
         authorization: 'token ' + app.state.oauthToken
@@ -40,4 +40,4 @@ async function startDeploymentLogs (app, projectId, deploymentId) {
   }
 }
 
-module.exports = startDeploymentLogs;
+module.exports = startInstanceLogs;

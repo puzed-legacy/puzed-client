@@ -1,4 +1,4 @@
-async function readProject (app, projectId, deploymentId) {
+async function readDeployment (app, projectId, deploymentId) {
   if (!app.state.loggedIn) {
     return;
   }
@@ -16,10 +16,11 @@ async function readProject (app, projectId, deploymentId) {
 
     const existingDeploymentIndex = app.state.deployments.findIndex(deployment => deployment.id === deploymentId);
     if (existingDeploymentIndex > -1) {
-      app.state.deployments.splice(existingDeploymentIndex, 1);
+      app.state.deployments[existingDeploymentIndex] = deployment;
+      return;
     }
 
-    app.state.deployments.unshift(deployment);
+    app.state.deployments.push(deployment);
   } catch (error) {
     console.log(error);
   }
@@ -27,4 +28,4 @@ async function readProject (app, projectId, deploymentId) {
   app.unsetLoadingState();
 }
 
-module.exports = readProject;
+module.exports = readDeployment;

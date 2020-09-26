@@ -1,9 +1,16 @@
-async function createDeployment (app, projectId, branch) {
+async function createDeployment (app, projectId, title, branch) {
   if (!app.state.loggedIn) {
     return;
   }
 
-  app.setLoadingState();
+  const index = app.state.deployments.push({
+    id: 'tmp' + Date.now(),
+    projectId,
+    title,
+    branch,
+    submitting: true
+  });
+  app.emitStateChanged();
 
   const deploymentResponse = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments`, {
     method: 'post',
@@ -11,17 +18,17 @@ async function createDeployment (app, projectId, branch) {
       authorization: 'token ' + app.state.oauthToken
     },
     body: JSON.stringify({
-      branch,
-      group: branch
+      title,
+      branch
     }, null, 2)
   });
 
   const deployment = await deploymentResponse.json();
 
   app.readProject(app, projectId);
-  app.readDeployment(app, projectId, deployment.id);
+  app.state.deployments[index - 1] = deployment;
 
-  app.unsetLoadingState();
+  app.emitStateChanged();
 }
 
 module.exports = createDeployment;
