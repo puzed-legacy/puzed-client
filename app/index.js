@@ -79,18 +79,19 @@ module.exports = function (config) {
       url.searchParams.append('id', id);
     });
 
-    if (notifierController) {
-      notifierController.abort();
-    }
-
-    notifierController = new window.AbortController();
-    const signal = notifierController.signal;
+    const newNotifierController = new window.AbortController();
+    const signal = newNotifierController.signal;
 
     try {
       const notifierResponse = await window.fetch(url.href, { signal });
       const reader = notifierResponse.body
         .pipeThrough(new window.TextDecoderStream())
         .getReader();
+
+      if (notifierController) {
+        notifierController.abort();
+      }
+      notifierController = newNotifierController;
 
       while (true) {
         const { value, done } = await reader.read();

@@ -104,6 +104,11 @@ function instanceItem (vnode) {
         app.toggleExpanded(app, 'instanceExpands', instance.id);
       };
 
+      function handleDestroyInstance () {
+        app.destroyInstance(app, project.id, deployment.id, instance.id);
+        document.activeElement.blur();
+      }
+
       return html`
         <puz-instance key=${instance.id} class="instance-status-${instance.status} ${app.state.instanceExpands[instance.id] ? 'expanded' : ''}">
           <puz-instance-heading onclick=${toggleExpanded}>
@@ -113,7 +118,7 @@ function instanceItem (vnode) {
             <div>
               ${m(mui.dropdown, { class: 'align-right', head: '☰' }, [
                 m('div',
-                  m('a', { onclick: app.destroyInstance.bind(null, app, project.id, deployment.id, instance.id) }, 'Destroy instance')
+                  m('a', { onclick: handleDestroyInstance }, 'Destroy instance')
                 )
               ])}
             </div>

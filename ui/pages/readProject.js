@@ -65,7 +65,7 @@ module.exports = function (app, html) {
           <puz-deployment>
             <form onsubmit=${handleCreateDeploymentSubmit}>
               <puz-deployment-heading>
-                <div class="nowrap cutoff">
+                <div class="nowrap cutoff grow">
                   <input name="title" placeholder="Name your new deployment" />
                 </div>
                 <div class="nowrap cutoff">

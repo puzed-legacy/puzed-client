@@ -3,8 +3,6 @@ async function readDeployment (app, projectId, deploymentId) {
     return;
   }
 
-  app.setLoadingState();
-
   try {
     const response = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments/${deploymentId}`, {
       headers: {
@@ -17,15 +15,15 @@ async function readDeployment (app, projectId, deploymentId) {
     const existingDeploymentIndex = app.state.deployments.findIndex(deployment => deployment.id === deploymentId);
     if (existingDeploymentIndex > -1) {
       app.state.deployments[existingDeploymentIndex] = deployment;
+      app.emitStateChanged();
       return;
     }
 
     app.state.deployments.push(deployment);
+    app.emitStateChanged();
   } catch (error) {
     console.log(error);
   }
-
-  app.unsetLoadingState();
 }
 
 module.exports = readDeployment;

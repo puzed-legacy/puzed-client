@@ -13,7 +13,7 @@ function instanceList (vnode) {
     view: (vnode) => {
       const instances = app.state.instances.filter(instance => instance.deploymentId === deployment.id);
 
-      return instances.map(instance => mithril(instanceItem, { app, project, deployment, instance }));
+      return instances.map(instance => mithril(instanceItem, { key: instance.id, app, project, deployment, instance }));
     }
   };
 }

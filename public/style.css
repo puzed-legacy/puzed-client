@@ -222,7 +222,7 @@ puz-deployment-heading button {
 }
 
 puz-deployment-heading > div:first-child {
-  padding-left: 15px;
+  padding-left: 8px;
 }
 
 puz-deployment-heading div.cutoff {
@@ -288,7 +288,7 @@ puz-deployment-heading select {
 puz-deployment-heading > * {
   padding: 5px;
 }
-puz-deployment-heading > *:first-child {
+.grow {
   flex-grow: 1;
 }
 
