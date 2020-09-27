@@ -33,6 +33,16 @@ function deploymentItem (vnode) {
       document.activeElement.blur();
     }
 
+    function handlePromoteToProduction () {
+      app.patchDeployment(app, project.id, deployment.id, {
+        autoSwitch: {
+          targetDeployment: 'production',
+          newTitle: 'production-backup-' + Date.now()
+        }
+      });
+      document.activeElement.blur();
+    }
+
     return html`
       <puz-deployment-heading onclick=${toggleExpanded(deployment.id)}>
         <div class="nowrap">
@@ -58,8 +68,8 @@ function deploymentItem (vnode) {
             m('div',
               m('a', { href: '#four' }, 'Remove a random instance')
             ),
-            m('div',
-              m('a', { href: '#four' }, 'Promote to Production')
+            m('div', { class: deployment.title === 'production' ? 'disabled' : '' },
+              m('a', { onclick: handlePromoteToProduction }, 'Promote to Production')
             ),
             m('hr'),
             m('div', { class: deployment.title === 'production' ? 'disabled' : '' },

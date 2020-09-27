@@ -115,6 +115,7 @@ module.exports = function (config) {
   app.listInstances = require('./projects/deployments/instances/list');
   app.readInstance = require('./projects/deployments/instances/read');
   app.readDeployment = require('./projects/deployments/read');
+  app.patchDeployment = require('./projects/deployments/patch');
   app.createDeployment = require('./projects/deployments/create');
   app.createInstance = require('./projects/deployments/instances/create');
   app.destroyInstance = require('./projects/deployments/instances/destroy');
