@@ -61,7 +61,7 @@ function createForm (app, providerRepositoryId) {
         name: 'domain',
         label: 'Domain',
         component: mui.textInput,
-        initialValue: `${providerRepositoryId}.puzed.com`
+        initialValue: `${providerRepositoryId.replace(/\//g, '-')}.puzed.com`
       }
     ],
     onSubmit: (event, data) => {
