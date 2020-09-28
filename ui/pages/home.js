@@ -18,8 +18,7 @@ module.exports = function (app, html) {
     return html`
       <div>
         <h1>Your Account</h1>
-        <p>${app.state.user.name}</p>
-        <p><a href="${app.state.user.url}">${app.state.user.url}</a></p>
+        <p>You are logged in as <strong>${app.state.user.email}</strong></p>
       </div>
     `;
   }

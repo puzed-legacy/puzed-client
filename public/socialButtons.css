@@ -1,0 +1,24 @@
+.btn-social {
+  cursor: pointer;
+  align-items: center;
+  display: flex;
+  fill: currentColor;
+  padding: 7px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background-color: rgb(48, 48, 48);
+  color: white;
+}
+
+.btn-social:hover {
+  background-color: black;
+}
+
+.btn-social svg {
+  display: inline;
+  color: white;
+  padding: 5px;
+  margin-right: 10px;
+}

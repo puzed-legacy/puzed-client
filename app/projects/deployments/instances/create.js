@@ -8,7 +8,7 @@ async function createInstance (app, projectId, deploymentId) {
   const instanceResponse = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments/${deploymentId}/instances`, {
     method: 'post',
     headers: {
-      authorization: 'token ' + app.state.oauthToken
+      authorization: 'token ' + app.state.session.secret
     }
   });
 

@@ -6,9 +6,9 @@ async function listBranches (app, project) {
   app.setLoadingState();
 
   try {
-    const response = await window.fetch(`https://api.github.com/repos/${project.owner}/${project.repo}/branches`, {
+    const response = await window.fetch(`${app.config.apiServerUrl}/providers/github/repositories/${project.providerRepositoryId}/branches`, {
       headers: {
-        authorization: 'token ' + app.state.oauthToken
+        authorization: 'token ' + app.state.session.secret
       }
     });
 

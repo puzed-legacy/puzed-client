@@ -7,8 +7,8 @@ module.exports = function (config) {
   const app = {
     state: {
       loading: 0,
-      oauthToken: window.localStorage.getItem('oauthToken'),
-      loggedIn: window.localStorage.getItem('oauthToken'),
+      session: window.localStorage.getItem('session'),
+      loggedIn: window.localStorage.getItem('session'),
 
       projects: [],
       deployments: [],
@@ -22,6 +22,8 @@ module.exports = function (config) {
     }
   };
 
+  app.state.session = app.state.session ? JSON.parse(app.state.session) : null;
+
   function toggleExpanded (app, stateKey, id) {
     if (app.state[stateKey][id]) {
       app.state[stateKey][id] = false;
@@ -33,6 +35,15 @@ module.exports = function (config) {
   }
 
   async function changeUrl () {
+    const routes = {
+      '/': () => 'home',
+      '/login': () => 'login',
+      '/projects': () => 'listProjects',
+      '/projects/create': () => 'createProject',
+      '/projects/:projectId': () => 'readProject',
+      '/providers/:providerId/oauth': require('./auth/oauthHandler').bind(null, app)
+    };
+
     const route = routemeup(routes, { url: window.location.pathname });
 
     app.state.page = route ? await route.controller() : 'notFound';
@@ -42,14 +53,6 @@ module.exports = function (config) {
       eventEmitter.emit('stateChanged', { force: true });
     }
   }
-
-  const routes = {
-    '/': () => 'home',
-    '/projects': () => 'listProjects',
-    '/projects/create': () => 'createProject',
-    '/projects/:projectId': () => 'readProject',
-    '/auth': require('./auth/loginHandler').bind(null, app)
-  };
 
   function emitStateChanged () {
     eventEmitter.emit('stateChanged');

@@ -8,7 +8,7 @@ async function readProject (app, projectId) {
   try {
     const response = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}`, {
       headers: {
-        authorization: 'token ' + app.state.oauthToken
+        authorization: 'token ' + app.state.session.secret
       }
     });
 

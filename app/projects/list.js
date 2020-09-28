@@ -8,7 +8,7 @@ async function listProjects (app) {
   try {
     const response = await window.fetch(`${app.config.apiServerUrl}/projects`, {
       headers: {
-        authorization: 'token ' + app.state.oauthToken
+        authorization: 'token ' + app.state.session.secret
       }
     });
 

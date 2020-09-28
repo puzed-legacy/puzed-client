@@ -120,7 +120,7 @@ module.exports = function (app, html) {
         </div>
 
         <div>
-          <strong>Repository:</strong> <a href="https://github.com/${project.owner}/${project.repo}" target="_blank">https://github.com/${project.owner}/${project.repo}</a>
+          <strong>Repository:</strong> <a href="https://github.com/${project.providerRepositoryId}" target="_blank">https://github.com/${project.providerRepositoryId}</a>
         </div>
 
         ${renderDeployments(project, deployments)}

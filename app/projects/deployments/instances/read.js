@@ -8,7 +8,7 @@ async function readInstance (app, projectId, deploymentId, instanceId) {
   try {
     const response = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments/${deploymentId}/instances/${instanceId}`, {
       headers: {
-        authorization: 'token ' + app.state.oauthToken
+        authorization: 'token ' + app.state.session.secret
       }
     });
 

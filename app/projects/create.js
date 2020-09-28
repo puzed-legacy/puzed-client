@@ -17,7 +17,7 @@ async function createProject (app, project) {
   const projectCreationResponse = await window.fetch(`${app.config.apiServerUrl}/projects`, {
     method: 'post',
     headers: {
-      authorization: 'token ' + app.state.oauthToken
+      authorization: 'token ' + app.state.session.secret
     },
     body: JSON.stringify({
       ...project,

@@ -6,9 +6,9 @@ async function listRepositories (app) {
   app.setLoadingState();
 
   try {
-    const response = await window.fetch('https://api.github.com/user/repos?sort=updated', {
+    const response = await window.fetch(`${app.config.apiServerUrl}/providers/github/repositories`, {
       headers: {
-        authorization: 'token ' + app.state.oauthToken
+        authorization: 'token ' + app.state.session.secret
       }
     });
 

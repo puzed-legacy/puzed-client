@@ -1,15 +1,12 @@
 async function getUser (app) {
-  if (!app.state.oauthToken) {
+  if (!app.state.session) {
     return;
   }
 
-  app.state.loading = app.state.loading + 1;
-  app.eventEmitter.emit('stateChanged');
-
   try {
-    const response = await window.fetch('https://api.github.com/user', {
+    const response = await window.fetch(`${app.config.apiServerUrl}/sessions/current`, {
       headers: {
-        authorization: 'token ' + app.state.oauthToken
+        authorization: app.state.session.secret
       }
     });
 
@@ -17,16 +14,16 @@ async function getUser (app) {
       throw new Error('session could not be validated');
     }
 
-    const user = await response.json();
+    const session = await response.json();
 
-    app.state.user = user;
+    app.state.user = session.user;
+    app.state.session = session;
   } catch (error) {
-    window.localStorage.removeItem('oauthToken');
+    window.localStorage.removeItem('session');
     window.location.reload();
     console.log(error);
   }
 
-  app.state.loading = app.state.loading - 1;
   app.eventEmitter.emit('stateChanged');
 }
 

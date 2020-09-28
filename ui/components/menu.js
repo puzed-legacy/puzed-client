@@ -1,11 +1,24 @@
+const md5 = require('md5');
+
 module.exports = function (app, html) {
+  function guestPill () {
+    return [html`
+      <a target="_blank" href="/login">Login</a>
+    `, html`
+      <a target="_blank" href="/register">Register</a>
+    `];
+  }
+
   function userPill () {
+    const emailHash = md5(app.state.user.email);
+
     return html`
-      <a target="_blank" href="${app.state.user.html_url}">
-        <img src="${app.state.user.avatar_url}" /> ${app.state.user.login}
+      <a target="_blank" href="#">
+        <img src="https://www.gravatar.com/avatar/${emailHash}?s=50" /> ${app.state.user.email}
       </a>
     `;
   }
+
   return html`
     <header>
       <nav>
@@ -13,7 +26,7 @@ module.exports = function (app, html) {
         ${app.state.loggedIn ? html`<a href="/projects">Projects</a>` : null}
       </nav>
       <nav>
-        ${app.state.user ? userPill() : null}
+        ${app.state.user ? userPill() : guestPill()}
       </nav>
     </header>
   `;

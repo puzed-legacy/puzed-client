@@ -15,7 +15,7 @@ async function createDeployment (app, projectId, title, branch) {
   const deploymentResponse = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments`, {
     method: 'post',
     headers: {
-      authorization: 'token ' + app.state.oauthToken
+      authorization: 'token ' + app.state.session.secret
     },
     body: JSON.stringify({
       title,

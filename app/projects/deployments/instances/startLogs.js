@@ -21,7 +21,7 @@ async function startInstanceLogs (app, projectId, deploymentId, instanceId) {
     const response = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments/${deploymentId}/instances/${instanceId}/log`, {
       signal,
       headers: {
-        authorization: 'token ' + app.state.oauthToken
+        authorization: 'token ' + app.state.session.secret
       }
     });
     const reader = response.body

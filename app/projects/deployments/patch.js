@@ -6,7 +6,7 @@ async function patchDeployment (app, projectId, deploymentId, partialRecord) {
   const deploymentResponse = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments/${deploymentId}`, {
     method: 'PATCH',
     headers: {
-      authorization: 'token ' + app.state.oauthToken
+      authorization: 'token ' + app.state.session.secret
     },
     body: JSON.stringify(partialRecord, null, 2)
   });

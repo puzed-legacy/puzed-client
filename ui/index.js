@@ -3,8 +3,10 @@ const html = require('hyperx')(mithril);
 const pushStateAnchors = require('spath/pushStateAnchors');
 require('./modules/onUrlChange');
 window.m = mithril;
+
 const pages = {
   home: require('./pages/home'),
+  login: require('./pages/login'),
   listProjects: require('./pages/listProjects'),
   readProject: require('./pages/readProject'),
   createProject: require('./pages/createProject'),

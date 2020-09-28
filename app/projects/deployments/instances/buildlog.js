@@ -12,7 +12,7 @@ async function buildlog (app, projectId, deploymentId, instanceId) {
 
   const response = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments/${deploymentId}/instances/${instanceId}/buildlog`, {
     headers: {
-      authorization: 'token ' + app.state.oauthToken
+      authorization: 'token ' + app.state.session.secret
     }
   });
   const reader = response.body

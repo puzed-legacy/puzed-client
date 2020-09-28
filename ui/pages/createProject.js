@@ -5,7 +5,7 @@ const mui = require('mithui');
 
 const menu = require('../components/menu');
 
-function createForm (app, owner, repo) {
+function createForm (app, providerRepositoryId) {
   return m(mui.form, {
     fields: [
       {
@@ -13,7 +13,7 @@ function createForm (app, owner, repo) {
         label: 'Project Name',
         component: mui.textInput,
         autoFocus: true,
-        initialValue: `my-${owner}-${repo}-1`
+        initialValue: `my-${providerRepositoryId.replace(/\//g, '-')}-1`
       },
       {
         name: 'image',
@@ -61,7 +61,7 @@ function createForm (app, owner, repo) {
         name: 'domain',
         label: 'Domain',
         component: mui.textInput,
-        initialValue: `${owner}-${repo}.puzed.com`
+        initialValue: `${providerRepositoryId}.puzed.com`
       }
     ],
     onSubmit: (event, data) => {
@@ -71,8 +71,8 @@ function createForm (app, owner, repo) {
 
       app.createProject(app, {
         ...data,
-        owner,
-        repo
+        provider: 'github',
+        providerRepositoryId
       }).then(project => {
         button.disabled = false;
         setPath('/projects/' + project.id);
@@ -104,7 +104,7 @@ function selectRepository ({ attrs }) {
               ${(app.state.repositories || []).map(repository => {
                 return html`
                   <li>
-                    <a href="/projects/create?from=${repository.full_name}">${repository.name}</a>
+                    <a href="/projects/create?providerRepositoryId=${repository.full_name}">${repository.name}</a>
                   </li>`;
               })}
             </ul>
@@ -118,9 +118,7 @@ function selectRepository ({ attrs }) {
 function setupProject ({ attrs }) {
   const url = attrs.url;
 
-  const from = url.searchParams.get('from').split('/');
-  const owner = from[0];
-  const repo = from[1];
+  const providerRepositoryId = url.searchParams.get('providerRepositoryId');
 
   return {
     view: ({ attrs }) => {
@@ -130,10 +128,10 @@ function setupProject ({ attrs }) {
 
           <section>
             <h2>Create a new project</h2>
-            <strong>Owner</strong>: ${owner}
-            <strong>Repo</strong>: ${repo}
+            <strong>Provider</strong>: github
+            <strong>Repository</strong>: ${providerRepositoryId}
             <hr />        
-            ${createForm(attrs.app, owner, repo)}
+            ${createForm(attrs.app, providerRepositoryId)}
           </section>
         </main>
       `;
@@ -146,7 +144,7 @@ module.exports = function (app, html) {
     view: () => {
       const url = new URL(window.location.href);
 
-      if (url.searchParams.get('from')) {
+      if (url.searchParams.get('providerRepositoryId')) {
         return m(setupProject, { app, url });
       }
 
