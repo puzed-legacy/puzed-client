@@ -1,4 +1,4 @@
-async function listDeployments (app, projectId) {
+async function listDeployments (app, serviceId) {
   if (!app.state.loggedIn) {
     return;
   }
@@ -6,7 +6,7 @@ async function listDeployments (app, projectId) {
   app.setLoadingState();
 
   try {
-    const response = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments`, {
+    const response = await window.fetch(`${app.config.apiServerUrl}/services/${serviceId}/deployments`, {
       headers: {
         authorization: 'token ' + app.state.session.secret
       }
@@ -14,7 +14,7 @@ async function listDeployments (app, projectId) {
 
     const deployments = await response.json();
 
-    app.state.deployments = app.state.deployments.filter(deployment => deployment.projectId !== projectId);
+    app.state.deployments = app.state.deployments.filter(deployment => deployment.serviceId !== serviceId);
     app.state.deployments = app.state.deployments.concat(deployments);
   } catch (error) {
     console.log(error);

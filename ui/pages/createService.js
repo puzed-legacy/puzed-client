@@ -10,7 +10,7 @@ function createForm (app, providerRepositoryId) {
     fields: [
       {
         name: 'name',
-        label: 'Project Name',
+        label: 'Service Name',
         component: mui.textInput,
         autoFocus: true,
         initialValue: `my-${providerRepositoryId.replace(/\//g, '-')}-1`
@@ -69,13 +69,13 @@ function createForm (app, providerRepositoryId) {
       const button = event.target.querySelector('form > button');
       button.disabled = true;
 
-      app.createProject(app, {
+      app.createService(app, {
         ...data,
         provider: 'github',
         providerRepositoryId
-      }).then(project => {
+      }).then(service => {
         button.disabled = false;
-        setPath('/projects/' + project.id);
+        setPath('/services/' + service.id);
       }).catch(error => {
         console.log(error);
         button.disabled = false;
@@ -104,7 +104,7 @@ function selectRepository ({ attrs }) {
               ${(app.state.repositories || []).map(repository => {
                 return html`
                   <li>
-                    <a href="/projects/create?providerRepositoryId=${repository.full_name}">${repository.name}</a>
+                    <a href="/services/create?providerRepositoryId=${repository.full_name}">${repository.name}</a>
                   </li>`;
               })}
             </ul>
@@ -115,7 +115,7 @@ function selectRepository ({ attrs }) {
   };
 }
 
-function setupProject ({ attrs }) {
+function setupService ({ attrs }) {
   const url = attrs.url;
 
   const providerRepositoryId = url.searchParams.get('providerRepositoryId');
@@ -127,7 +127,7 @@ function setupProject ({ attrs }) {
           ${menu(attrs.app, html)}
 
           <section>
-            <h2>Create a new project</h2>
+            <h2>Create a new service</h2>
             <strong>Provider</strong>: github
             <strong>Repository</strong>: ${providerRepositoryId}
             <hr />        
@@ -145,7 +145,7 @@ module.exports = function (app, html) {
       const url = new URL(window.location.href);
 
       if (url.searchParams.get('providerRepositoryId')) {
-        return m(setupProject, { app, url });
+        return m(setupService, { app, url });
       }
 
       return m(selectRepository, { app, url });

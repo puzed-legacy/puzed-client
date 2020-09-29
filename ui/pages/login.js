@@ -36,7 +36,7 @@ module.exports = function (app) {
           const button = event.target.querySelector('form > button');
           button.disabled = true;
 
-          app.login(app, data).then(project => {
+          app.login(app, data).then(service => {
             button.disabled = false;
             setPath('/');
           }).catch(error => {

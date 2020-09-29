@@ -33,16 +33,16 @@ header > nav a {
 }
 
 /*
-  PROJECT VIEW
+  SERVICE VIEW
 */
-.projectInfo h1 {
+.serviceInfo h1 {
   margin: 5px 0 20px 0;
 }
-.projectInfo {
+.serviceInfo {
   padding: 10px;
   background-color: #ececec;
 }
-.projectInfo > div {
+.serviceInfo > div {
   margin-bottom: 10px;
   padding: 10px;
   background-color: white;

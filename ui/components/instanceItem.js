@@ -15,10 +15,10 @@ function formatDate (maybeDate) {
 const terminal = require('../components/terminal');
 const tabbed = require('../components/tabbed');
 
-function instanceLog (app, project, deployment, instance) {
+function instanceLog (app, service, deployment, instance) {
   return {
     oncreate: () => {
-      app.readInstanceBuildLog(app, project.id, deployment.id, instance.id);
+      app.readInstanceBuildLog(app, service.id, deployment.id, instance.id);
     },
 
     view: () => {
@@ -31,32 +31,32 @@ function instanceLog (app, project, deployment, instance) {
   };
 }
 
-function settings (app, project, deployment, instance) {
+function settings (app, service, deployment, instance) {
   return {
     view: () => html`
       <puz-build-log>
         <div>
           <label>Commit Hash:</label> ${instance.commitHash}
         </div>
-        <button onclick=${app.destroyInstance.bind(null, app, project.id, deployment.id, instance.id)}>Destroy</button>
+        <button onclick=${app.destroyInstance.bind(null, app, service.id, deployment.id, instance.id)}>Destroy</button>
       </puz-build-log>
     `
   };
 }
 
-function liveLog (app, project, deployment, instance) {
+function liveLog (app, service, deployment, instance) {
   const reconnect = event => {
     event.preventDefault();
-    app.startInstanceLogs(app, project.id, deployment.id, instance.id);
+    app.startInstanceLogs(app, service.id, deployment.id, instance.id);
   };
 
   return {
     oncreate: () => {
-      app.startInstanceLogs(app, project.id, deployment.id, instance.id);
+      app.startInstanceLogs(app, service.id, deployment.id, instance.id);
     },
 
     ondelete: () => {
-      app.stopInstanceLogs(app, project.id, deployment.id, instance.id);
+      app.stopInstanceLogs(app, service.id, deployment.id, instance.id);
     },
 
     view: () => {
@@ -83,19 +83,19 @@ function liveLog (app, project, deployment, instance) {
 
 function instanceItem (vnode) {
   const app = vnode.attrs.app;
-  const project = vnode.attrs.project;
+  const service = vnode.attrs.service;
   const deployment = vnode.attrs.deployment;
   const instance = vnode.attrs.instance;
 
   function instanceChangeHandler () {
-    app.readInstance(app, project.id, deployment.id, instance.id);
+    app.readInstance(app, service.id, deployment.id, instance.id);
   }
 
   return {
     oncreate: () => app.notifier.on(instance.id, instanceChangeHandler),
     onremove: () => app.notifier.off(instance.id, instanceChangeHandler),
     view: (vnode) => {
-      const { app, project, instance } = vnode.attrs;
+      const { app, service, instance } = vnode.attrs;
       const toggleExpanded = event => {
         if (['MUI-DROPDOWN-HEAD', 'A'].includes(event.target.tagName)) {
           return;
@@ -105,7 +105,7 @@ function instanceItem (vnode) {
       };
 
       function handleDestroyInstance () {
-        app.destroyInstance(app, project.id, deployment.id, instance.id);
+        app.destroyInstance(app, service.id, deployment.id, instance.id);
         document.activeElement.blur();
       }
 
@@ -133,16 +133,16 @@ function instanceItem (vnode) {
                     key: 'buildLogs',
                     title: html`<span>Build Log</span>`,
                     defaultActive: instance.status === 'pending',
-                    content: instanceLog(app, project, deployment, instance)
+                    content: instanceLog(app, service, deployment, instance)
                   }, {
                     key: 'logs',
                     title: html`<span>Logs</span>`,
                     defaultActive: instance.status !== 'pending',
-                    content: liveLog(app, project, deployment, instance)
+                    content: liveLog(app, service, deployment, instance)
                   }, {
                       key: 'settings',
                       title: html`<span>Settings</span>`,
-                      content: settings(app, project, deployment, instance)
+                      content: settings(app, service, deployment, instance)
                   }]
                 })}
       

@@ -1,4 +1,4 @@
-async function destroyInstance (app, projectId, deploymentId, instanceId) {
+async function destroyInstance (app, serviceId, deploymentId, instanceId) {
   if (!app.state.loggedIn) {
     return;
   }
@@ -6,7 +6,7 @@ async function destroyInstance (app, projectId, deploymentId, instanceId) {
   app.setLoadingState();
 
   try {
-    const response = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments/${deploymentId}/instances/${instanceId}`, {
+    const response = await window.fetch(`${app.config.apiServerUrl}/services/${serviceId}/deployments/${deploymentId}/instances/${instanceId}`, {
       method: 'delete',
       headers: {
         authorization: 'token ' + app.state.session.secret
@@ -17,8 +17,8 @@ async function destroyInstance (app, projectId, deploymentId, instanceId) {
       throw new Error('could not delete instance, server responded with ' + response.status);
     }
 
-    app.readProject(app, projectId);
-    app.listDeployments(app, projectId);
+    app.readService(app, serviceId);
+    app.listDeployments(app, serviceId);
   } catch (error) {
     console.log(error);
   }

@@ -1,4 +1,4 @@
-async function startInstanceLogs (app, projectId, deploymentId, instanceId) {
+async function startInstanceLogs (app, serviceId, deploymentId, instanceId) {
   if (!app.state.loggedIn) {
     return;
   }
@@ -18,7 +18,7 @@ async function startInstanceLogs (app, projectId, deploymentId, instanceId) {
   liveLog.abort = () => controller.abort();
   const signal = controller.signal;
   try {
-    const response = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments/${deploymentId}/instances/${instanceId}/log`, {
+    const response = await window.fetch(`${app.config.apiServerUrl}/services/${serviceId}/deployments/${deploymentId}/instances/${instanceId}/log`, {
       signal,
       headers: {
         authorization: 'token ' + app.state.session.secret

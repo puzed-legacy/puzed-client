@@ -1,4 +1,4 @@
-async function buildlog (app, projectId, deploymentId, instanceId) {
+async function buildlog (app, serviceId, deploymentId, instanceId) {
   if (!app.state.loggedIn) {
     return;
   }
@@ -10,7 +10,7 @@ async function buildlog (app, projectId, deploymentId, instanceId) {
   app.setLoadingState();
   app.state.buildLogs[instanceId] = '';
 
-  const response = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments/${deploymentId}/instances/${instanceId}/buildlog`, {
+  const response = await window.fetch(`${app.config.apiServerUrl}/services/${serviceId}/deployments/${deploymentId}/instances/${instanceId}/buildlog`, {
     headers: {
       authorization: 'token ' + app.state.session.secret
     }

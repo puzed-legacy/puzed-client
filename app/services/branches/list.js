@@ -1,4 +1,4 @@
-async function listBranches (app, project) {
+async function listBranches (app, service) {
   if (!app.state.loggedIn) {
     return;
   }
@@ -6,7 +6,7 @@ async function listBranches (app, project) {
   app.setLoadingState();
 
   try {
-    const response = await window.fetch(`${app.config.apiServerUrl}/providers/github/repositories/${project.providerRepositoryId}/branches`, {
+    const response = await window.fetch(`${app.config.apiServerUrl}/providers/github/repositories/${service.providerRepositoryId}/branches`, {
       headers: {
         authorization: 'token ' + app.state.session.secret
       }
@@ -15,7 +15,7 @@ async function listBranches (app, project) {
     const branches = await response.json();
     app.state.branches = app.state.branches || {};
 
-    app.state.branches[project.id] = branches;
+    app.state.branches[service.id] = branches;
   } catch (error) {
     console.log(error);
   }

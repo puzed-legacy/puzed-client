@@ -1,7 +1,7 @@
-async function createProject (app, project) {
+async function createService (app, service) {
   app.setLoadingState();
 
-  const secrets = await Promise.all((project.secrets || []).map(secret =>
+  const secrets = await Promise.all((service.secrets || []).map(secret =>
     new Promise(resolve => {
       const reader = new window.FileReader();
       reader.onload = function (event) {
@@ -14,24 +14,24 @@ async function createProject (app, project) {
     })
   ));
 
-  const projectCreationResponse = await window.fetch(`${app.config.apiServerUrl}/projects`, {
+  const serviceCreationResponse = await window.fetch(`${app.config.apiServerUrl}/services`, {
     method: 'post',
     headers: {
       authorization: 'token ' + app.state.session.secret
     },
     body: JSON.stringify({
-      ...project,
+      ...service,
       secrets
     })
   });
-  const projectResult = await projectCreationResponse.json();
+  const serviceResult = await serviceCreationResponse.json();
 
-  app.readProject(app, projectResult.id);
-  app.listDeployments(app, projectResult.id);
+  app.readService(app, serviceResult.id);
+  app.listDeployments(app, serviceResult.id);
 
   app.unsetLoadingState();
 
-  return projectResult;
+  return serviceResult;
 }
 
-module.exports = createProject;
+module.exports = createService;

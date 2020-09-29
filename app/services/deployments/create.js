@@ -1,18 +1,18 @@
-async function createDeployment (app, projectId, title, branch) {
+async function createDeployment (app, serviceId, title, branch) {
   if (!app.state.loggedIn) {
     return;
   }
 
   const index = app.state.deployments.push({
     id: 'tmp' + Date.now(),
-    projectId,
+    serviceId,
     title,
     branch,
     submitting: true
   });
   app.emitStateChanged();
 
-  const deploymentResponse = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments`, {
+  const deploymentResponse = await window.fetch(`${app.config.apiServerUrl}/services/${serviceId}/deployments`, {
     method: 'post',
     headers: {
       authorization: 'token ' + app.state.session.secret
@@ -25,7 +25,7 @@ async function createDeployment (app, projectId, title, branch) {
 
   const deployment = await deploymentResponse.json();
 
-  app.readProject(app, projectId);
+  app.readService(app, serviceId);
   app.state.deployments[index - 1] = deployment;
 
   app.emitStateChanged();

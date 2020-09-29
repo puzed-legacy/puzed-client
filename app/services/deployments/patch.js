@@ -1,9 +1,9 @@
-async function patchDeployment (app, projectId, deploymentId, partialRecord) {
+async function patchDeployment (app, serviceId, deploymentId, partialRecord) {
   if (!app.state.loggedIn) {
     return;
   }
 
-  const deploymentResponse = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments/${deploymentId}`, {
+  const deploymentResponse = await window.fetch(`${app.config.apiServerUrl}/services/${serviceId}/deployments/${deploymentId}`, {
     method: 'PATCH',
     headers: {
       authorization: 'token ' + app.state.session.secret
@@ -20,8 +20,8 @@ async function patchDeployment (app, projectId, deploymentId, partialRecord) {
     return;
   }
 
-  app.readProject(app, projectId);
-  app.readDeployment(app, projectId, deploymentId);
+  app.readService(app, serviceId);
+  app.readDeployment(app, serviceId, deploymentId);
 
   app.emitStateChanged();
 }

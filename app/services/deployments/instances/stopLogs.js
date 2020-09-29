@@ -1,4 +1,4 @@
-async function stopInstanceLogs (app, projectId, deploymentId, instanceId) {
+async function stopInstanceLogs (app, serviceId, deploymentId, instanceId) {
   if (!app.state.loggedIn) {
     return;
   }

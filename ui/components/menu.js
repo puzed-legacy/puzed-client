@@ -23,7 +23,7 @@ module.exports = function (app, html) {
     <header>
       <nav>
         <a href="/">Home</a>
-        ${app.state.loggedIn ? html`<a href="/projects">Projects</a>` : null}
+        ${app.state.loggedIn ? html`<a href="/services">Services</a>` : null}
       </nav>
       <nav>
         ${app.state.user ? userPill() : guestPill()}

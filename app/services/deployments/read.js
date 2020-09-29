@@ -1,10 +1,10 @@
-async function readDeployment (app, projectId, deploymentId) {
+async function readDeployment (app, serviceId, deploymentId) {
   if (!app.state.loggedIn) {
     return;
   }
 
   try {
-    const response = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments/${deploymentId}`, {
+    const response = await window.fetch(`${app.config.apiServerUrl}/services/${serviceId}/deployments/${deploymentId}`, {
       headers: {
         authorization: 'token ' + app.state.session.secret
       }

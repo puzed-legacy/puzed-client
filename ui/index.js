@@ -7,9 +7,9 @@ window.m = mithril;
 const pages = {
   home: require('./pages/home'),
   login: require('./pages/login'),
-  listProjects: require('./pages/listProjects'),
-  readProject: require('./pages/readProject'),
-  createProject: require('./pages/createProject'),
+  listServices: require('./pages/listServices'),
+  readService: require('./pages/readService'),
+  createService: require('./pages/createService'),
   notFound: require('./pages/notFound')
 };
 

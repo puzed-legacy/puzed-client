@@ -10,7 +10,7 @@ module.exports = function (config) {
       session: window.localStorage.getItem('session'),
       loggedIn: window.localStorage.getItem('session'),
 
-      projects: [],
+      services: [],
       deployments: [],
       deploymentExpands: {},
       instances: [],
@@ -38,9 +38,9 @@ module.exports = function (config) {
     const routes = {
       '/': () => 'home',
       '/login': () => 'login',
-      '/projects': () => 'listProjects',
-      '/projects/create': () => 'createProject',
-      '/projects/:projectId': () => 'readProject',
+      '/services': () => 'listServices',
+      '/services/create': () => 'createService',
+      '/services/:serviceId': () => 'readService',
       '/providers/:providerId/oauth': require('./auth/oauthHandler').bind(null, app)
     };
 
@@ -112,22 +112,22 @@ module.exports = function (config) {
   });
 
   app.listRepositories = require('./repositories/list');
-  app.listProjects = require('./projects/list');
-  app.listBranches = require('./projects/branches/list');
-  app.listDeployments = require('./projects/deployments/list');
-  app.listInstances = require('./projects/deployments/instances/list');
-  app.readInstance = require('./projects/deployments/instances/read');
-  app.readDeployment = require('./projects/deployments/read');
-  app.patchDeployment = require('./projects/deployments/patch');
-  app.createDeployment = require('./projects/deployments/create');
-  app.createInstance = require('./projects/deployments/instances/create');
-  app.destroyInstance = require('./projects/deployments/instances/destroy');
-  app.readInstanceBuildLog = require('./projects/deployments/instances/buildlog');
-  app.readProject = require('./projects/read');
-  app.createProject = require('./projects/create');
+  app.listServices = require('./services/list');
+  app.listBranches = require('./services/branches/list');
+  app.listDeployments = require('./services/deployments/list');
+  app.listInstances = require('./services/deployments/instances/list');
+  app.readInstance = require('./services/deployments/instances/read');
+  app.readDeployment = require('./services/deployments/read');
+  app.patchDeployment = require('./services/deployments/patch');
+  app.createDeployment = require('./services/deployments/create');
+  app.createInstance = require('./services/deployments/instances/create');
+  app.destroyInstance = require('./services/deployments/instances/destroy');
+  app.readInstanceBuildLog = require('./services/deployments/instances/buildlog');
+  app.readService = require('./services/read');
+  app.createService = require('./services/create');
 
-  app.startInstanceLogs = require('./projects/deployments/instances/startLogs.js');
-  app.stopInstanceLogs = require('./projects/deployments/instances/stopLogs.js');
+  app.startInstanceLogs = require('./services/deployments/instances/startLogs.js');
+  app.stopInstanceLogs = require('./services/deployments/instances/stopLogs.js');
 
   app.changeUrl = changeUrl;
 

@@ -1,4 +1,4 @@
-async function listProjects (app) {
+async function listServices (app) {
   if (!app.state.loggedIn) {
     return;
   }
@@ -6,15 +6,15 @@ async function listProjects (app) {
   app.setLoadingState();
 
   try {
-    const response = await window.fetch(`${app.config.apiServerUrl}/projects`, {
+    const response = await window.fetch(`${app.config.apiServerUrl}/services`, {
       headers: {
         authorization: 'token ' + app.state.session.secret
       }
     });
 
-    const projects = await response.json();
+    const services = await response.json();
 
-    app.state.projects = projects;
+    app.state.services = services;
   } catch (error) {
     console.log(error);
   }
@@ -22,4 +22,4 @@ async function listProjects (app) {
   app.unsetLoadingState();
 }
 
-module.exports = listProjects;
+module.exports = listServices;

@@ -9,10 +9,10 @@ const instanceList = require('../components/instanceList');
 function deploymentItem (vnode) {
   const app = vnode.attrs.app;
   const deploymentId = vnode.attrs.deployment.id;
-  const projectId = vnode.attrs.project.id;
+  const serviceId = vnode.attrs.service.id;
 
   function deploymentChangeHandler () {
-    app.readDeployment(app, projectId, deploymentId);
+    app.readDeployment(app, serviceId, deploymentId);
   }
 
   const toggleExpanded = deploymentId => event => {
@@ -27,14 +27,14 @@ function deploymentItem (vnode) {
     app.toggleExpanded(app, 'deploymentExpands', deploymentId);
   };
 
-  function deploymentHeading (deployment, project) {
+  function deploymentHeading (deployment, service) {
     function handleAddNewInstance () {
-      app.createInstance(app, project.id, deployment.id);
+      app.createInstance(app, service.id, deployment.id);
       document.activeElement.blur();
     }
 
     function handlePromoteToProduction () {
-      app.patchDeployment(app, project.id, deployment.id, {
+      app.patchDeployment(app, service.id, deployment.id, {
         autoSwitch: {
           targetDeployment: 'production',
           newTitle: 'production-backup-' + Date.now()
@@ -55,8 +55,8 @@ function deploymentItem (vnode) {
         <div class="nowrap cutoff grow">
           <strong>${deployment.title}</strong>
           (${deployment.title === 'production'
-            ? html`<a href="https://${project.domain}" target="_blank">visit</a>`
-            : html`<a href="https://${deployment.title}--${project.domain}" target="_blank">visit</a>`})
+            ? html`<a href="https://${service.domain}" target="_blank">visit</a>`
+            : html`<a href="https://${deployment.title}--${service.domain}" target="_blank">visit</a>`})
         </div>
         <div class="nowrap cutoff">${deployment.branch}</div>
         <div><span class="label label-${deployment.status}">${deployment.instanceCount} Instances</span></div>
@@ -81,7 +81,7 @@ function deploymentItem (vnode) {
     `;
   }
 
-  function deploymentSubmittingHeading (deployment, project) {
+  function deploymentSubmittingHeading (deployment, service) {
     return html`
       <puz-deployment-heading onclick=${toggleExpanded(deployment.id)}>
         <div class="nowrap cutoff grow">
@@ -100,14 +100,14 @@ function deploymentItem (vnode) {
     oncreate: () => app.notifier.on(deploymentId, deploymentChangeHandler),
     onremove: () => app.notifier.off(deploymentId, deploymentChangeHandler),
     view: (vnode) => {
-      const { app, project, deployment } = vnode.attrs;
+      const { app, service, deployment } = vnode.attrs;
 
       const deploymentClasses = classcat({
         expanded: app.state.deploymentExpands[deployment.id],
         submitting: deployment.submitting
       });
 
-      const heading = deployment.submitting ? deploymentSubmittingHeading(deployment, project) : deploymentHeading(deployment, project);
+      const heading = deployment.submitting ? deploymentSubmittingHeading(deployment, service) : deploymentHeading(deployment, service);
 
       return html`
         <puz-deployment key=${deployment.id} class="${deploymentClasses}">
@@ -115,7 +115,7 @@ function deploymentItem (vnode) {
       
           ${app.state.deploymentExpands[deployment.id] ? html`
             <puz-deployment-content>
-              ${mithril(instanceList, { app, project, deployment })}
+              ${mithril(instanceList, { app, service, deployment })}
             </puz-deployment-content>
           ` : ''}
         </puz-deployment>

@@ -1,7 +1,7 @@
 const menu = require('../components/menu');
 
 module.exports = function (app, html) {
-  app.listProjects(app);
+  app.listServices(app);
 
   return {
     view: () => html`
@@ -9,14 +9,14 @@ module.exports = function (app, html) {
         ${menu(app, html)}
   
         <section>
-          <h2>Your Projects</h2>
-          <a href="/projects/create">Create new project</a>
-          <p>Select a project you would like to manage.</p>
+          <h2>Your Services</h2>
+          <a href="/services/create">Create new service</a>
+          <p>Select a service you would like to manage.</p>
           <ul>
-            ${(app.state.projects || []).map(project => {
+            ${(app.state.services || []).map(service => {
               return html`
                 <li>
-                  <a href="/projects/${project.id}">${project.name}</a>
+                  <a href="/services/${service.id}">${service.name}</a>
                 </li>`;
             })}
           </ul>

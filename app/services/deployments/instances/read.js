@@ -1,4 +1,4 @@
-async function readInstance (app, projectId, deploymentId, instanceId) {
+async function readInstance (app, serviceId, deploymentId, instanceId) {
   if (!app.state.loggedIn) {
     return;
   }
@@ -6,7 +6,7 @@ async function readInstance (app, projectId, deploymentId, instanceId) {
   app.setLoadingState();
 
   try {
-    const response = await window.fetch(`${app.config.apiServerUrl}/projects/${projectId}/deployments/${deploymentId}/instances/${instanceId}`, {
+    const response = await window.fetch(`${app.config.apiServerUrl}/services/${serviceId}/deployments/${deploymentId}/instances/${instanceId}`, {
       headers: {
         authorization: 'token ' + app.state.session.secret
       }
