@@ -10,6 +10,7 @@ module.exports = function (config) {
       session: window.localStorage.getItem('session'),
       loggedIn: window.localStorage.getItem('session'),
 
+      links: [],
       services: [],
       deployments: [],
       deploymentExpands: {},
@@ -38,6 +39,8 @@ module.exports = function (config) {
     const routes = {
       '/': () => 'home',
       '/login': () => 'login',
+      '/links': () => 'listLinks',
+      '/links/create': () => 'createLink',
       '/services': () => 'listServices',
       '/services/create': () => 'createService',
       '/services/:serviceId': () => 'readService',
@@ -112,6 +115,7 @@ module.exports = function (config) {
   });
 
   app.listRepositories = require('./repositories/list');
+  app.listLinks = require('./links/list');
   app.listServices = require('./services/list');
   app.listBranches = require('./services/branches/list');
   app.listDeployments = require('./services/deployments/list');

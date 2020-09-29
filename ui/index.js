@@ -7,6 +7,8 @@ window.m = mithril;
 const pages = {
   home: require('./pages/home'),
   login: require('./pages/login'),
+  createLink: require('./pages/links/create'),
+  listLinks: require('./pages/links/list'),
   listServices: require('./pages/listServices'),
   readService: require('./pages/readService'),
   createService: require('./pages/createService'),
