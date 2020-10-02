@@ -3,9 +3,11 @@ const m = require('mithril');
 const html = require('hyperx')(m);
 const mui = require('mithui');
 
-const menu = require('../components/menu');
+const menu = require('../../components/menu');
 
 module.exports = function (app) {
+  let showGenericError;
+
   return {
     view: () => {
       if (app.state.loggedIn) {
@@ -28,21 +30,24 @@ module.exports = function (app) {
         {
           name: 'password',
           label: 'Password',
-          component: mui.textInput
+          component: mui.passwordInput
         }
         ],
         onSubmit: (event, data) => {
+          showGenericError = false;
           event.preventDefault();
           const button = event.target.querySelector('form > button');
           button.disabled = true;
 
-          app.login(app, data).then(service => {
-            button.disabled = false;
-            setPath('/');
-          }).catch(error => {
-            console.log(error);
-            button.disabled = false;
-          });
+          app.login(app, data)
+            .then(service => {
+              button.disabled = false;
+              setPath('/');
+            }).catch(_ => {
+              showGenericError = true;
+              button.disabled = false;
+              app.emitStateChanged();
+            });
         }
       });
 
@@ -52,6 +57,12 @@ module.exports = function (app) {
     
           <section>
             <h1>Login</h1>
+
+            ${showGenericError ? html`
+            <div class="alert alert-danger">
+              No user could be found with the details you provided
+            </div>
+            ` : null}
 
             ${loginForm}
 

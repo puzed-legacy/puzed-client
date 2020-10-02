@@ -39,6 +39,7 @@ module.exports = function (config) {
     const routes = {
       '/': () => 'home',
       '/login': () => 'login',
+      '/register': () => 'register',
       '/links': () => 'listLinks',
       '/links/create': () => 'createLink',
       '/services': () => 'listServices',
@@ -114,19 +115,27 @@ module.exports = function (config) {
     }
   });
 
+  app.login = require('./user/login');
+  app.register = require('./user/register');
+
   app.listRepositories = require('./repositories/list');
+
   app.listLinks = require('./links/list');
+
   app.listServices = require('./services/list');
   app.listBranches = require('./services/branches/list');
+
   app.listDeployments = require('./services/deployments/list');
-  app.listInstances = require('./services/deployments/instances/list');
-  app.readInstance = require('./services/deployments/instances/read');
   app.readDeployment = require('./services/deployments/read');
   app.patchDeployment = require('./services/deployments/patch');
   app.createDeployment = require('./services/deployments/create');
+
+  app.listInstances = require('./services/deployments/instances/list');
+  app.readInstance = require('./services/deployments/instances/read');
   app.createInstance = require('./services/deployments/instances/create');
   app.destroyInstance = require('./services/deployments/instances/destroy');
   app.readInstanceBuildLog = require('./services/deployments/instances/buildlog');
+
   app.readService = require('./services/read');
   app.createService = require('./services/create');
 
