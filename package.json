@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "disc": "./node_modules/.bin/browserify --full-paths index.js | discify --open",
-    "build": "node_modules/.bin/browserify -g uglifyify -t envify -t brfs ./index.js --noparse clone > public/index.bundle.js",
-    "watch": "node_modules/.bin/watchify -t envify -t brfs -d -o public/index.bundle.js index.js",
+    "build": "node_modules/.bin/browserify -g uglifyify -t envify ./index.js --noparse clone > public/index.bundle.js",
+    "watch": "node_modules/.bin/watchify --noparse clone -t envify -d -o public/index.bundle.js index.js",
     "serve": "node_modules/.bin/ws -p ${WEB_PORT:-8180} -d ./public --spa index.html",
     "start": "npm run watch & npm run serve",
     "test": "echo \"Error: no test specified\" && exit 1",

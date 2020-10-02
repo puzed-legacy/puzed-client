@@ -2,8 +2,8 @@ const mithril = require('mithril');
 const m = mithril;
 const html = require('hyperx')(mithril);
 
-const deploymentItem = require('../components/deploymentItem');
-const menu = require('../components/menu');
+const deploymentItem = require('../../components/deploymentItem');
+const menu = require('../../components/menu');
 
 function branchPicker (vnode) {
   const { app, service } = vnode.attrs;

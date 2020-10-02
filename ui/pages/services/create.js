@@ -3,17 +3,36 @@ const m = require('mithril');
 const html = require('hyperx')(m);
 const mui = require('mithui');
 
-const menu = require('../components/menu');
+const menu = require('../../components/menu');
 
-function createForm (app, providerRepositoryId) {
+function loadingSelect () {
+  return {
+    view: () => {
+      return html`<em>Loading repositories from source provider...</em>`;
+    }
+  };
+}
+
+function createForm (app, providerRepositoryId, linkId) {
   return m(mui.form, {
     fields: [
       {
         name: 'name',
         label: 'Service Name',
         component: mui.textInput,
-        autoFocus: true,
-        initialValue: `my-${providerRepositoryId.replace(/\//g, '-')}-1`
+        autoFocus: true
+      },
+      {
+        name: 'providerRepositoryId',
+        label: 'Source Code Repository',
+        component: app.state.repositories ? mui.select : loadingSelect,
+        options: app.state.repositories ? app.state.repositories.map(repo => {
+          return {
+            value: repo.full_name,
+            label: `${repo.name} (${repo.full_name})`
+          };
+        }) : [],
+        initialValue: providerRepositoryId
       },
       {
         name: 'image',
@@ -43,7 +62,7 @@ function createForm (app, providerRepositoryId) {
         name: 'buildCommand',
         label: 'Build command',
         component: mui.textInput,
-        initialValue: 'npm ci'
+        initialValue: 'npm install'
       },
       {
         name: 'runCommand',
@@ -61,7 +80,7 @@ function createForm (app, providerRepositoryId) {
         name: 'domain',
         label: 'Domain',
         component: mui.textInput,
-        initialValue: `${providerRepositoryId.replace(/\//g, '-')}.puzed.com`
+        initialValue: 'example.puzed.com'
       }
     ],
     onSubmit: (event, data) => {
@@ -72,7 +91,8 @@ function createForm (app, providerRepositoryId) {
       app.createService(app, {
         ...data,
         provider: 'github',
-        providerRepositoryId
+        providerRepositoryId,
+        linkId
       }).then(service => {
         button.disabled = false;
         setPath('/services/' + service.id);
@@ -84,54 +104,25 @@ function createForm (app, providerRepositoryId) {
   });
 }
 
-function selectRepository ({ attrs }) {
-  return {
-    oncreate: () => {
-      attrs.app.listRepositories(attrs.app);
-    },
-
-    view: () => {
-      const app = attrs.app;
-
-      return html`
-        <main>
-          ${menu(app, html)}
-    
-          <section>
-            <h2>Your Repositories</h2>
-            <p>Select a repository you would like to deploy.</p>
-            <ul>
-              ${(app.state.repositories || []).map(repository => {
-                return html`
-                  <li>
-                    <a href="/services/create?providerRepositoryId=${repository.full_name}">${repository.name}</a>
-                  </li>`;
-              })}
-            </ul>
-          </section>
-        </main>
-      `;
-    }
-  };
-}
-
 function setupService ({ attrs }) {
   const url = attrs.url;
 
   const providerRepositoryId = url.searchParams.get('providerRepositoryId');
+  const linkId = url.searchParams.get('linkId');
 
   return {
     view: ({ attrs }) => {
+      const link = attrs.app.state.links.find(link => link.id === linkId);
+
       return html`
         <main>
           ${menu(attrs.app, html)}
 
           <section>
             <h2>Create a new service</h2>
-            <strong>Provider</strong>: github
-            <strong>Repository</strong>: ${providerRepositoryId}
+            <div><strong>Link</strong>: ${link && link.providerId} ${link && link.externalUserId && `(${link.externalUserId})`}</div>
             <hr />        
-            ${createForm(attrs.app, providerRepositoryId)}
+            ${createForm(attrs.app, providerRepositoryId, linkId)}
           </section>
         </main>
       `;
@@ -141,14 +132,16 @@ function setupService ({ attrs }) {
 
 module.exports = function (app, html) {
   return {
+    oncreate: () => {
+      const url = new URL(window.location.href);
+      app.listRepositories(app, url.searchParams.get('linkId'));
+      app.listLinks(app);
+    },
+
     view: () => {
       const url = new URL(window.location.href);
 
-      if (url.searchParams.get('providerRepositoryId')) {
-        return m(setupService, { app, url });
-      }
-
-      return m(selectRepository, { app, url });
+      return m(setupService, { app, url });
     }
   };
 };

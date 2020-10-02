@@ -1,4 +1,4 @@
-async function listRepositories (app) {
+async function listRepositories (app, linkId) {
   if (!app.state.loggedIn) {
     return;
   }
@@ -6,7 +6,7 @@ async function listRepositories (app) {
   app.setLoadingState();
 
   try {
-    const response = await window.fetch(`${app.config.apiServerUrl}/providers/github/repositories`, {
+    const response = await window.fetch(`${app.config.apiServerUrl}/links/${linkId}/repositories`, {
       headers: {
         authorization: 'token ' + app.state.session.secret
       }

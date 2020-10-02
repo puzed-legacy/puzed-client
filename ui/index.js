@@ -10,9 +10,9 @@ const pages = {
   register: require('./pages/user/register'),
   createLink: require('./pages/links/create'),
   listLinks: require('./pages/links/list'),
-  listServices: require('./pages/listServices'),
-  readService: require('./pages/readService'),
-  createService: require('./pages/createService'),
+  listServices: require('./pages/services/list'),
+  readService: require('./pages/services/read'),
+  createService: require('./pages/services/create'),
   notFound: require('./pages/notFound')
 };
 
