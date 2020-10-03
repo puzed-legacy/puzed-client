@@ -6,7 +6,7 @@
   "scripts": {
     "disc": "./node_modules/.bin/browserify --full-paths index.js | discify --open",
     "build": "node_modules/.bin/browserify -g uglifyify -t envify ./index.js --noparse clone > public/index.bundle.js",
-    "watch": "node_modules/.bin/watchify --noparse clone -t envify -d -o public/index.bundle.js index.js",
+    "watch": "node_modules/.bin/watchify -v --delay 300 --noparse clone -t envify -d -o public/index.bundle.js index.js",
     "serve": "node_modules/.bin/ws -p ${WEB_PORT:-8180} -d ./public --spa index.html",
     "start": "npm run watch & npm run serve",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -24,12 +24,12 @@
   "dependencies": {
     "ansi-to-html": "^0.6.14",
     "classcat": "^4.1.0",
-    "date-fns": "^2.15.0",
+    "date-fns": "^2.16.1",
     "md5": "^2.3.0",
     "mithril": "^2.0.4",
-    "mithui": "^1.1.7",
-    "preact": "^10.4.7",
-    "snyk": "^1.383.0",
+    "mithui": "^1.1.8",
+    "preact": "^10.5.3",
+    "snyk": "^1.406.0",
     "throttle-debounce": "^2.3.0"
   },
   "devDependencies": {

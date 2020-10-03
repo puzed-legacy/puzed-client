@@ -8,6 +8,8 @@ const pages = {
   home: require('./pages/home'),
   login: require('./pages/user/login'),
   register: require('./pages/user/register'),
+  createDomain: require('./pages/domains/create'),
+  listDomains: require('./pages/domains/list'),
   createLink: require('./pages/links/create'),
   listLinks: require('./pages/links/list'),
   listServices: require('./pages/services/list'),
@@ -34,6 +36,8 @@ module.exports = function (app, container) {
       const content = page(app, html);
 
       mithril.mount(container, content);
+
+      document.querySelector('[autofocus]').focus();
     }
 
     mithril.redraw();

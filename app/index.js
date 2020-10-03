@@ -40,6 +40,8 @@ module.exports = function (config) {
       '/': () => 'home',
       '/login': () => 'login',
       '/register': () => 'register',
+      '/domains': () => 'listDomains',
+      '/domains/create': () => 'createDomain',
       '/links': () => 'listLinks',
       '/links/create': () => 'createLink',
       '/services': () => 'listServices',
@@ -119,6 +121,8 @@ module.exports = function (config) {
   app.register = require('./user/register');
 
   app.listRepositories = require('./repositories/list');
+
+  app.listDomains = require('./domains/list');
 
   app.listLinks = require('./links/list');
 

@@ -14,7 +14,7 @@ module.exports = function (app, html) {
 
     return html`
       <a target="_blank" href="#">
-        <img src="https://www.gravatar.com/avatar/${emailHash}?s=50" /> ${app.state.user.email}
+        <img src="https://www.libravatar.org/avatar/${emailHash}?d=identicon&s=120" /> ${app.state.user.email}
       </a>
     `;
   }
@@ -25,6 +25,7 @@ module.exports = function (app, html) {
         <a href="/">Home</a>
         ${app.state.loggedIn ? html`<a href="/links">Links</a>` : null}
         ${app.state.loggedIn ? html`<a href="/services">Services</a>` : null}
+        ${app.state.loggedIn ? html`<a href="/domains">Domains</a>` : null}
       </nav>
       <nav>
         ${app.state.user ? userPill() : guestPill()}

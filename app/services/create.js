@@ -26,6 +26,10 @@ async function createService (app, service) {
   });
   const serviceResult = await serviceCreationResponse.json();
 
+  if (serviceCreationResponse.status !== 201) {
+    throw Object.assign(new Error('service could not be created'), { data: serviceResult.error });
+  }
+
   app.readService(app, serviceResult.id);
   app.listDeployments(app, serviceResult.id);
 
