@@ -24,6 +24,11 @@ function createForm ({ attrs }) {
           <div class="alert alert-danger">
             <div><strong>Could not create service</strong></div>
             <div>Check and fix any specific errors in the form below then try again.</div>
+            ${errors.messages ? html`
+              <ul>
+                ${errors.messages.map(message => html`<li>${message}</li>`)}
+              </ul>
+            ` : ''}
           </div>
         `),
 
