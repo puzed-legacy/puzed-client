@@ -37,7 +37,8 @@ module.exports = function (app, container) {
 
       mithril.mount(container, content);
 
-      document.querySelector('[autofocus]').focus();
+      const autoFocusedElement = document.querySelector('[autofocus]');
+      autoFocusedElement && autoFocusedElement.focus();
     }
 
     mithril.redraw();

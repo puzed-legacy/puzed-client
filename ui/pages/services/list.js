@@ -12,7 +12,7 @@ function serviceListByCategory () {
 
       return html`
         <div>
-          <h3>${link.providerId} ${link.externalUserId ? `(${link.externalUserId})` : ''}</h3>
+          <h3>${link && link.providerId} ${link && link.externalUserId ? `(${link.externalUserId})` : ''}</h3>
           <a href="/services/create?linkId=${category}">Create new service</a>
           <ul>
             ${(app.state.services || [])
