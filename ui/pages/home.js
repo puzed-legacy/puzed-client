@@ -4,8 +4,10 @@ module.exports = function (app, html) {
   function authBox () {
     return html`
       <div>
-        <h1>Login</h1>
-        <a href="https://github.com/login/oauth/authorize?scope=repo&client_id=${app.config.oauthClientId}">Login via GitHub</a>
+        <h1>Welcome</h1>
+        <div>
+          You are not logged in.
+        </div>
       </div>
     `;
   }

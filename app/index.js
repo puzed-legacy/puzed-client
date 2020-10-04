@@ -12,6 +12,7 @@ module.exports = function (config) {
 
       links: [],
       services: [],
+      providers: [],
       deployments: [],
       deploymentExpands: {},
       instances: [],
@@ -83,7 +84,7 @@ module.exports = function (config) {
 
   let notifierController;
   app.notifier = require('./notifier')(async (notifyIds, emit) => {
-    const url = new URL(`${app.config.apiServerUrl}/notify`);
+    const url = new URL(`${app.config.apiServerUrl}/notify`, window.location.href);
     notifyIds.forEach(id => {
       url.searchParams.append('id', id);
     });
@@ -125,6 +126,7 @@ module.exports = function (config) {
   app.listDomains = require('./domains/list');
 
   app.listLinks = require('./links/list');
+  app.listProviders = require('./providers/list');
 
   app.listServices = require('./services/list');
   app.listBranches = require('./services/branches/list');
