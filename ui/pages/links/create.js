@@ -42,6 +42,10 @@ function createForm (app) {
 
 module.exports = function (app) {
   return {
+    oncreate: () => {
+      app.listProviders(app);
+    },
+
     view: ({ attrs }) => {
       return html`
         <main>
@@ -49,8 +53,16 @@ module.exports = function (app) {
 
           <section>
             <h2>Link with a new provider</h2>
-            <a href="https://github.com/apps/puzed-local/installations/new">Login via GitHub</a>
-            ${createForm(app)}
+            ${app.state.providers
+              .map(provider => {
+                return html`
+                  <a href=${provider.installUrl}>
+                    Link with ${provider.title}
+                  </a>
+                `;
+              })}
+
+            <!-- ${createForm(app)} -->
           </section>
         </main>
       `;
