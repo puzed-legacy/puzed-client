@@ -171,6 +171,17 @@ ul.small {
 }
 
 /*
+  ICON
+*/
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+}
+.icon svg {
+  height: 20px;
+}
+
+/*
   LAYOUT
 */
 .heading-container {

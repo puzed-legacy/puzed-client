@@ -26,7 +26,7 @@ module.exports = function (app) {
           app.createDomain(app, data)
             .then(domain => {
               button.disabled = false;
-              setPath('/');
+              setPath('/domains');
             }).catch(error => {
               errors = error.data;
               app.emitStateChanged();

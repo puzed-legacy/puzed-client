@@ -124,6 +124,7 @@ module.exports = function (config) {
   app.listRepositories = require('./repositories/list');
 
   app.listDomains = require('./domains/list');
+  app.createDomain = require('./domains/create');
 
   app.listLinks = require('./links/list');
   app.listProviders = require('./providers/list');
