@@ -308,8 +308,12 @@ mui-dropdown-body > div:not(.disabled):hover a {
 mui-dropdown-body > div.disabled > a {
   color: grey;
 }
-mui-dropdown-body > div > a {
-  text-decoration: none;
+
+mui-dropdown > mui-dropdown-body > div > a {
+  padding: 8px;
+}
+mui-dropdown > mui-dropdown-body > div {
+  display: block;
 }
 
 mui-dropdown-head {

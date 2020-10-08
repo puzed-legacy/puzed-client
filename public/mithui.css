@@ -131,9 +131,10 @@ mui-dropdown-body > hr {
   margin: 6px 0 6px 0;
 }
 
-mui-dropdown > mui-dropdown-body > div {
-  display: block;
+mui-dropdown > mui-dropdown-body > div > a {
+  text-decoration: none;
   padding: 8px;
+  display: block;
 }
 
 mui-dropdown.align-right mui-dropdown-body {
