@@ -93,6 +93,14 @@ module.exports = function (app, html) {
         </div>
 
         <div>
+          <strong>Build Command:</strong> <pre><code>${service.buildCommand}</code></pre>
+        </div>
+
+        <div>
+          <strong>Run Command:</strong> <pre><code>${service.runCommand}</code></pre>
+        </div>
+
+        <div>
           <strong>Web Port:</strong> ${service.webPort}
         </div>
 
