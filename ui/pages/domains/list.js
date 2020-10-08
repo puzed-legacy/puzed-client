@@ -67,7 +67,7 @@ module.exports = function (app, html) {
                   ${domain.verificationStatus === 'pending' ? warningIcon({ class: 'icon' }) : ''}
                   ${domain.verificationStatus === 'error' ? errorIcon({ class: 'icon' }) : ''}
                   ${domain.domain}
-                  ${domain.verificationStatus === 'pending' ? html`
+                  ${domain.verificationStatus === 'pending' || domain.verificationStatus === 'failed' ? html`
                     <div class="alert alert-warning">
                       This domain has not been verified and you will not be able to use it.
                       <br />
