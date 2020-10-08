@@ -72,7 +72,7 @@ header > nav img {
   margin-top: 10px;
 }
 
-.serviceInfo pre {
+.serviceInfo > div > pre {
   padding: 8px;
   font-size: 100%;
   background-color: #ececec;
