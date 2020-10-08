@@ -12,6 +12,10 @@ section {
   padding: 10px;
 }
 
+pre {
+  margin: 0;
+}
+
 header {
   display: flex;
   background-color: #3c3c3c;
@@ -62,6 +66,17 @@ header > nav img {
   padding: 10px;
   background-color: white;
   box-shadow: 0 0 10px -5px #5a5a5a;
+}
+
+.serviceInfo > div > *:nth-child(2) {
+  margin-top: 10px;
+}
+
+.serviceInfo pre {
+  padding: 8px;
+  font-size: 100%;
+  background-color: #ececec;
+  color: black;
 }
 
 /*
