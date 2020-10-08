@@ -15,6 +15,7 @@ const pages = {
   listServices: require('./pages/services/list'),
   readService: require('./pages/services/read'),
   createService: require('./pages/services/create'),
+  loading: require('./pages/loading'),
   notFound: require('./pages/notFound')
 };
 

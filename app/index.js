@@ -48,7 +48,10 @@ module.exports = function (config) {
       '/services': () => 'listServices',
       '/services/create': () => 'createService',
       '/services/:serviceId': () => 'readService',
-      '/providers/:providerId/oauth': require('./auth/oauthHandler').bind(null, app)
+      '/providers/:providerId/oauth': () => {
+        require('./auth/oauthHandler')(app);
+        return 'loading';
+      }
     };
 
     const route = routemeup(routes, { url: window.location.pathname });

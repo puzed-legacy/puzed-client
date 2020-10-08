@@ -3,12 +3,12 @@ const menu = require('../components/menu');
 module.exports = function (app, html) {
   function authBox () {
     return html`
-      <div>
+      <section>
         <h1>Welcome</h1>
         <div>
           You are not logged in.
         </div>
-      </div>
+      </section>
     `;
   }
 
