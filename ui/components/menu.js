@@ -1,5 +1,7 @@
 const md5 = require('md5');
 
+const classcat = require('classcat');
+
 module.exports = function (app, html) {
   function guestPill () {
     return [html`
@@ -19,13 +21,17 @@ module.exports = function (app, html) {
     `;
   }
 
+  function isActiveUrl (url) {
+    return window.location.pathname.startsWith(url);
+  }
+
   return html`
     <header>
       <nav>
         <a href="/">Home</a>
-        ${app.state.loggedIn ? html`<a href="/links">Links</a>` : null}
-        ${app.state.loggedIn ? html`<a href="/services">Services</a>` : null}
-        ${app.state.loggedIn ? html`<a href="/domains">Domains</a>` : null}
+        ${app.state.loggedIn ? html`<a href="/links" class=${classcat({ active: isActiveUrl('/links') })}>Links</a>` : null}
+        ${app.state.loggedIn ? html`<a href="/services" class=${classcat({ active: isActiveUrl('/services') })}>Services</a>` : null}
+        ${app.state.loggedIn ? html`<a href="/domains" class=${classcat({ active: isActiveUrl('/domains') })}>Domains</a>` : null}
       </nav>
       <nav>
         ${app.state.user ? userPill() : guestPill()}

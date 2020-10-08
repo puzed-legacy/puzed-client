@@ -18,10 +18,10 @@ module.exports = function (app, html) {
     }
 
     return html`
-      <div>
+      <section>
         <h1>Your Account</h1>
         <p>You are logged in as <strong>${app.state.user.email}</strong></p>
-      </div>
+      </section>
     `;
   }
 
