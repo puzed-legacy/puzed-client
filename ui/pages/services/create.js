@@ -103,6 +103,13 @@ function createForm ({ attrs }) {
               initialValue: '8000'
             },
             {
+              name: 'allowInternetAccess',
+              label: 'Allow Internet Access',
+              errors: errors && errors.fields && errors.fields.allowInternetAccess,
+              component: mui.checkbox,
+              initialValue: false
+            },
+            {
               name: 'domain',
               label: 'Domain',
               errors: errors && errors.fields && errors.fields.domain,
