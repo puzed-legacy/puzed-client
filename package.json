@@ -27,14 +27,14 @@
     "date-fns": "^2.16.1",
     "md5": "^2.3.0",
     "mithril": "^2.0.4",
-    "mithui": "^1.1.8",
-    "preact": "^10.5.3",
-    "snyk": "^1.406.0",
+    "mithui": "^1.1.9",
+    "preact": "^10.5.4",
+    "snyk": "^1.413.2",
     "throttle-debounce": "^2.3.0"
   },
   "devDependencies": {
     "brfs": "^2.0.2",
-    "browserify": "^16.5.2",
+    "browserify": "^17.0.0",
     "browserify-tree": "0.0.6",
     "envify": "^4.1.0",
     "hyperx": "^2.5.4",
