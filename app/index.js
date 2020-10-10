@@ -12,6 +12,7 @@ module.exports = function (config) {
 
       links: [],
       services: [],
+      networkRules: [],
       providers: [],
       deployments: [],
       deploymentExpands: {},
@@ -129,6 +130,7 @@ module.exports = function (config) {
   app.listDomains = require('./domains/list');
   app.createDomain = require('./domains/create');
 
+  app.listNetworkRules = require('./networkRules/list');
   app.listLinks = require('./links/list');
   app.listProviders = require('./providers/list');
 

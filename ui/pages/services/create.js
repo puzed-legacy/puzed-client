@@ -5,20 +5,18 @@ const mui = require('mithui');
 
 const menu = require('../../components/menu');
 
-function loadingSelect () {
-  return {
-    view: () => {
-      return html`<em>Loading repositories from source provider...</em>`;
-    }
-  };
-}
-
 function createForm ({ attrs }) {
   const { app, providerRepositoryId, linkId } = attrs;
   let errors;
 
   return {
+    oncreate: () => {
+      app.listNetworkRules(app);
+    },
+
     view: () => {
+      const defaultNetworkRule = (app.state.networkRules || []).find(networkRule => networkRule.default);
+
       return m('div',
         m('div', { hidden: !errors }, html`
           <div class="alert alert-danger">
@@ -45,7 +43,7 @@ function createForm ({ attrs }) {
               name: 'providerRepositoryId',
               label: 'Source Code Repository',
               errors: errors && errors.fields && errors.fields.providerRepositoryId,
-              component: app.state.repositories ? mui.select : loadingSelect,
+              component: mui.select,
               options: app.state.repositories ? app.state.repositories.map(repo => {
                 return {
                   value: repo.full_name,
@@ -103,11 +101,15 @@ function createForm ({ attrs }) {
               initialValue: '8000'
             },
             {
-              name: 'allowInternetAccess',
-              label: 'Allow Internet Access',
-              errors: errors && errors.fields && errors.fields.allowInternetAccess,
-              component: mui.checkbox,
-              initialValue: false
+              name: 'networkRulesId',
+              label: 'Network Access Level',
+              component: mui.select,
+              options: (app.state.networkRules || []).map(networkRule => ({
+                value: networkRule.id,
+                label: networkRule.title
+              })),
+              initialValue: defaultNetworkRule && defaultNetworkRule.id,
+              errors: errors && errors.fields && errors.fields.allowInternetAccess
             },
             {
               name: 'domain',

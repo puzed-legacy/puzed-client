@@ -32,6 +32,7 @@ function branchPicker (vnode) {
 module.exports = function (app, html) {
   app.readService(app, app.state.tokens.serviceId);
   app.listDeployments(app, app.state.tokens.serviceId);
+  app.listNetworkRules(app);
 
   let createDeploymentOpen = false;
   function toggleCreateDeploymentOpen () {
@@ -85,6 +86,8 @@ module.exports = function (app, html) {
   }
 
   function renderService (service, deployments) {
+    const networkRule = app.state.networkRules.find(networkRule => networkRule.id === service.networkRulesId);
+
     return html`
       <div class="serviceInfo">
         <h1>${service.name}</h2>
@@ -104,6 +107,11 @@ module.exports = function (app, html) {
 
         <div>
           <strong>Web Port:</strong> ${service.webPort}
+        </div>
+
+        <div>
+          <strong>Network Access Level:</strong>
+          ${networkRule && networkRule.title}
         </div>
 
         <div>

@@ -18,7 +18,7 @@ pre {
 
 header {
   display: flex;
-  background-color: #3c3c3c;
+  background-color: #0c0731;
   align-items: center;
   margin-bottom: 5px;
   padding: 2px;
@@ -31,7 +31,7 @@ header > nav a:hover {
 }
 
 header > nav a.active {
-  background-color: #111111;
+  background-color: #42404a;
 }
 
 header > nav a {
@@ -429,4 +429,112 @@ puz-tabbed-menu a {
 puz-tabbed-content {
   display: block;
   padding-top: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+mui-selectLookup {
+  position: relative;
+  outline: none;
+  display: block;
+  width: 100%;
+}
+
+mui-selectLookup:focus-within mui-selectLookup-head {
+  border-color: blue;
+}
+
+mui-selectLookup-head input:focus,
+mui-selectLookup-head input:active {
+  outline: none;
+}
+
+mui-selectLookup-head input {
+  padding: 5px;
+  border: 0;
+  display: block;
+  width: 100%;
+}
+
+mui-selectLookup-head {
+  display: block;
+  font-family: arial;
+  font-weight: bold;
+  font-size: 100%;
+  border: 2px solid black;
+  cursor: pointer;
+}
+
+mui-selectLookup-body a {
+  color: black;
+}
+mui-selectLookup-body {
+  z-index: 100000;
+  background-color: white;
+  color: black;
+  position: absolute;
+  display: inline-block;
+  font-family: arial;
+  font-size: 100%;
+  border: 2px solid black;
+  padding: 3px;
+  height: 300px;
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;  
+}
+
+mui-selectLookup.full-width mui-selectLookup-head {
+  width: 100%;
+}
+
+mui-selectLookup.with-icon mui-selectLookup-head {
+  padding-right: 25px;
+  background: transparent;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position-x: 100%;
+  background-position-y: center;
+}
+
+mui-selectLookup-body {
+  display: block;
+  white-space: nowrap;
+}
+
+mui-selectLookup-body > hr {
+  border-color: black;
+  padding: 0;
+  margin: 6px 0 6px 0;
+}
+
+mui-selectLookup > mui-selectLookup-body > div {
+  display: block;
+  padding: 5px;
+}
+
+mui-selectLookup > mui-selectLookup-body > div > a {
+  text-decoration: none;
+  padding: 8px;
+  display: block;
+}
+
+mui-selectLookup.align-right mui-selectLookup-body {
+  min-width: 24px;
+  right: 0;
+}
+
+mui-selectLookup.align-up mui-selectLookup-body {
+  bottom: 0;
+  margin-bottom: calc(100% + 6px);
 }
