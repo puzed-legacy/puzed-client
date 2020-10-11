@@ -39,18 +39,23 @@ function statistics (app, service, deployment, instance) {
   let cpu;
   let memory;
   let disk;
+  let timer;
 
   return {
     oncreate: () => {
       app.readInstanceStatistics(app, service.id, deployment.id, instance.id);
     },
 
-    onupdate: () => {
-      const instanceStatistics = app.state.instanceStatistics[instance.id];
+    onremove: () => {
+      clearInterval(timer);
+    },
 
+    onupdate: () => {
       if (chart) {
         return;
       }
+
+      const instanceStatistics = app.state.instanceStatistics[instance.id];
 
       if (instanceStatistics) {
         cpu = instanceStatistics.reduce((result, statistic) => {
@@ -78,8 +83,6 @@ function statistics (app, service, deployment, instance) {
           result.data.push(value);
           return result;
         }, { date: [], data: [] });
-
-        app.emitStateChanged();
       }
     },
 
@@ -103,7 +106,6 @@ function statistics (app, service, deployment, instance) {
             title: 'Memory Usage',
             unit: 'mb',
             formatter: items => {
-              console.log(items[0]);
               return `${items[0].axisValueLabel}<br/>${parseFloat(items[0].value).toFixed(2)}mb`;
             }
           })}
