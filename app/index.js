@@ -20,6 +20,7 @@ module.exports = function (config) {
       instanceExpands: {},
       buildLogs: {},
       liveLogs: {},
+      instanceStatistics: {},
 
       deploymentLogs: {}
     }
@@ -142,6 +143,7 @@ module.exports = function (config) {
   app.patchDeployment = require('./services/deployments/patch');
   app.createDeployment = require('./services/deployments/create');
 
+  app.readInstanceStatistics = require('./services/deployments/instances/statistics');
   app.listInstances = require('./services/deployments/instances/list');
   app.readInstance = require('./services/deployments/instances/read');
   app.createInstance = require('./services/deployments/instances/create');
