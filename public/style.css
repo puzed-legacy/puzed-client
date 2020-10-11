@@ -61,18 +61,18 @@ header > nav img {
   padding: 10px;
   background-color: #ececec;
 }
-.serviceInfo > div {
+.serviceInfo div.serviceInfoPane {
   margin-bottom: 10px;
   padding: 10px;
   background-color: white;
   box-shadow: 0 0 10px -5px #5a5a5a;
 }
 
-.serviceInfo > div > *:nth-child(2) {
+.serviceInfo div.serviceInfoPane > *:nth-child(2) {
   margin-top: 10px;
 }
 
-.serviceInfo > div > pre {
+.serviceInfo div.serviceInfoPane > pre {
   padding: 8px;
   font-size: 100%;
   background-color: #ececec;

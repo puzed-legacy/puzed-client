@@ -23,7 +23,10 @@ module.exports = function (app) {
           const button = event.target.querySelector('form > button');
           button.disabled = true;
 
-          app.createDomain(app, data)
+          app.createDomain(app, {
+            ...data,
+            formId: undefined
+          })
             .then(domain => {
               button.disabled = false;
               setPath('/domains');
