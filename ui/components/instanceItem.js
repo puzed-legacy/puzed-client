@@ -199,18 +199,19 @@ function instanceItem (vnode) {
 
       return html`
       <puz-instance key=${instance.id} class="instance-status-${instance.status} ${app.state.instanceExpands[instance.id] ? 'expanded' : ''}">
-      <puz-instance-heading onclick=${toggleExpanded}>
-      <div class="nowrap cutoff">${instance.id}</div>
-      <div><span class="label label-${instance.status}">${instance.status}</span></div>
-      <div class="nowrap">${formatDate(instance.dateCreated)}</div>
-      <div>
-      ${m(mui.dropdown, { class: 'align-right', head: '☰' }, [
-        m('div',
-        m('a', { onclick: handleDestroyInstance }, 'Destroy instance')
-        )
-      ])}
-      </div>
-      </puz-instance-heading>
+
+        <puz-instance-heading onclick=${toggleExpanded}>
+          <div class="nowrap cutoff">${instance.id}</div>
+          <div><span class="label label-${instance.status}">${instance.status}</span></div>
+          <div class="nowrap">${formatDate(instance.dateCreated)}</div>
+          <div>
+          ${m(mui.dropdown, { class: 'align-right', head: '☰' }, [
+            m('div',
+            m('a', { onclick: handleDestroyInstance }, 'Destroy instance')
+            )
+          ])}
+          </div>
+        </puz-instance-heading>
       
       ${app.state.instanceExpands[instance.id] ? html`
       <puz-instance-content>

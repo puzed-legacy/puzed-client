@@ -172,6 +172,7 @@ module.exports = function (app, html) {
     view: () => {
       const service = app.state.services.find(service => service.id === app.state.tokens.serviceId);
       const deployments = app.state.deployments.filter(deployment => deployment.serviceId === app.state.tokens.serviceId);
+
       if (!service || !deployments) {
         return;
       }
