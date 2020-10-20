@@ -14,10 +14,7 @@ async function listInstances (app, serviceId, deploymentId) {
 
     const instances = await response.json();
 
-    app.state.instances = app.state.instances.filter(instance =>
-      instance.deploymentId !== deploymentId
-    );
-    app.state.instances = app.state.instances.concat(instances);
+    app.state.instances = instances;
   } catch (error) {
     console.log(error);
   }

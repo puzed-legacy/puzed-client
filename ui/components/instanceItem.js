@@ -180,7 +180,10 @@ function instanceItem (vnode) {
   }
 
   return {
-    oncreate: () => app.notifier.on(instance.id, instanceChangeHandler),
+    oncreate: () => {
+      instanceChangeHandler();
+      app.notifier.on(instance.id, instanceChangeHandler);
+    },
     onremove: () => app.notifier.off(instance.id, instanceChangeHandler),
     view: (vnode) => {
       const { app, service, instance } = vnode.attrs;

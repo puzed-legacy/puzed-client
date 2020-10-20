@@ -43,7 +43,13 @@ function createForm ({ attrs }) {
               name: 'providerRepositoryId',
               label: 'Source Code Repository',
               errors: errors && errors.fields && errors.fields.providerRepositoryId,
-              component: mui.select,
+              component: app.state.repositories ? mui.select : () => {
+                return {
+                  view: () => {
+                    return html`<em>Loading repositories...</em>`;
+                  }
+                };
+              },
               options: app.state.repositories ? app.state.repositories.map(repo => {
                 return {
                   value: repo.full_name,

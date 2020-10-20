@@ -15,11 +15,11 @@ async function readInstance (app, serviceId, deploymentId, instanceId) {
     const instance = await response.json();
 
     const existingInstanceIndex = app.state.instances.findIndex(instance => instance.id === instanceId);
-    if (existingInstanceIndex > -1) {
-      app.state.instances.splice(existingInstanceIndex, 1);
+    if (existingInstanceIndex === -1) {
+      app.state.instances.unshift(instance);
+    } else {
+      app.state.instances[existingInstanceIndex] = instance;
     }
-
-    app.state.instances.unshift(instance);
   } catch (error) {
     console.log(error);
   }
