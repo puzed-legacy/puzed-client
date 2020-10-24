@@ -21,8 +21,8 @@ function lineChart () {
               data: vnode.attrs.data.data
             }
           ]
-        })
-        return
+        });
+        return;
       }
 
       const option = {

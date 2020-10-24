@@ -9,13 +9,48 @@ function createForm ({ attrs }) {
   const { app, providerRepositoryId, linkId } = attrs;
   let errors;
 
+  const getComponent = (type) => {
+    if (type === 'repositorySelector') {
+      const repositorySelector = app.state.repositories ? mui.select : () => {
+        return {
+          view: () => {
+            return html`<em>Loading repositories...</em>`;
+          }
+        };
+      };
+
+      return {
+        component: repositorySelector,
+        initialValue: providerRepositoryId,
+        options: app.state.repositories ? app.state.repositories.map(repo => {
+          return {
+            value: repo.full_name,
+            label: `${repo.name} (${repo.full_name})`
+          };
+        }) : []
+      };
+    }
+
+    return {
+      component: mui[type]
+    };
+  };
+
   return {
     oncreate: () => {
       app.listNetworkRules(app);
+      app.getSchemaService(app, linkId);
     },
 
     view: () => {
-      const defaultNetworkRule = (app.state.networkRules || []).find(networkRule => networkRule.default);
+      const fields = ((app.state.schema.service && app.state.schema.service[linkId]) || [])
+        .map(field => {
+          return {
+            ...field,
+            errors: errors && errors.fields && errors.fields[field.name],
+            ...getComponent(field.component)
+          };
+        });
 
       return m('div',
         m('div', { hidden: !errors }, html`
@@ -31,100 +66,7 @@ function createForm ({ attrs }) {
         `),
 
         m(mui.form, {
-          fields: [
-            {
-              name: 'name',
-              label: 'Service Name',
-              errors: errors && errors.fields && errors.fields.name,
-              component: mui.textInput,
-              autoFocus: true
-            },
-            {
-              name: 'providerRepositoryId',
-              label: 'Source Code Repository',
-              errors: errors && errors.fields && errors.fields.providerRepositoryId,
-              component: app.state.repositories ? mui.select : () => {
-                return {
-                  view: () => {
-                    return html`<em>Loading repositories...</em>`;
-                  }
-                };
-              },
-              options: app.state.repositories ? app.state.repositories.map(repo => {
-                return {
-                  value: repo.full_name,
-                  label: `${repo.name} (${repo.full_name})`
-                };
-              }) : [],
-              initialValue: providerRepositoryId
-            },
-            {
-              name: 'image',
-              label: 'Image',
-              errors: errors && errors.fields && errors.fields.image,
-              component: mui.select,
-              options: [
-                {
-                  value: 'nodejs12',
-                  label: 'NodeJS (version 12)'
-                }
-              ],
-              initialValue: 'nodejs12'
-            },
-            {
-              name: 'environmentVariables',
-              label: 'Environment Variables',
-              errors: errors && errors.fields && errors.fields.environmentVariables,
-              component: mui.multilineInput
-            },
-            {
-              name: 'secrets',
-              label: 'Secrets',
-              errors: errors && errors.fields && errors.fields.secrets,
-              prefix: '/run/secrets/',
-              component: mui.filePicker,
-              multiple: true
-            },
-            {
-              name: 'buildCommand',
-              label: 'Build command',
-              errors: errors && errors.fields && errors.fields.buildCommand,
-              component: mui.textInput,
-              initialValue: 'npm install'
-            },
-            {
-              name: 'runCommand',
-              label: 'Run command',
-              errors: errors && errors.fields && errors.fields.runCommand,
-              component: mui.textInput,
-              initialValue: 'npm run start'
-            },
-            {
-              name: 'webPort',
-              label: 'Web Port',
-              errors: errors && errors.fields && errors.fields.webPort,
-              component: mui.textInput,
-              initialValue: '8000'
-            },
-            {
-              name: 'networkRulesId',
-              label: 'Network Access Level',
-              component: mui.select,
-              options: (app.state.networkRules || []).map(networkRule => ({
-                value: networkRule.id,
-                label: networkRule.title
-              })),
-              initialValue: defaultNetworkRule && defaultNetworkRule.id,
-              errors: errors && errors.fields && errors.fields.allowInternetAccess
-            },
-            {
-              name: 'domain',
-              label: 'Domain',
-              errors: errors && errors.fields && errors.fields.domain,
-              component: mui.textInput,
-              initialValue: 'example.puzed.com'
-            }
-          ],
+          fields,
           onSubmit: (event, data) => {
             event.preventDefault();
 

@@ -11,6 +11,7 @@ module.exports = function (config) {
       loggedIn: window.localStorage.getItem('session'),
 
       links: [],
+      schema: {},
       services: [],
       networkRules: [],
       providers: [],
@@ -134,6 +135,8 @@ module.exports = function (config) {
   app.listNetworkRules = require('./networkRules/list');
   app.listLinks = require('./links/list');
   app.listProviders = require('./providers/list');
+
+  app.getSchemaService = require('./schema/service');
 
   app.listServices = require('./services/list');
   app.listBranches = require('./services/branches/list');
