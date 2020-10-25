@@ -16,12 +16,18 @@ pre {
   margin: 0;
 }
 
+header .logo {
+  margin-left: 10px;
+  min-width: 24px;
+  min-height: 24px;
+}
+
 header {
   display: flex;
   background-color: #0c0731;
   align-items: center;
   margin-bottom: 5px;
-  padding: 2px;
+  padding: 0px 2px 3px 2px;
 }
 header > nav:first-child {
   flex-grow: 1;
