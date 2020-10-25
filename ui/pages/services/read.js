@@ -56,7 +56,7 @@ module.exports = function (app, html) {
     return html`
       <puz-deployments>
         <div class="heading-container">
-          <h1>Deployments</h1>>
+          <h1>Deployments</h1>
           <div>
             <button onclick=${toggleCreateDeploymentOpen}>New Deployment</button>
           </div>
@@ -103,7 +103,12 @@ module.exports = function (app, html) {
 
         return html`
           <div class="serviceInfo">
-            <h1>${service.name}</h2>
+            <div class="heading-container">
+              <h1>${service.name}</h1>
+              <div>
+                <a class="button" href=${`/services/${service.id}/edit`}>Edit</a>
+              </div>
+            </div>
             <div class="serviceInfoPane">
               <strong>Domain:</strong> <a href="https://${service.domain}" target="_blank">https://${service.domain}</a>
             </div>

@@ -4,6 +4,9 @@
 [![GitHub package.json version](https://img.shields.io/github/package-json/v/puzed/puzed-client)](https://github.com/puzed/puzed-client/releases)
 [![GitHub](https://img.shields.io/github/license/puzed/puzed-client)](https://github.com/puzed/puzed-client/blob/master/LICENSE)
 
+## Screenshot
+![Screenshot of UI](screenshot.png)
+
 ## Installation
 ### Install PM2
 ```bash
