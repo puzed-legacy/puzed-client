@@ -255,6 +255,11 @@ ul.small {
   padding: 2px 10px 5px 10px;
 }
 
+.label-switching {
+  background-color: #9ee4ff;
+  color: rgb(0 0 0);
+}
+
 .label-healthy {
   background-color: #d2ffcc;
   color: rgb(0, 129, 0);
