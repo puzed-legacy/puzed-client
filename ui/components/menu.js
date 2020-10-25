@@ -28,6 +28,7 @@ module.exports = function (app, html) {
   return html`
     <header>
       <nav>
+        <img class="logo" src="/logo.svg" />
         <a href="/">Home</a>
         ${app.state.loggedIn ? html`<a href="/links" class=${classcat({ active: isActiveUrl('/links') })}>Links</a>` : null}
         ${app.state.loggedIn ? html`<a href="/services" class=${classcat({ active: isActiveUrl('/services') })}>Services</a>` : null}
