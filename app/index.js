@@ -51,6 +51,7 @@ module.exports = function (config) {
       '/services': () => 'listServices',
       '/services/create': () => 'createService',
       '/services/:serviceId': () => 'readService',
+      '/services/:serviceId/edit': () => 'editService',
       '/providers/:providerId/oauth': () => {
         require('./auth/oauthHandler')(app);
         return 'loading';
@@ -155,6 +156,7 @@ module.exports = function (config) {
 
   app.readService = require('./services/read');
   app.createService = require('./services/create');
+  app.updateService = require('./services/update');
 
   app.startInstanceLogs = require('./services/deployments/instances/startLogs.js');
   app.stopInstanceLogs = require('./services/deployments/instances/stopLogs.js');

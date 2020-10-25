@@ -166,25 +166,27 @@ puz-form-label {
 /*
   BUTTONS
 */
-form button {
+button,
+.button {
+  padding: 5px 15px;
   font-size: 100%;
-  padding: 10px 20px;
-  font-size: 100%;
+  color: black;
   border: 1px solid black;
   background-color: white;
-  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
 }
-form button:disabled {
+button:disabled,
+.button:disabled {
   cursor: default;
   color: #9e9e9e;
   background-color: #505050;
 }
-form button:hover {
+button:hover,
+.button:hover {
   background-color: rgb(238, 238, 238);
 }
-form button {
-  cursor: pointer;
-}
+
 
 form button.success:hover {
   background-color: #2d7511;
@@ -217,9 +219,15 @@ ul.small {
 /*
   LAYOUT
 */
+.heading-container h1 {
+  padding: 0;
+  margin: 0;
+}
+
 .heading-container {
   display: flex;
   align-items: center;
+  margin: 5px 0 10px 0;
 }
 
 .heading-container > *:first-child {
@@ -269,6 +277,11 @@ ul.small {
 /*
   PUZ-DEPLOYMENTS
 */
+puz-deployments {
+  margin-top: 25px;
+  display: block;
+}
+
 puz-deployment {
   display: block;
   margin-bottom: 10px;
