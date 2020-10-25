@@ -43,6 +43,11 @@ function deploymentItem (vnode) {
       document.activeElement.blur();
     }
 
+    function handleDestroyDeployment () {
+      app.deleteDeployment(app, service.id, deployment.id);
+      document.activeElement.blur();
+    }
+
     return html`
       <puz-deployment-heading onclick=${toggleExpanded(deployment.id)}>
         <div class="nowrap">
@@ -76,7 +81,7 @@ function deploymentItem (vnode) {
             ),
             m('hr'),
             m('div', { class: deployment.title === 'production' ? 'disabled' : '' },
-              m('a', { href: '#four' }, 'Destroy deployment')
+              m('a', { onclick: handleDestroyDeployment }, 'Destroy deployment')
             )
           ])}
         </div>
