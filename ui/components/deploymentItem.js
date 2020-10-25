@@ -58,7 +58,10 @@ function deploymentItem (vnode) {
             ? html`<a href="https://${service.domain}" target="_blank">visit</a>`
             : html`<a href="https://${deployment.title}--${service.domain}" target="_blank">visit</a>`})
         </div>
-        <div class="nowrap cutoff">${deployment.branch}</div>
+        <div class="nowrap cutoff">${deployment.branch || 'unknown'}</div>
+        ${deployment.autoSwitch ? html`<div class="nowrap cutoff">
+          <span class="label label-switching">switching</span>
+        </div>` : ''}
         <div><span class="label label-${deployment.status}">${deployment.healthyInstances}/${deployment.totalInstances} Instances</span></div>
         <div>
           ${m(mui.dropdown, { class: 'align-right', head: '☰' }, [
