@@ -143,6 +143,7 @@ module.exports = function (config) {
   app.listBranches = require('./services/branches/list');
 
   app.listDeployments = require('./services/deployments/list');
+  app.deleteDeployment = require('./services/deployments/delete');
   app.readDeployment = require('./services/deployments/read');
   app.patchDeployment = require('./services/deployments/patch');
   app.createDeployment = require('./services/deployments/create');
