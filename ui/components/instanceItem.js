@@ -143,7 +143,7 @@ function liveLog (app, service, deployment, instance) {
       app.startInstanceLogs(app, service.id, deployment.id, instance.id);
     },
 
-    ondelete: () => {
+    onremove: () => {
       app.stopInstanceLogs(app, service.id, deployment.id, instance.id);
     },
 
