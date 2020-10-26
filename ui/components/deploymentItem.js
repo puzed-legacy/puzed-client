@@ -13,6 +13,7 @@ function deploymentItem (vnode) {
 
   function deploymentChangeHandler () {
     app.readDeployment(app, serviceId, deploymentId);
+    app.listInstances(app, serviceId, deploymentId);
   }
 
   const toggleExpanded = deploymentId => event => {
