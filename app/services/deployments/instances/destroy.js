@@ -1,4 +1,4 @@
-async function destroyInstance (app, serviceId, deploymentId, instanceId) {
+async function destroyInstance (app, serviceId, deploymentId, instanceId, hard) {
   if (!app.state.loggedIn) {
     return;
   }
@@ -6,7 +6,8 @@ async function destroyInstance (app, serviceId, deploymentId, instanceId) {
   app.setLoadingState();
 
   try {
-    const response = await window.fetch(`${app.config.apiServerUrl}/services/${serviceId}/deployments/${deploymentId}/instances/${instanceId}`, {
+    hard = hard ? '?hard=true' : '';
+    const response = await window.fetch(`${app.config.apiServerUrl}/services/${serviceId}/deployments/${deploymentId}/instances/${instanceId}${hard}`, {
       method: 'delete',
       headers: {
         authorization: 'token ' + app.state.session.secret
@@ -19,6 +20,7 @@ async function destroyInstance (app, serviceId, deploymentId, instanceId) {
 
     app.readService(app, serviceId);
     app.listDeployments(app, serviceId);
+    app.listInstances(app, serviceId, deploymentId);
   } catch (error) {
     console.log(error);
   }
