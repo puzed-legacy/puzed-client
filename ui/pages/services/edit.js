@@ -68,6 +68,7 @@ function createForm ({ attrs }) {
 
             app.updateService(app, service.id, {
               ...data,
+              secrets: undefined,
               formId: undefined
             }).then(service => {
               button.disabled = false;
