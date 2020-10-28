@@ -34,11 +34,6 @@ function instanceLog (app, service, deployment, instance) {
 }
 
 function statistics (app, service, deployment, instance) {
-  let chart;
-
-  let cpu;
-  let memory;
-  let disk;
   let timer;
 
   return {
@@ -50,72 +45,70 @@ function statistics (app, service, deployment, instance) {
       clearInterval(timer);
     },
 
-    onupdate: () => {
-      if (chart) {
+    view: () => {
+      const instanceStatistics = app.state.instanceStatistics[instance.id];
+
+      if (!instanceStatistics) {
         return;
       }
 
-      const instanceStatistics = app.state.instanceStatistics[instance.id];
+      const cpu = instanceStatistics.reduce((result, statistic) => {
+        const formattedDate = formatDate(statistic.dateCreated);
 
-      if (instanceStatistics) {
-        cpu = instanceStatistics.reduce((result, statistic) => {
-          const formattedDate = formatDate(statistic.dateCreated);
+        result.date.push(formattedDate);
+        result.data.push(statistic.cpuPercent);
+        return result;
+      }, { date: [], data: [] });
 
-          result.date.push(formattedDate);
-          result.data.push(statistic.cpuPercent);
-          return result;
-        }, { date: [], data: [] });
+      const memory = instanceStatistics.reduce((result, statistic) => {
+        const formattedDate = formatDate(statistic.dateCreated);
+        const value = parseInt(statistic.memory / 1000000);
 
-        memory = instanceStatistics.reduce((result, statistic) => {
-          const formattedDate = formatDate(statistic.dateCreated);
-          const value = parseInt(statistic.memory / 100000);
+        result.date.push(formattedDate);
+        result.data.push(value);
+        return result;
+      }, { date: [], data: [] });
 
-          result.date.push(formattedDate);
-          result.data.push(value);
-          return result;
-        }, { date: [], data: [] });
+      const disk = instanceStatistics.reduce((result, statistic) => {
+        const formattedDate = formatDate(statistic.dateCreated);
+        const value = parseInt(statistic.diskIo);
 
-        disk = instanceStatistics.reduce((result, statistic) => {
-          const formattedDate = formatDate(statistic.dateCreated);
-          const value = parseInt(statistic.diskIo);
+        result.date.push(formattedDate);
+        result.data.push(value);
+        return result;
+      }, { date: [], data: [] });
 
-          result.date.push(formattedDate);
-          result.data.push(value);
-          return result;
-        }, { date: [], data: [] });
-      }
-    },
-
-    view: () => html`
-      <puz-build-log>
-        <div>
-          <h1>CPU Usage</h1>
-          ${m(lineChart, {
-            data: cpu,
-            title: 'CPU Usage',
-            unit: 'percent',
-            formatter: items => {
-              return `${items[0].axisValueLabel}<br/>${parseFloat(items[0].value).toFixed(2)}%`;
-            }
-          })}
-        </div>
-        <div>
-          <h1>Memory Usage</h1>
-          ${m(lineChart, {
-            data: memory,
-            title: 'Memory Usage',
-            unit: 'mb',
-            formatter: items => {
-              return `${items[0].axisValueLabel}<br/>${parseFloat(items[0].value).toFixed(2)}mb`;
-            }
-          })}
-        </div>
-        <div>
-          <h1>Disk IO Usage</h1>
-          ${m(lineChart, { data: disk, title: 'Disk IO Usage' })}
-        </div>
-      </puz-build-log>
-    `
+      return html`
+        <puz-build-log>
+          <div>
+            <h1>CPU Usage</h1>
+            ${m(lineChart, {
+              data: cpu,
+              title: 'CPU Usage',
+              unit: 'percent',
+              formatter: items => {
+                return `${items[0].axisValueLabel}<br/>${parseFloat(items[0].value).toFixed(2)}%`;
+              }
+            })}
+          </div>
+          <div>
+            <h1>Memory Usage</h1>
+            ${m(lineChart, {
+              data: memory,
+              title: 'Memory Usage',
+              unit: 'mb',
+              formatter: items => {
+                return `${items[0].axisValueLabel}<br/>${parseFloat(items[0].value).toFixed(2)}mb`;
+              }
+            })}
+          </div>
+          <div>
+            <h1>Disk IO Usage</h1>
+            ${m(lineChart, { data: disk, title: 'Disk IO Usage' })}
+          </div>
+        </puz-build-log>
+      `;
+    }
   };
 }
 
