@@ -188,9 +188,11 @@ function instanceItem (vnode) {
         app.toggleExpanded(app, 'instanceExpands', instance.id);
       };
 
-      function handleDestroyInstance () {
-        app.destroyInstance(app, service.id, deployment.id, instance.id);
-        document.activeElement.blur();
+      function handleDestroyInstance (hard) {
+        return () => {
+          app.destroyInstance(app, service.id, deployment.id, instance.id, hard);
+          document.activeElement.blur();
+        };
       }
 
       return html`
@@ -203,7 +205,10 @@ function instanceItem (vnode) {
           <div>
           ${m(mui.dropdown, { class: 'align-right', head: '☰' }, [
             m('div',
-            m('a', { onclick: handleDestroyInstance }, 'Destroy instance')
+              m('a', { onclick: handleDestroyInstance(false) }, 'Destroy instance')
+            ),
+            m('div',
+              m('a', { onclick: handleDestroyInstance(true) }, 'Delete instance')
             )
           ])}
           </div>
