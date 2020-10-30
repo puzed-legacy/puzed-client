@@ -11,7 +11,9 @@ async function getUser (app) {
     });
 
     if (response.status >= 300) {
-      throw new Error('session could not be validated');
+      window.localStorage.removeItem('session');
+      window.location.href = '/';
+      return;
     }
 
     const session = await response.json();
@@ -19,8 +21,6 @@ async function getUser (app) {
     app.state.user = session.user;
     app.state.session = session;
   } catch (error) {
-    window.localStorage.removeItem('session');
-    window.location.reload();
     console.log(error);
   }
 

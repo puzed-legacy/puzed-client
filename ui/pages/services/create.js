@@ -52,7 +52,7 @@ function createForm ({ attrs }) {
           };
         });
 
-      return m('div',
+      return m('article',
         m('div', { hidden: !errors }, html`
           <div class="alert alert-danger">
             <div><strong>Could not create service</strong></div>
@@ -115,7 +115,7 @@ function setupService ({ attrs }) {
           ${menu(attrs.app, html)}
 
           <section>
-            <h2>Create a new service</h2>
+            <h1>Create a new service</h1>
             <div><strong>Link</strong>: ${link && link.providerId} ${link && link.externalUserId && `(${link.externalUserId})`}</div>
             <hr />        
             ${m(createForm, { app: attrs.app, providerRepositoryId, linkId })}

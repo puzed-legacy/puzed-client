@@ -42,7 +42,7 @@ function createForm ({ attrs }) {
           };
         });
 
-      return m('div',
+      return m('article',
         m('div', { hidden: !errors }, html`
           <div class="alert alert-danger">
             <div><strong>Could not edit service</strong></div>
@@ -101,7 +101,7 @@ function setupService ({ attrs }) {
 
           <section>
             <div class="heading-container">
-              <h1>Edit ${service.name}</h1>
+              <h1>${service.name} (editing)</h1>
               <div>
                 <a class="button" href=${`/services/${service.id}`}>Back</a>
               </div>
