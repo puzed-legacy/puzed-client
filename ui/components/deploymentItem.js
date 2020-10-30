@@ -68,7 +68,7 @@ function deploymentItem (vnode) {
         ${deployment.autoSwitch ? html`<div class="nowrap cutoff">
           <span class="label label-switching">switching</span>
         </div>` : ''}
-        <div><span class="label label-${deployment.status}">${deployment.healthyInstances}/${deployment.totalInstances} Instances</span></div>
+        <div class="nowrap"><span class="label label-${deployment.status}">${deployment.healthyInstances}/${deployment.totalInstances} Instances</span></div>
         <div>
           ${m(mui.dropdown, { class: 'align-right', head: '☰' }, [
             m('div',

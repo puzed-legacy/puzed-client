@@ -9,11 +9,11 @@ module.exports = function (app, html) {
         ${menu(app, html)}
   
         <section>
-          <h2>Links</h2>
+          <h1>Links</h1>
           <p>Create or manage your links to source providers.</p>
           <a href="/links/create">Create new link</a>
 
-          <h3>Listing your links</h3>
+          <h2>Listing your links</h2>
           <ul>
             ${(app.state.links || []).map(link => {
               return html`

@@ -52,7 +52,7 @@ module.exports = function (app) {
           ${menu(app, html)}
 
           <section>
-            <h2>Link with a new provider</h2>
+            <h1>Link with a new provider</h1>
             ${app.state.providers
               .map(provider => {
                 return html`

@@ -102,70 +102,72 @@ module.exports = function (app, html) {
         const networkRule = app.state.networkRules.find(networkRule => networkRule.id === service.networkRulesId);
 
         return html`
-          <div class="serviceInfo">
+          <div>
             <div class="heading-container">
               <h1>${service.name}</h1>
               <div>
                 <a class="button" href=${`/services/${service.id}/edit`}>Edit</a>
               </div>
             </div>
-            <div class="serviceInfoPane">
-              <strong>Domain:</strong> <a href="https://${service.domain}" target="_blank">https://${service.domain}</a>
-            </div>
-    
-            <div class="serviceInfoPane">
-              <strong>Repository:</strong> <a href="https://github.com/${service.providerRepositoryId}" target="_blank">https://github.com/${service.providerRepositoryId}</a>
-            </div>
-    
-            ${!showMoreInfo ? html`
+            <article>
               <div class="serviceInfoPane">
-                <a href="javascript:void(0);" onclick=${setShowMoreInfo.bind(null, true)}>Show more information</a>
+                <strong>Domain:</strong> <a href="https://${service.domain}" target="_blank">https://${service.domain}</a>
               </div>
-            ` : html`
-              <div>
+      
+              <div class="serviceInfoPane">
+                <strong>Repository:</strong> <a href="https://github.com/${service.providerRepositoryId}" target="_blank">https://github.com/${service.providerRepositoryId}</a>
+              </div>
+      
+              ${!showMoreInfo ? html`
                 <div class="serviceInfoPane">
-                  <strong>Build Command:</strong>
-                  <pre><code>${service.buildCommand}</code></pre>
+                  <a href="javascript:void(0);" onclick=${setShowMoreInfo.bind(null, true)}>Show more information</a>
                 </div>
-    
-                <div class="serviceInfoPane">
-                  <strong>Run Command:</strong>
-                  <pre><code>${service.runCommand}</code></pre>
-                </div>
-    
-                <div class="serviceInfoPane">
-                  <strong>Web Port:</strong> ${service.webPort}
-                </div>
-    
-                <div class="serviceInfoPane">
-                  <strong>Network Access Level:</strong>
-                  ${networkRule && networkRule.title}
-                </div>
-    
-                <div class="serviceInfoPane">
-                  <strong>Environment Variables:</strong><br />
-                  ${!service.environmentVariables
-                      ? m('div.emptyPlaceholder', 'This service has no environment variables')
-                      : html`
-                        <ul class="small">
-                          ${(service.environmentVariables || '').split('\n').map(line => {
-                            return m('li', line);
-                          })}
-                        </ul> 
-                      `
-                  }
-                </div>
-    
-                <div class="serviceInfoPane">
-                  <strong>Secrets:</strong><br />
-                    ${
-                      (service.secrets || []).length === 0
-                      ? m('div.emptyPlaceholder', 'This service has no secrets')
-                      : m('ul', { class: 'small' }, (service.secrets || []).map(secret => m('li', secret.name)))
+              ` : html`
+                <div>
+                  <div class="serviceInfoPane">
+                    <strong>Build Command:</strong>
+                    <pre><code>${service.buildCommand}</code></pre>
+                  </div>
+      
+                  <div class="serviceInfoPane">
+                    <strong>Run Command:</strong>
+                    <pre><code>${service.runCommand}</code></pre>
+                  </div>
+      
+                  <div class="serviceInfoPane">
+                    <strong>Web Port:</strong> ${service.webPort}
+                  </div>
+      
+                  <div class="serviceInfoPane">
+                    <strong>Network Access Level:</strong>
+                    ${networkRule && networkRule.title}
+                  </div>
+      
+                  <div class="serviceInfoPane">
+                    <strong>Environment Variables:</strong><br />
+                    ${!service.environmentVariables
+                        ? m('div.emptyPlaceholder', 'This service has no environment variables')
+                        : html`
+                          <ul class="small">
+                            ${(service.environmentVariables || '').split('\n').map(line => {
+                              return m('li', line);
+                            })}
+                          </ul> 
+                        `
                     }
+                  </div>
+      
+                  <div class="serviceInfoPane">
+                    <strong>Secrets:</strong><br />
+                      ${
+                        (service.secrets || []).length === 0
+                        ? m('div.emptyPlaceholder', 'This service has no secrets')
+                        : m('ul', { class: 'small' }, (service.secrets || []).map(secret => m('li', secret.name)))
+                      }
+                  </div>
                 </div>
-              </div>
-            `}
+              `}
+            </article>
             ${renderDeployments(service, deployments)}
           </div>
         `;

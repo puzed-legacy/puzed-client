@@ -6,7 +6,7 @@ async function readService (app, serviceId) {
   app.setLoadingState();
 
   try {
-    const response = await window.fetch(`${app.config.apiServerUrl}/services/${serviceId}`, {
+    const response = await window.fetch(`${app.config.apiServerUrl}/services/${serviceId}?join[deployments]=true`, {
       headers: {
         authorization: 'token ' + app.state.session.secret
       }

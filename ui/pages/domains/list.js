@@ -54,11 +54,11 @@ module.exports = function (app, html) {
         ${menu(app, html)}
   
         <section>
-          <h2>Domains</h2>
+          <h1>Domains</h1>
           <p>Create or manage your domains.</p>
           <a href="/domains/create">Create new domain</a>
 
-          <h3>Listing your domains</h3>
+          <h2>Listing your domains</h2>
           <ul>
             ${(app.state.domains || []).map(domain => {
               return html`
