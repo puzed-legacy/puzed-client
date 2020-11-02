@@ -62,7 +62,7 @@ function deploymentItem (vnode) {
           <strong>${deployment.title}</strong>
           (${deployment.title === 'production'
             ? html`<a href="https://${service.domain}" target="_blank">visit</a>`
-            : html`<a href="https://${deployment.title}--${service.domain}" target="_blank">visit</a>`})
+            : html`<a href="https://${deployment.subdomain}--${service.domain}" target="_blank">visit</a>`})
         </div>
         <div class="nowrap cutoff">${deployment.branch || 'unknown'}</div>
         ${deployment.autoSwitch ? html`<div class="nowrap cutoff">
