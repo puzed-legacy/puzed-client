@@ -28,6 +28,10 @@ function serviceListByCategory () {
                 app.readService(app, service.id);
               }
 
+              function stopPropagation (event) {
+                event.stopPropagation();
+              }
+
               return m({
                 oncreate: () => {
                   app.notifier.on(service.id, serviceChangeHandler);
@@ -36,6 +40,7 @@ function serviceListByCategory () {
                 view: () => html`
                   <li class="clickable" onclick=${setPath.bind(null, `/services/${service.id}`)} />
                     <a href="/services/${service.id}">${service.name}</a>
+                    <a target="_blank" onclick=${stopPropagation} href="https://${service.domain}/">https://${service.domain}/</a>
                     <div>
                       ${service.deployments.length} Deployments
                     </div>
