@@ -38,20 +38,19 @@ function serviceListByCategory () {
                 },
                 onremove: () => app.notifier.off(service.id, serviceChangeHandler),
                 view: () => html`
-                  <li class="clickable" onclick=${setPath.bind(null, `/services/${service.id}`)} />
+                  <li class="clickable" onclick=${setPath.bind(null, `/services/${service.id}`)}>
                     <a href="/services/${service.id}">${service.name}</a>
                     <a target="_blank" onclick=${stopPropagation} href="https://${service.domain}/">https://${service.domain}/</a>
                     <div>
                       ${service.deployments.length} Deployments
                     </div>
                     <div>
-                      ${unstableDeploymentsCount > 0
-                        ? html`<span class="label label-unhealthy">${unstableDeploymentsCount} Unstable</span>`
-                        : html`<span class="label label-healthy">Stable</span>`
-                      }
+                      ${service.deployments.length > 0 && unstableDeploymentsCount > 0 ? html`<span class="label label-unhealthy">${unstableDeploymentsCount} Unstable</span>` : ''}
+                      ${service.deployments.length > 0 && unstableDeploymentsCount === 0 ? html`<span class="label label-healthy">Stable</span>` : ''}
+                      ${service.deployments.length === 0 ? html`<span class="label label-unhealthy">No Deployments</span>` : ''}
                     </div>
                   </li>
-                  `
+                `
               });
             })}
           </ul>
