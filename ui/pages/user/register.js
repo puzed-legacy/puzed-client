@@ -13,7 +13,7 @@ module.exports = function (app) {
       if (app.state.loggedIn) {
         return html`
           <main>
-            ${menu(app, html)}
+            ${m(menu, { app })}
 
             <p>You are already logged in.</p>
           </main>
@@ -60,7 +60,7 @@ module.exports = function (app) {
 
       return html`
         <main>
-          ${menu(app, html)}
+          ${m(menu, { app })}
     
           <section>
             <h1>Create an account</h1>

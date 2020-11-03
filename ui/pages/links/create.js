@@ -24,7 +24,6 @@ function createForm (app) {
       event.preventDefault();
       // const button = event.target.querySelector('form > button');
       // button.disabled = true;
-      alert('oh');
       // app.createService(app, {
       //   ...data,
       //   provider: 'github',
@@ -49,7 +48,7 @@ module.exports = function (app) {
     view: ({ attrs }) => {
       return html`
         <main>
-          ${menu(app, html)}
+          ${m(menu, { app })}
 
           <section>
             <h1>Link with a new provider</h1>

@@ -1,4 +1,5 @@
 const m = require('mithril');
+const html = require('hyperx')(m);
 
 const menu = require('../../components/menu');
 
@@ -45,13 +46,13 @@ const errorIcon = (props) => {
   });
 };
 
-module.exports = function (app, html) {
+module.exports = function (app) {
   app.listDomains(app);
 
   return {
     view: () => html`
       <main>
-        ${menu(app, html)}
+        ${m(menu, { app })}
   
         <section>
           <h1>Domains</h1>
@@ -67,23 +68,27 @@ module.exports = function (app, html) {
                   ${domain.verificationStatus === 'pending' ? warningIcon({ class: 'icon' }) : ''}
                   ${domain.verificationStatus === 'error' ? errorIcon({ class: 'icon' }) : ''}
                   ${domain.domain}
-                  ${domain.verificationStatus === 'pending' || domain.verificationStatus === 'failed' ? html`
-                    <div class="alert alert-warning">
-                      This domain has not been verified and you will not be able to use it.
-                      <br />
-                      <strong>Add the following TXT record to the domain:</strong>
-                      <br />
-                      (If you are asked for a subdomain, you can use @)
-                      <br />
-                      <pre><code>${domain.domain}=${domain.verificationCode}</code></pre>
-                    </div>
-                  ` : ''}
+                  ${domain.verificationStatus === 'pending' || domain.verificationStatus === 'failed'
+                    ? html`
+                      <div class="alert alert-warning">
+                        This domain has not been verified and you will not be able to use it.
+                        <br />
+                        <strong>Add the following TXT record to the domain:</strong>
+                        <br />
+                        (If you are asked for a subdomain, you can use @)
+                        <br />
+                        <pre><code>${domain.domain}=${domain.verificationCode}</code></pre>
+                      </div>
+                    `
+                    : ''}
 
-                  ${domain.verificationStatus === 'error' ? html`
-                    <div class="alert alert-danger">
-                      This domain could not be verified.
-                    </div>
-                  ` : ''}
+                  ${domain.verificationStatus === 'error'
+                    ? html`
+                      <div class="alert alert-danger">
+                        This domain could not be verified.
+                      </div>
+                    `
+                    : ''}
                 </li>`;
             })}
           </ul>

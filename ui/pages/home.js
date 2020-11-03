@@ -1,6 +1,9 @@
+const m = require('mithril');
+const html = require('hyperx')(m);
+
 const menu = require('../components/menu');
 
-module.exports = function (app, html) {
+module.exports = function (app) {
   function authBox () {
     return html`
       <section>
@@ -28,7 +31,7 @@ module.exports = function (app, html) {
   return {
     view: () => html`
       <main>
-        ${menu(app, html)}
+        ${m(menu, { app })}
   
         ${app.state.loggedIn ? userBox() : authBox()}
       </main>

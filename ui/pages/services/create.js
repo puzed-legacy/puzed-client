@@ -11,23 +11,27 @@ function createForm ({ attrs }) {
 
   const getComponent = (type) => {
     if (type === 'repositorySelector') {
-      const repositorySelector = app.state.repositories ? mui.select : () => {
-        return {
-          view: () => {
-            return html`<em>Loading repositories...</em>`;
-          }
-        };
-      };
+      const repositorySelector = app.state.repositories
+        ? mui.select
+        : () => {
+            return {
+              view: () => {
+                return html`<em>Loading repositories...</em>`;
+              }
+            };
+          };
 
       return {
         component: repositorySelector,
         initialValue: providerRepositoryId,
-        options: app.state.repositories ? app.state.repositories.map(repo => {
-          return {
-            value: repo.full_name,
-            label: `${repo.name} (${repo.full_name})`
-          };
-        }) : []
+        options: app.state.repositories
+          ? app.state.repositories.map(repo => {
+              return {
+                value: repo.full_name,
+                label: `${repo.name} (${repo.full_name})`
+              };
+            })
+          : []
       };
     }
 
@@ -57,11 +61,13 @@ function createForm ({ attrs }) {
           <div class="alert alert-danger">
             <div><strong>Could not create service</strong></div>
             <div>Check and fix any specific errors in the form below then try again.</div>
-            ${errors && errors.messages && errors.messages.length > 0 ? html`
-              <ul>
-                ${errors.messages.map(message => html`<li>${message}</li>`)}
-              </ul>
-            ` : ''}
+            ${errors && errors.messages && errors.messages.length > 0
+              ? html`
+                <ul>
+                  ${errors.messages.map(message => html`<li>${message}</li>`)}
+                </ul>
+              `
+              : ''}
           </div>
         `),
 
@@ -101,7 +107,7 @@ function createForm ({ attrs }) {
 }
 
 function setupService ({ attrs }) {
-  const url = attrs.url;
+  const { app, url } = attrs;
 
   const providerRepositoryId = url.searchParams.get('providerRepositoryId');
   const linkId = url.searchParams.get('linkId');
@@ -112,7 +118,7 @@ function setupService ({ attrs }) {
 
       return html`
         <main>
-          ${menu(attrs.app, html)}
+          ${m(menu, { app })}
 
           <section>
             <h1>Create a new service</h1>
@@ -126,7 +132,7 @@ function setupService ({ attrs }) {
   };
 }
 
-module.exports = function (app, html) {
+module.exports = function (app) {
   return {
     oncreate: () => {
       const url = new URL(window.location.href);

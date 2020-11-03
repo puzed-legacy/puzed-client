@@ -76,7 +76,7 @@ module.exports = function (app) {
 
       return html`
         <main>
-          ${menu(app, html)}
+          ${m(menu, { app })}
     
           <section>
             <h1>Your Services</h1>

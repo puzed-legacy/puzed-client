@@ -7,9 +7,11 @@ async function oauthHandler (app) {
 
   const oauthResponse = await window.fetch(`${app.config.apiServerUrl}/providers/${providerId}/oauth?token=${accessToken}&installationId=${installationId}`, {
     method: 'post',
-    headers: app.state.session ? {
-      authorization: app.state.session.secret
-    } : {}
+    headers: app.state.session
+      ? {
+          authorization: app.state.session.secret
+        }
+      : {}
   });
 
   const oauthData = await oauthResponse.json();

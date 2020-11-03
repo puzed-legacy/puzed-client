@@ -143,18 +143,22 @@ function liveLog (app, service, deployment, instance) {
     view: () => {
       return html`
       <puz-live-log>
-      ${app.state.liveLogs[instance.id] && !app.state.liveLogs[instance.id].abort && instance.status !== 'destroyed' ? html`
-      <div class="alert alert-warning">
-      Logs are not live. Disconnected.
-      <a href="javascript:void(0)" onclick=${reconnect}>Click here to reconnect</a>
-      </div>
-      ` : ''}
+      ${app.state.liveLogs[instance.id] && !app.state.liveLogs[instance.id].abort && instance.status !== 'destroyed'
+        ? html`
+          <div class="alert alert-warning">
+          Logs are not live. Disconnected.
+          <a href="javascript:void(0)" onclick=${reconnect}>Click here to reconnect</a>
+          </div>
+          `
+        : ''}
       
-      ${instance.status === 'destroyed' ? html`
-      <div class="alert alert-info">
-      Logs are not live. Container is destroyed.
-      </div>
-      ` : ''}
+      ${instance.status === 'destroyed'
+        ? html`
+          <div class="alert alert-info">
+          Logs are not live. Container is destroyed.
+          </div>
+          `
+        : ''}
       ${mithril(terminal, { content: (app.state.liveLogs[instance.id] && app.state.liveLogs[instance.id].data) || 'No logs found' })}
       </puz-live-log>
       `;
@@ -214,34 +218,36 @@ function instanceItem (vnode) {
           </div>
         </puz-instance-heading>
       
-      ${app.state.instanceExpands[instance.id] ? html`
-      <puz-instance-content>
-      
-      ${mithril(tabbed, {
-        app,
-        tabs: [{
-          key: 'buildLogs',
-          title: html`<span>Build Log</span>`,
-          defaultActive: instance.status === 'pending',
-          content: instanceLog(app, service, deployment, instance)
-        }, {
-          key: 'logs',
-          title: html`<span>Logs</span>`,
-          defaultActive: instance.status !== 'pending',
-          content: liveLog(app, service, deployment, instance)
-        }, {
-          key: 'stats',
-          title: 'Statistics',
-          content: statistics(app, service, deployment, instance)
-        }, {
-          key: 'settings',
-          title: html`<span>Settings</span>`,
-          content: settings(app, service, deployment, instance)
-        }]
-      })}
-      
-      </puz-instance-content>
-      ` : ''}
+      ${app.state.instanceExpands[instance.id]
+        ? html`
+        <puz-instance-content>
+        
+        ${mithril(tabbed, {
+          app,
+          tabs: [{
+            key: 'buildLogs',
+            title: html`<span>Build Log</span>`,
+            defaultActive: instance.status === 'pending',
+            content: instanceLog(app, service, deployment, instance)
+          }, {
+            key: 'logs',
+            title: html`<span>Logs</span>`,
+            defaultActive: instance.status !== 'pending',
+            content: liveLog(app, service, deployment, instance)
+          }, {
+            key: 'stats',
+            title: 'Statistics',
+            content: statistics(app, service, deployment, instance)
+          }, {
+            key: 'settings',
+            title: html`<span>Settings</span>`,
+            content: settings(app, service, deployment, instance)
+          }]
+        })}
+        
+        </puz-instance-content>
+      `
+      : ''}
       </puz-instance>
       `;
     }
