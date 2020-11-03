@@ -62,23 +62,25 @@ module.exports = function (app, html) {
           </div>
         </div>
 
-        ${createDeploymentOpen ? html`
-          <puz-deployment>
-            <form onsubmit=${handleCreateDeploymentSubmit}>
-              <puz-deployment-heading>
-                <div class="nowrap cutoff grow">
-                  <input name="title" placeholder="Name your new deployment" />
-                </div>
-                <div class="nowrap cutoff">
-                  ${mithril(branchPicker, { name: 'branch', app, service })}
-                </div>
-                <div>
-                  <button>Save</button>
-                </div>
-              </puz-deployment-heading>
-            </form>
-          </puz-deployment>
-        ` : ''}
+        ${createDeploymentOpen
+          ? html`
+            <puz-deployment>
+              <form onsubmit=${handleCreateDeploymentSubmit}>
+                <puz-deployment-heading>
+                  <div class="nowrap cutoff grow">
+                    <input name="title" placeholder="Name your new deployment" />
+                  </div>
+                  <div class="nowrap cutoff">
+                    ${mithril(branchPicker, { name: 'branch', app, service })}
+                  </div>
+                  <div>
+                    <button>Save</button>
+                  </div>
+                </puz-deployment-heading>
+              </form>
+            </puz-deployment>
+          `
+          : ''}
 
         ${deployments.map(deployment => mithril(deploymentItem, { key: deployment.id, app, service, deployment }))}
       </puz-deployments>
@@ -118,11 +120,13 @@ module.exports = function (app, html) {
                 <strong>Repository:</strong> <a href="https://github.com/${service.providerRepositoryId}" target="_blank">https://github.com/${service.providerRepositoryId}</a>
               </div>
       
-              ${!showMoreInfo ? html`
+              ${!showMoreInfo
+                ? html`
                 <div class="serviceInfoPane">
                   <a href="javascript:void(0);" onclick=${setShowMoreInfo.bind(null, true)}>Show more information</a>
                 </div>
-              ` : html`
+              `
+               : html`
                 <div>
                   <div class="serviceInfoPane">
                     <strong>Build Command:</strong>
@@ -186,7 +190,7 @@ module.exports = function (app, html) {
 
       return html`
         <main>
-          ${menu(app, html)}
+          ${m(menu, { app })}
 
           <section>
             ${service ? m(renderService, { service, deployments }) : null}

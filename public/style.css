@@ -11,7 +11,7 @@ body {
   margin: 0;
   height: 100%;
   background-color: rgb(238 240 245);
-  --dark: #2e4b52;
+  --dark: #1b224c;
   --light: white;
   --radius: 3px;
   --shadow: 0 0 5px -2px #382e52;
@@ -570,12 +570,18 @@ header {
 .nav-user {
   white-space: nowrap;
 }
+.nav-user a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
 .nav-user a {
   text-decoration: none;
   border-radius: var(--radius);
   padding: 10px;
   display: block;
   margin: 10px;
+  color: white;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.03);
 }
 .nav-user img {
   width: 100%;
@@ -589,48 +595,22 @@ header {
   margin-bottom: 5px;
   margin-right: 10px;
 }
+.nav-links a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
 .nav-links a {
+  border-radius: var(--radius);
   text-decoration: none;
   color: white;
-  padding: 12px;
+  padding: 15px 10px 15px 10px;
+  margin: 10px;
   display: block;
   margin-bottom: 10px;
+  background-color: rgba(255, 255, 255, 0.03);
 }
 
 .nav-links a.active {
   background-color: rgba(255, 255, 255, 0.1);
-}
-
-.header-top {
-  display: flex;
-}
-.header-brand {
-  flex: 1;
-  padding: 6px;
-  color: white;
-}
-.header-brand span {
-  padding: 6px;
-  display: inline-block;
-  font-size: 16px;
-}
-.header-brand .logo {
-  max-width: 30px;
-  float: left;
-}
-header > :not(:first-child) {
-  display: none;
-}
-
-.burger-open header > :not(:first-child) {
-  display: initial;
-}
-
-.header-burger {
-  color: white;
-  font-size: 22px;
-  margin: 5px;
-  cursor: pointer;
 }
 
 /*
@@ -664,12 +644,54 @@ header > :not(:first-child) {
 .clickable {
   cursor: pointer;
 }
+
+/*
+  HEADER
+*/
+.header-top {
+  display: flex;
+  height: 50px;
+  align-items: center;
+}
+.header-brand a {
+  color: white;
+}
+.header-brand {
+  flex: 1;
+  padding-left: 6px;
+}
+.header-brand span {
+  padding: 6px;
+  display: inline-block;
+  font-size: 20px;
+}
+.header-brand .logo {
+  max-width: 30px;
+  float: left;
+  margin-top: 3px;
+}
+header > :not(:first-child) {
+  display: none;
+}
+
+.burger-open header > :not(:first-child) {
+  display: initial;
+}
+
+.header-burger {
+  margin-top: -5px;
+  color: white;
+  font-size: 22px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
 /*
   RESPONSIVE
 */
 @media (min-width: 600px) {
   body {
-    --sidebar-width: 90px;
+    --sidebar-width: 100px;
   }
 
   .cards li {
@@ -697,6 +719,8 @@ header > :not(:first-child) {
   
   .header-top {
     align-items: center;
+    height: auto;
+    margin-top: auto;
   }
   .header-brand .logo {
     max-width: 100%;
@@ -711,6 +735,7 @@ header > :not(:first-child) {
     position: fixed;
     bottom: 0;
     width: var(--sidebar-width);
+    background-color: var(--dark);
   }
 
   .nav-links a {

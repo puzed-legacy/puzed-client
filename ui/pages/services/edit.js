@@ -47,11 +47,13 @@ function createForm ({ attrs }) {
           <div class="alert alert-danger">
             <div><strong>Could not edit service</strong></div>
             <div>Check and fix any specific errors in the form below then try again.</div>
-            ${errors && errors.messages && errors.messages.length > 0 ? html`
-              <ul>
-                ${errors.messages.map(message => html`<li>${message}</li>`)}
-              </ul>
-            ` : ''}
+            ${errors && errors.messages && errors.messages.length > 0
+              ? html`
+                <ul>
+                  ${errors.messages.map(message => html`<li>${message}</li>`)}
+                </ul>
+              `
+              : ''}
           </div>
         `),
 
@@ -92,12 +94,13 @@ function createForm ({ attrs }) {
 function setupService ({ attrs }) {
   return {
     view: ({ attrs }) => {
+      const { app } = attrs;
       const service = attrs.service;
       const link = attrs.app.state.links.find(link => link.id === service.linkId);
 
       return html`
         <main>
-          ${menu(attrs.app, html)}
+          ${m(menu, { app })}
 
           <section>
             <div class="heading-container">

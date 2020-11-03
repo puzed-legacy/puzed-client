@@ -17,7 +17,7 @@ module.exports = function (app) {
       if (app.state.loggedIn) {
         return html`
           <main>
-            ${menu(app, html)}
+            ${m(menu, { app })}
 
             <p>You are already logged in.</p>
           </main>
@@ -57,16 +57,18 @@ module.exports = function (app) {
 
       return html`
         <main>
-          ${menu(app, html)}
+          ${m(menu, { app })}
     
           <section>
             <h1>Login</h1>
 
-            ${showGenericError ? html`
-            <div class="alert alert-danger">
-              No user could be found with the details you provided
-            </div>
-            ` : null}
+            ${showGenericError
+              ? html`
+              <div class="alert alert-danger">
+                No user could be found with the details you provided
+              </div>
+              `
+              : null}
 
             ${loginForm}
 

@@ -3,9 +3,11 @@ async function listProviders (app) {
 
   try {
     const response = await window.fetch(`${app.config.apiServerUrl}/providers`, {
-      headers: app.state.session ? {
-        authorization: 'token ' + app.state.session.secret
-      } : {}
+      headers: app.state.session
+        ? {
+            authorization: 'token ' + app.state.session.secret
+          }
+        : {}
     });
 
     const providers = await response.json();

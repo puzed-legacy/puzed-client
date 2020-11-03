@@ -1,19 +1,21 @@
 const md5 = require('md5');
-
 const classcat = require('classcat');
 const m = require('mithril');
+const html = require('hyperx')(m);
 
 const homeImage = require('../images/home.js');
 const linkImage = require('../images/link.js');
 const serviceImage = require('../images/service.js');
 const domainImage = require('../images/domain.js');
 
-module.exports = function (app, html) {
+module.exports = function (vnode) {
+  const { app } = vnode.attrs;
+
   function guestPill () {
     return [html`
       <a target="_blank" href="/login">Login</a>
     `, html`
-      <a target="_blank" href="/register">Register</a>
+      <a target="_blank" href="/register">Join</a>
     `];
   }
 
@@ -39,22 +41,26 @@ module.exports = function (app, html) {
     `;
   }
 
+  function hideMenu () {
+    document.body.classList.remove('burger-open');
+  }
+
   function userLinks () {
     return html`
       <div class="nav-links">  
-        <a href="/" class=${window.location.pathname === '/' ? 'active' : ''}>
+        <a href="/" onclick=${hideMenu} class=${window.location.pathname === '/' ? 'active' : ''}>
           ${m(homeImage)}
           Home
         </a>
-        <a href="/links" class=${classcat({ active: isActiveUrl('/links') })}>
+        <a href="/links" onclick=${hideMenu} class=${classcat({ active: isActiveUrl('/links') })}>
           ${m(linkImage)}
           Links
         </a>
-        <a href="/services" class=${classcat({ active: isActiveUrl('/services') })}>
+        <a href="/services" onclick=${hideMenu} class=${classcat({ active: isActiveUrl('/services') })}>
           ${m(serviceImage)}
           Services
         </a>
-        <a href="/domains" class=${classcat({ active: isActiveUrl('/domains') })}>
+        <a href="/domains" onclick=${hideMenu} class=${classcat({ active: isActiveUrl('/domains') })}>
           ${m(domainImage)}
           Domains
         </a>
@@ -62,25 +68,45 @@ module.exports = function (app, html) {
     `;
   }
 
-  function toggleBurger () {
+  function toggleBurgerMenu () {
     document.body.classList.toggle('burger-open');
   }
 
-  return html`
-    <header>
-      <div class="header-top">
-        <div class="header-brand">
-          <img class="logo" src="/logo.svg" />
-          <span>Puzed Official</span>
+  function closeBurgerMenu (event) {
+    if (event.target.closest('.menu-header')) {
+      return;
+    }
+    document.body.classList.remove('burger-open');
+  }
+
+  return {
+    oncreate: () => {
+      document.addEventListener('click', closeBurgerMenu);
+    },
+
+    onremove: () => {
+      document.removeEventListener('click', closeBurgerMenu);
+    },
+
+    view: () => {
+      return html`
+      <header class="menu-header">
+        <div class="header-top">
+          <div class="header-brand">
+            <a href="/"><img class="logo" src="/logo.svg" />
+              <span>Puzed</span>
+            </a>
+          </div>
+          <div class="header-burger" onclick=${toggleBurgerMenu}>☰</div>
         </div>
-        <div class="header-burger" onclick=${toggleBurger}>☰</div>
-      </div>
-      ${app.state.user ? userLinks() : guestLinks()}
-      <div class="header-bottom">
-        <div class="nav-user">
-          ${app.state.user ? userPill() : guestPill()}
+        ${app.state.user ? userLinks() : guestLinks()}
+        <div class="header-bottom">
+          <div class="nav-user">
+            ${app.state.user ? userPill() : guestPill()}
+          </div>
         </div>
-      </div>
-    </header>
-  `;
+      </header>
+    `;
+    }
+  };
 };

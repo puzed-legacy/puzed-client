@@ -1,12 +1,15 @@
+const m = require('mithril');
+const html = require('hyperx')(m);
+
 const menu = require('../../components/menu');
 
-module.exports = function (app, html) {
+module.exports = function (app) {
   app.listLinks(app);
 
   return {
     view: () => html`
       <main>
-        ${menu(app, html)}
+        ${m(menu, { app })}
   
         <section>
           <h1>Links</h1>
