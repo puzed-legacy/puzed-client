@@ -308,10 +308,6 @@ puz-deployment-heading div.nowrap {
   text-overflow: ellipsis;
 }
 
-puz-deployment.expanded puz-deployment-heading {
-  border-bottom: 3px solid #ececec;
-}
-
 puz-deployment-heading > div > a {
   color: white;
 }
@@ -375,6 +371,11 @@ puz-deployment-content {
   display: block;
 }
 
+puz-deployment-content .noItems {
+  text-align: center;
+  color: #374235;
+}
+
 /*
   PUZ-INSTANCE
 */
@@ -382,6 +383,11 @@ puz-instance {
   display: block;
   background-color: white;
 }
+
+puz-instance + puz-instance {
+  border-top: 2px solid #ececec;
+}
+
 
 puz-instance-heading {
   cursor: pointer;
@@ -414,7 +420,10 @@ puz-instance-heading > *:first-child {
 puz-instance-content {
   padding: 10px;
   display: block;
-  border-left: 20px solid #ececec;
+}
+
+puz-instance.expanded puz-instance-heading{
+  border-bottom: none;
 }
 
 /*
