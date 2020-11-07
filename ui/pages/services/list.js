@@ -16,6 +16,7 @@ function serviceListByCategory () {
           <a href="/services/create?linkId=${category}">Create new service</a>
           <ul class="cards">
             ${(app.state.services || [])
+            .sort((a, b) => b.dateCreated - a.dateCreated)
             .filter(service => service.linkId === category)
             .map(service => {
               if (!service.deployments) {
