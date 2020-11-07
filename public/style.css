@@ -308,10 +308,6 @@ puz-deployment-heading div.nowrap {
   text-overflow: ellipsis;
 }
 
-puz-deployment.expanded puz-deployment-heading {
-  border-bottom: 3px solid #ececec;
-}
-
 puz-deployment-heading > div > a {
   color: white;
 }
@@ -375,6 +371,11 @@ puz-deployment-content {
   display: block;
 }
 
+puz-deployment-content .noItems {
+  text-align: center;
+  color: #374235;
+}
+
 /*
   PUZ-INSTANCE
 */
@@ -383,11 +384,15 @@ puz-instance {
   background-color: white;
 }
 
+puz-instance + puz-instance {
+  border-top: 2px solid #ececec;
+}
+
+
 puz-instance-heading {
   cursor: pointer;
   display: flex;
   padding: 5px 0 5px 10px;
-  border-bottom: 2px solid #ececec;
   align-items: center;
   color: #374235;
 }
@@ -414,7 +419,6 @@ puz-instance-heading > *:first-child {
 puz-instance-content {
   padding: 10px;
   display: block;
-  border-left: 20px solid #ececec;
 }
 
 /*
@@ -630,6 +634,7 @@ header {
   box-shadow: var(--shadow);
   display: inline-block;
   border-radius: var(--radius);
+  vertical-align: top;
 }
 
 .cards li > *:first-child {
@@ -639,6 +644,12 @@ header {
 .cards li > * {
   display: block;
   margin-bottom: 10px;
+}
+
+.cards li * {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .clickable {

@@ -199,6 +199,8 @@ function instanceItem (vnode) {
         };
       }
 
+      const showBuildLog = ['building', 'failed'].includes(instance.status);
+
       return html`
       <puz-instance key=${instance.id} class="instance-status-${instance.status} ${app.state.instanceExpands[instance.id] ? 'expanded' : ''}">
 
@@ -227,12 +229,12 @@ function instanceItem (vnode) {
           tabs: [{
             key: 'buildLogs',
             title: html`<span>Build Log</span>`,
-            defaultActive: instance.status === 'pending',
+            defaultActive: showBuildLog,
             content: instanceLog(app, service, deployment, instance)
           }, {
             key: 'logs',
             title: html`<span>Logs</span>`,
-            defaultActive: instance.status !== 'pending',
+            defaultActive: !showBuildLog,
             content: liveLog(app, service, deployment, instance)
           }, {
             key: 'stats',
