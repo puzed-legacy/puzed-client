@@ -14,7 +14,7 @@ function instanceList () {
       const { app, service, deployment } = vnode.attrs;
       const instances = app.state.instances.filter(instance => instance.deploymentId === deployment.id);
 
-      if(!instances.lengh) {
+      if(!instances.length) {
         return html`
         <div class="noItems">
           <p>This deployment has no instances.</p>
