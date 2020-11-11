@@ -8,7 +8,7 @@ const lineChart = require('./lineChart');
 
 function formatDate (maybeDate) {
   try {
-    return dateFnsFormat(new Date(parseFloat(maybeDate)), 'dd/MM/yyyy hh:mm:ss');
+    return dateFnsFormat(new Date(parseFloat(maybeDate)), 'dd/MM/yyyy HH:mm:ss');
   } catch (error) {
     return 'Unknown date';
   }
