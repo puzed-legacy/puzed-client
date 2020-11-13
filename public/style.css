@@ -41,6 +41,17 @@ main {
   color: grey;
 }
 
+.closeButton:hover {
+  background-color: black;
+}
+.closeButton {
+  position: absolute;
+  right: 38px;
+  background-color: #4c4c4c;
+  color: white;
+  padding: 5px;
+}
+
 /*
   HEADINGS
 */
@@ -257,10 +268,15 @@ ul.small {
   color: rgb(0 0 0);
 }
 
+.label-build-failed {
+  background-color: rgb(128, 0, 0);
+  color: white;
+}
 .label-healthy {
   background-color: #d2ffcc;
   color: rgb(0, 129, 0);
 }
+
 .label-unhealthy,
 .label-building,
 .label-starting {

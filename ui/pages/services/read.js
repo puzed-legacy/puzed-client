@@ -40,16 +40,18 @@ module.exports = function (app, html) {
     mithril.redraw();
   }
 
-  function handleCreateDeploymentSubmit (event) {
+  async function handleCreateDeploymentSubmit (event) {
     event.preventDefault();
 
     const title = event.target.querySelector('[name="title"]').value;
     const branch = event.target.querySelector('[name="branch"]').value;
 
-    app.createDeployment(app, app.state.tokens.serviceId, title, branch);
-
     createDeploymentOpen = false;
     mithril.redraw();
+
+    const deployment = await app.createDeployment(app, app.state.tokens.serviceId, title, branch);
+    app.readBuildLog(app, app.state.tokens.serviceId, deployment.id);
+    app.toggleExpanded(app, 'imageBuildLogExpands', deployment.id);
   }
 
   function renderDeployments (service, deployments) {

@@ -17,22 +17,6 @@ function formatDate (maybeDate) {
 const terminal = require('../components/terminal');
 const tabbed = require('../components/tabbed');
 
-function instanceLog (app, service, deployment, instance) {
-  return {
-    oncreate: () => {
-      app.readInstanceBuildLog(app, service.id, deployment.id, instance.id);
-    },
-
-    view: () => {
-      return html`
-      <puz-build-log>
-      ${mithril(terminal, { content: app.state.buildLogs[instance.id] || instance.buildLog || 'No build log found' })}
-      </puz-build-log>
-      `;
-    }
-  };
-}
-
 function statistics (app, service, deployment, instance) {
   let timer;
 
@@ -199,14 +183,22 @@ function instanceItem (vnode) {
         };
       }
 
-      const showBuildLog = ['building', 'failed'].includes(instance.status);
-
       return html`
       <puz-instance key=${instance.id} class="instance-status-${instance.status} ${app.state.instanceExpands[instance.id] ? 'expanded' : ''}">
 
         <puz-instance-heading onclick=${toggleExpanded}>
           <div class="nowrap cutoff">${instance.id}</div>
-          <div><span class="label label-${instance.status}">${instance.status}</span></div>
+          <div>
+            ${instance.statusDetail
+              ? html`<span class="label label-${instance.status}">
+                <strong>${instance.status}</strong>
+                ${instance.statusDetail}
+              </span>`
+              : html`<span class="label label-${instance.status}">
+                ${instance.status}
+              </span>`
+            }
+          </div>
           <div class="nowrap">${formatDate(instance.dateCreated)}</div>
           <div>
           ${m(mui.dropdown, { class: 'align-right', head: '☰' }, [
@@ -227,14 +219,9 @@ function instanceItem (vnode) {
         ${mithril(tabbed, {
           app,
           tabs: [{
-            key: 'buildLogs',
-            title: html`<span>Build Log</span>`,
-            defaultActive: showBuildLog,
-            content: instanceLog(app, service, deployment, instance)
-          }, {
             key: 'logs',
             title: html`<span>Logs</span>`,
-            defaultActive: !showBuildLog,
+            defaultActive: true,
             content: liveLog(app, service, deployment, instance)
           }, {
             key: 'stats',
