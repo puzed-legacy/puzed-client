@@ -17,6 +17,7 @@ module.exports = function (config) {
       providers: [],
       deployments: [],
       deploymentExpands: {},
+      imageBuildLogExpands: {},
       instances: [],
       instanceExpands: {},
       buildLogs: {},
@@ -153,7 +154,7 @@ module.exports = function (config) {
   app.readInstance = require('./services/deployments/instances/read');
   app.createInstance = require('./services/deployments/instances/create');
   app.destroyInstance = require('./services/deployments/instances/destroy');
-  app.readInstanceBuildLog = require('./services/deployments/instances/buildlog');
+  app.readBuildLog = require('./services/deployments/buildlog');
 
   app.readService = require('./services/read');
   app.createService = require('./services/create');

@@ -4,6 +4,7 @@ const m = mithril;
 const html = require('hyperx')(mithril);
 
 const classcat = require('classcat');
+const terminal = require('../components/terminal');
 const instanceList = require('../components/instanceList');
 
 function deploymentItem (vnode) {
@@ -48,6 +49,11 @@ function deploymentItem (vnode) {
       app.deleteDeployment(app, service.id, deployment.id);
       document.activeElement.blur();
     }
+    function handleViewBuildLog () {
+      app.readBuildLog(app, service.id, deployment.id);
+      app.toggleExpanded(app, 'imageBuildLogExpands', deployment.id);
+      document.activeElement.blur();
+    }
 
     return html`
       <puz-deployment-heading onclick=${toggleExpanded(deployment.id)}>
@@ -74,9 +80,27 @@ function deploymentItem (vnode) {
               </div>`
             : ''
         }
+        ${deployment.buildStatus === 'building'
+            ? html`
+              <div class="nowrap cutoff">
+                <span class="label label-building">building</span>
+              </div>`
+            : ''
+        }
+        ${deployment.buildStatus === 'failed'
+            ? html`
+              <div class="nowrap cutoff">
+                <span class="label label-build-failed">build failed</span>
+              </div>`
+            : ''
+        }
         <div class="nowrap"><span class="label label-${deployment.status}">${deployment.healthyInstances}/${deployment.totalInstances} Instances</span></div>
         <div>
           ${m(mui.dropdown, { class: 'align-right', head: '☰' }, [
+            m('div',
+              m('a', { onclick: handleViewBuildLog }, 'View build log')
+            ),
+            m('hr'),
             m('div',
               m('a', { onclick: handleAddNewInstance }, 'Add a new instance')
             ),
@@ -124,10 +148,21 @@ function deploymentItem (vnode) {
 
       const heading = deployment.submitting ? deploymentSubmittingHeading(deployment, service) : deploymentHeading(deployment, service);
 
+      function handleToggleClose (id) {
+        app.toggleExpanded(app, 'imageBuildLogExpands', id);
+      }
+
       return html`
         <puz-deployment key=${deployment.id} class="${deploymentClasses}">
           ${heading}
       
+          ${app.state.imageBuildLogExpands[deployment.id]
+            ? mithril('div',
+                mithril('button', { class: 'closeButton', onclick: handleToggleClose.bind(null, deployment.id) }, 'close'),
+                mithril(terminal, { content: app.state.buildLogs[deployment.id] || deployment.buildLog || 'No build log found' })
+              )
+            : ''
+          }
           ${app.state.deploymentExpands[deployment.id]
             ? html`
               <puz-deployment-content>

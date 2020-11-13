@@ -1,16 +1,16 @@
-async function buildlog (app, serviceId, deploymentId, instanceId) {
+async function buildlog (app, serviceId, deploymentId) {
   if (!app.state.loggedIn) {
     return;
   }
 
-  if (app.state.buildLogs[instanceId]) {
+  if (app.state.buildLogs[deploymentId]) {
     return;
   }
 
   app.setLoadingState();
-  app.state.buildLogs[instanceId] = '';
+  app.state.buildLogs[deploymentId] = '';
 
-  const response = await window.fetch(`${app.config.apiServerUrl}/services/${serviceId}/deployments/${deploymentId}/instances/${instanceId}/buildlog`, {
+  const response = await window.fetch(`${app.config.apiServerUrl}/services/${serviceId}/deployments/${deploymentId}/buildlog`, {
     headers: {
       authorization: 'token ' + app.state.session.secret
     }
@@ -24,7 +24,7 @@ async function buildlog (app, serviceId, deploymentId, instanceId) {
   while (true) {
     const { value, done } = await reader.read();
     if (done) break;
-    app.state.buildLogs[instanceId] = app.state.buildLogs[instanceId] + value.toString();
+    app.state.buildLogs[deploymentId] = app.state.buildLogs[deploymentId] + value.toString();
     app.emitStateChanged();
   }
 }

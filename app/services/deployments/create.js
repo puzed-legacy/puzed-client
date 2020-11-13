@@ -29,6 +29,8 @@ async function createDeployment (app, serviceId, title, branch) {
   app.state.deployments[index - 1] = deployment;
 
   app.emitStateChanged();
+
+  return deployment;
 }
 
 module.exports = createDeployment;
