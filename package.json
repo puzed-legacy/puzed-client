@@ -32,7 +32,7 @@
     "mithril": "^2.0.4",
     "mithui": "^1.1.9",
     "preact": "^10.5.7",
-    "snyk": "^1.428.2",
+    "snyk": "^1.430.0",
     "throttle-debounce": "^2.3.0"
   },
   "devDependencies": {
