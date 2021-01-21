@@ -31,7 +31,7 @@
     "md5": "^2.3.0",
     "mithril": "^2.0.4",
     "mithui": "^1.1.9",
-    "preact": "^10.5.7",
+    "preact": "^10.5.8",
     "snyk": "^1.437.3",
     "throttle-debounce": "^2.3.0"
   },
