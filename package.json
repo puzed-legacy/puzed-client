@@ -33,6 +33,8 @@
     "mithui": "^1.1.9",
     "preact": "^10.5.11",
     "snyk": "^1.437.4",
+    "preact": "^10.5.10",
+    "snyk": "^1.438.0",
     "throttle-debounce": "^2.3.0"
   },
   "devDependencies": {
