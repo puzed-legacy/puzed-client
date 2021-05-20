@@ -13,9 +13,9 @@ module.exports = function (vnode) {
 
   function guestPill () {
     return [html`
-      <a target="_blank" href="/login">Login</a>
+      <a href="/login">Login</a>
     `, html`
-      <a target="_blank" href="/register">Join</a>
+      <a href="/register">Join</a>
     `];
   }
 
@@ -23,7 +23,7 @@ module.exports = function (vnode) {
     const emailHash = md5(app.state.user.email);
 
     return html`
-      <a target="_blank" href="#">
+      <a href="#">
         <img src="https://www.libravatar.org/avatar/${emailHash}?d=identicon&s=120" />
       </a>
     `;
