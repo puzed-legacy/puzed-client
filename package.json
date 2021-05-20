@@ -30,7 +30,7 @@
     "echarts": "^5.1.1",
     "md5": "^2.3.0",
     "mithril": "^2.0.4",
-    "mithui": "^2.0.8",
+    "mithui": "^1.1.10",
     "preact": "^10.5.13",
     "snyk": "^1.602.0",
     "throttle-debounce": "^3.0.1"
