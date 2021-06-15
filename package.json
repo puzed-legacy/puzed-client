@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "ansi-to-html": "^0.6.15",
-    "chart.js": "^3.2.1",
+    "chart.js": "^3.3.0",
     "chartjs-adapter-date-fns": "^2.0.0",
     "classcat": "^5.0.3",
     "date-fns": "^2.21.3",
