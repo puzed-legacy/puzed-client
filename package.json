@@ -23,30 +23,22 @@
   },
   "dependencies": {
     "ansi-to-html": "^0.6.15",
-    "chart.js": "^3.3.0",
-    "chartjs-adapter-date-fns": "^2.0.0",
     "classcat": "^5.0.3",
-    "date-fns": "^2.21.3",
-    "echarts": "^5.1.1",
+    "date-fns": "^2.22.1",
     "md5": "^2.3.0",
     "mithril": "^2.0.4",
-    "mithui": "^1.1.10",
-    "preact": "^10.5.13",
-    "snyk": "^1.602.0",
+    "mithui": "^2.0.8",
     "throttle-debounce": "^3.0.1"
   },
   "devDependencies": {
-    "brfs": "^2.0.2",
     "browserify": "^17.0.0",
-    "browserify-tree": "0.0.6",
     "discify": "^1.6.3",
     "envify": "^4.1.0",
     "hyperx": "^2.5.4",
     "local-web-server": "^4.2.1",
-    "routemeup": "^2.0.1",
+    "routemeup": "^2.0.2",
     "spath": "^2.0.3",
     "uglifyify": "^5.0.2",
     "watchify": "^4.0.0"
-  },
-  "snyk": true
+  }
 }
