@@ -24,7 +24,7 @@
   "dependencies": {
     "ansi-to-html": "^0.7.1",
     "classcat": "^5.0.3",
-    "date-fns": "^2.22.1",
+    "date-fns": "^2.23.0",
     "md5": "^2.3.0",
     "mithril": "^2.0.4",
     "mithui": "^1.1.10",
