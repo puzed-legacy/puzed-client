@@ -28,7 +28,7 @@
     "md5": "^2.3.0",
     "mithril": "^2.0.4",
     "mithui": "^1.1.10",
-    "snyk": "^1.689.0",
+    "snyk": "^1.715.0",
     "throttle-debounce": "^3.0.1"
   },
   "devDependencies": {
@@ -36,7 +36,7 @@
     "discify": "^1.6.3",
     "envify": "^4.1.0",
     "hyperx": "^2.5.4",
-    "local-web-server": "^4.2.1",
+    "local-web-server": "^5.1.1",
     "routemeup": "^2.0.2",
     "spath": "^2.0.3",
     "uglifyify": "^5.0.2",
