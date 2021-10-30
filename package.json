@@ -22,7 +22,7 @@
     ]
   },
   "dependencies": {
-    "ansi-to-html": "^0.7.1",
+    "ansi-to-html": "^0.7.2",
     "classcat": "^5.0.3",
     "date-fns": "^2.25.0",
     "md5": "^2.3.0",
