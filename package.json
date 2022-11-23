@@ -28,7 +28,7 @@
     "md5": "^2.3.0",
     "mithril": "^2.2.2",
     "mithui": "^1.1.10",
-    "snyk": "^1.1047.0",
+    "snyk": "^1.1048.0",
     "throttle-debounce": "^5.0.0"
   },
   "devDependencies": {
